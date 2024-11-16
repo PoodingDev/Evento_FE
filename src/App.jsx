@@ -1,10 +1,5 @@
-function App() {
+import React from "react";
 
-  return (
-    <>
-     
-    </>
-  )
+export default function App() {
+  return <div>App</div>;
 }
-
-export default App
