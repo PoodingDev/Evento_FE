@@ -40,7 +40,7 @@ export default function SideBarLeft() {
   };
 
   return (
-    <div className="evento-sidebarleft h-[calc(100vh-5rem)] w-[18rem] rounded-tr-[2.5rem] bg-[#F1F1F1] pl-[2.25rem] pr-[1.75rem] pt-[1.6rem]">
+    <div className="evento-sidebarleft absolute mt-[5rem] h-[calc(100vh-5rem)] w-[18rem] rounded-tr-[2.5rem] bg-[#F1F1F1] pl-[2.25rem] pr-[1.75rem] pt-[1.6rem]">
       <div>
         {/* 내 캘린더 */}
         <div className="evento-my-calendar text-[0.9rem] text-[#646464]">
