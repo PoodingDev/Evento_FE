@@ -13,13 +13,12 @@ export default function LoginPostCode() {
       // 중복 요청 방지
       const usedAuthCode = localStorage.getItem("usedAuthCode");
       if (usedAuthCode === authorizationCode) {
-        console.error("이미 사용된 인증 코드입니다.");
+        //console.error("이미 사용된 인증 코드입니다.");
         return;
       }
 
       postCode(authorizationCode);
       localStorage.setItem("usedAuthCode", authorizationCode);
-
       // URL 초기화
       setTimeout(() => navigate("/auth", { replace: true }), 100);
     }
@@ -40,11 +39,11 @@ export default function LoginPostCode() {
         },
       })
       .then((response) => {
-        console.log("응답:", response.data); // Access Token 출력
-        localStorage.setItem("authToken", response.data.access_token); // Access Token 저장
+        console.log("응답:", response.data);
+        localStorage.setItem("authToken", response.data.access_token);
       })
       .catch((error) => {
-        console.error("에러:", error.response.data); // 상세 에러 출력
+        console.error("에러:", error.response.data);
       });
   }
 
