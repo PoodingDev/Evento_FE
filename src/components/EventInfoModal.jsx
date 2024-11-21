@@ -1,4 +1,6 @@
 import React from "react";
+import { FaXmark } from "react-icons/fa6";
+
 import {
   FaLock,
   FaBookmark,
@@ -6,12 +8,11 @@ import {
   FaPen,
   FaCommentAlt,
 } from "react-icons/fa";
-import { FaXmark } from "react-icons/fa6";
 
 export default function EventInfo() {
   return (
-    <div className="flex h-screen items-center justify-center">
-      <div className="h-[532px] w-[781px] rounded-[20px] p-[40px] shadow-[0px_0px_10px_gray]">
+    <div className="ml-[18rem] flex h-screen items-center justify-center">
+      <div className="h-[450px] w-[750px] rounded-[20px] p-[40px] shadow-[0px_0px_10px_gray]">
         <div className="flex flex-wrap justify-between">
           {/* 제목 */}
           <div className="text-[64px] font-bold">저녁 약속</div>

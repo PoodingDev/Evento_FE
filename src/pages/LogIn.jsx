@@ -3,7 +3,7 @@ import React from "react";
 export default function LogIn() {
   return (
     // 배경 그라데이션 적용 시: from-eventoPurpleLight to-eventoWhite bg-gradient-to-b
-    <div className="bg-eventoWhite h-[calc(100vh-5rem)]">
+    <div className="bg-eventoWhite h-[100vh]">
       <div className="flex flex-col items-center justify-center h-full">
         <img src="/src/assets/logo/event_logo.png" alt="Evento" />
         <div className="text-eventoPurpleBase/70 mt-[1rem] text-[1rem]">

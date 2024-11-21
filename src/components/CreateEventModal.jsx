@@ -1,8 +1,9 @@
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
 import React, { useState } from "react";
 import { FaCaretDown, FaToggleOn } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+
 // $(".ui-datepicker ").css({ "margin-left": "141px", "margin-top": "-223px" });
 
 export default function EventCreate() {
@@ -10,8 +11,8 @@ export default function EventCreate() {
   const [endDate, setendDate] = useState(new Date());
 
   return (
-    <div className="flex h-screen items-center justify-center">
-      <div className="h-[532px] w-[781px] rounded-[20px] p-[40px] shadow-[0px_0px_10px_gray]">
+    <div className="ml-[18rem] flex h-screen items-center justify-center">
+      <div className="h-[450px] w-[750px] rounded-[20px] p-[40px] shadow-[0px_0px_10px_gray]">
         <div className="flex flex-wrap justify-between">
           {/* 제목 */}
           <input

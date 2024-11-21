@@ -21,6 +21,11 @@ module.exports = {
         // 경고 색상
         lightRed: "#FFCFCB",
         darkRed: "#E13228",
+
+        darkGray: "#888888",
+        lightGray: "#BBBBBB",
+
+        eventoblack: "#121212",
       },
     },
   },
