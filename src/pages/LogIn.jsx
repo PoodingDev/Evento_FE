@@ -13,14 +13,29 @@ export default function LogIn() {
           <span className="font-bold">evento.</span>와 함께 시작하세요!
         </div>
         <div className="mt-[2rem] space-y-[1rem]">
-          <div className="flex h-[3.3rem] w-[20rem] cursor-pointer items-center justify-center rounded-lg bg-[#FEE500]/90 font-bold text-[#181600]">
-            카카오톡 로그인
+          <div className="relative flex h-[3.3rem] w-[20rem] cursor-pointer items-center rounded-lg bg-[#FEE500] text-[#181600]/85">
+            <img
+              src="/src/assets/kakao_logo.png"
+              className="absolute left-2 ml-[0.8rem] h-[1.1rem]"
+              alt="K"
+            />
+            <span className="w-full text-center">카카오 연동하기</span>
           </div>
-          <div className="text-eventoWhite flex h-[3.3rem] w-[20rem] cursor-pointer items-center justify-center rounded-lg bg-[#03C75A]/90 font-bold">
-            네이버 로그인
+          <div className="text-eventoWhite relative flex h-[3.3rem] w-[20rem] cursor-pointer items-center rounded-lg bg-[#03C75A]">
+            <img
+              src="/src/assets/naver_logo.png"
+              className="absolute left-2 h-[2.5rem]"
+              alt="K"
+            />
+            <span className="w-full text-center">네이버 연동하기</span>
           </div>
-          <div className="flex h-[3.3rem] w-[20rem] cursor-pointer items-center justify-center rounded-lg bg-[#F2F2F2]/90 font-bold text-[#555]">
-            구글 로그인
+          <div className="relative flex h-[3.3rem] w-[20rem] cursor-pointer items-center rounded-lg bg-[#F2F2F2]/90 text-[#555]">
+            <img
+              src="/src/assets/google_logo.png"
+              className="absolute left-2 ml-[0.3rem] h-[2rem]"
+              alt="K"
+            />
+            <span className="w-full text-center">구글 연동하기</span>
           </div>
         </div>
       </div>
