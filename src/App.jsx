@@ -3,10 +3,12 @@ import EventCreate from "components/CreateEventModal";
 import EventInfoModal from "/src/components/EventInfoModal";
 import Header from "components/Header";
 import LogIn from "/src/pages/LogIn";
+import LoginPostCode from "/src/pages/LoginPostCode";
 import Profile from "/src/pages/Profile";
 import ProfileEdit from "/src/pages/ProfileEdit";
 import React from "react";
 import SideBarLeft from "/src/components/SideBarLeft";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 
 function Layout({ children }) {
@@ -28,6 +30,7 @@ export default function App() {
       <Layout>
         <Routes>
           <Route path="/login" element={<LogIn />} />
+          <Route path="*" element={<LoginPostCode />} />
           <Route path="/" element={<Calendar />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="profile/edit" element={<ProfileEdit />} />
