@@ -33,7 +33,7 @@ export default function App() {
           <Route path="*" element={<LoginPostCode />} />
           <Route path="/" element={<Calendar />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="profile/edit" element={<ProfileEdit />} />
+          <Route path="/profile/edit" element={<ProfileEdit />} />
           //테스트용 - 모달을 페이지로 띄우기
           <Route path="event" element={<EventInfoModal />} />
           <Route path="new-event" element={<EventCreate />} />

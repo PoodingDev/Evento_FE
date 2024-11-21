@@ -10,11 +10,10 @@ export default function Header() {
 
       {/* 작업할 때 아래 주석 처리 뜯고 하시면 편합니다 */}
 
-      <Link to="/profile">profile</Link>
-      <Link to="/profile/edit">edit profile</Link>
-      <Link to="/event">event</Link>
-      <Link to="/new-event">create event</Link>
-      <Link to="/login">login</Link>
+      <Link to="/profile">Profile</Link>
+      <Link to="/event">Event</Link>
+      <Link to="/new-event">Create Event</Link>
+      <Link to="/login">Login</Link>
       <Link to="/"></Link>
 
       <FontAwesomeIcon icon={faUser} className="text-2xl text-[#4F378B]" />

@@ -20,9 +20,9 @@ export default function ProfileEdit() {
         <div className="ml-[5rem] mt-[2rem] flex items-center text-center">
           <p className="text-[1.4rem]">&nbsp; 내 프로필 수정</p>
         </div>
-        <div className="flex flex-col items-center justify-center h-full">
-          <div className="h-[15rem] w-[40rem] -translate-x-[2rem] -translate-y-[0.5rem]">
-            <div className="flex -translate-y-[6rem] items-center justify-center space-x-[6rem]">
+        <div className="flex h-full -translate-x-[2rem] -translate-y-[6rem] flex-col items-center justify-center">
+          <div className="h-[15rem] w-[40rem]">
+            <div className="flex items-center justify-center space-x-[6rem]">
               <div className="flex flex-col items-center gap-3">
                 <IoPersonCircleOutline className="text-eventoPurpleBase h-[7.5rem] w-[7.5rem] object-cover" />
                 <input
@@ -58,7 +58,7 @@ export default function ProfileEdit() {
                 </li>
               </ul>
             </div>
-            <div className="flex justify-center space-x-[1rem]">
+            <div className="mt-[5rem] flex justify-center space-x-[1rem]">
               <button className="border-eventoPurpleBase text-eventoPurpleBase w-[7rem] gap-3 rounded-[0.625rem] border-2 bg-white px-3 py-2">
                 취소
               </button>

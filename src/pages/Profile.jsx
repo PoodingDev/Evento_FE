@@ -6,7 +6,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 export default function Profile() {
   const navigate = useNavigate();
   const editClick = () =>
-    navigate("profile/edit", {
+    navigate("/profile/edit", {
       state: { userName, userNickname, userEmail, userBirth },
     });
   const userName = `이지금`;
