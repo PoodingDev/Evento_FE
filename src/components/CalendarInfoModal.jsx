@@ -1,13 +1,6 @@
 import React from "react";
 import { FaXmark } from "react-icons/fa6";
-
-import {
-  FaLock,
-  FaBookmark,
-  FaRegTrashAlt,
-  FaPen,
-  FaCommentAlt,
-} from "react-icons/fa";
+import { FaPen } from "react-icons/fa";
 
 export default function CalendarInfo() {
   return (
