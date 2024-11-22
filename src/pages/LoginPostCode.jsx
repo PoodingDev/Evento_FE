@@ -1,31 +1,51 @@
-import axios from "axios";
 import React, { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import axios from "axios";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function LoginPostCode() {
   const [searchParams] = useSearchParams();
-
+  const navigate = useNavigate();
   useEffect(() => {
     const authorizationCode = searchParams.get("code");
     if (authorizationCode) {
+      console.log("Authorization Code:", authorizationCode);
+
+      // 중복 요청 방지
+      const usedAuthCode = localStorage.getItem("usedAuthCode");
+      if (usedAuthCode === authorizationCode) {
+        //console.error("이미 사용된 인증 코드입니다.");
+        return;
+      }
+
       postCode(authorizationCode);
+      localStorage.setItem("usedAuthCode", authorizationCode);
+      // URL 초기화
+      setTimeout(() => navigate("/auth", { replace: true }), 100);
     }
-  }, [searchParams]);
+  }, [searchParams, navigate]);
 
   function postCode(authCode) {
+    const data = new URLSearchParams({
+      grant_type: "authorization_code",
+      client_id: import.meta.env.VITE_KAKAO_CLIENT_ID,
+      redirect_uri: "http://localhost:5173/auth",
+      code: authCode,
+    });
+
     axios
-      .post("https://run.mocky.io/v3/your-mock-api-id", {
-        //실제 우리 백엔드 uri로 수정
-        code: authCode,
-        platform: "google",
+      .post("https://kauth.kakao.com/oauth/token", data, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       })
       .then((response) => {
         console.log("응답:", response.data);
-        localStorage.setItem("authToken", response.data.token);
+        localStorage.setItem("authToken", response.data.access_token);
       })
       .catch((error) => {
-        console.error("에러:", error);
+        console.error("에러:", error.response.data);
       });
   }
+
   return <div>LoginPostCode</div>;
 }
