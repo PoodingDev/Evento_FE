@@ -14,9 +14,9 @@ export default function LogIn() {
         redirectUri = encodeURIComponent("http://localhost:5173/auth");
         redirectUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
         break;
-      case "naver":
-        // clientId = import.meta.env.VITE_NAVER_CLIENT_ID;
-        break;
+      // case "naver":
+      //   clientId = import.meta.env.VITE_NAVER_CLIENT_ID;
+      //   break;
       case "google":
         redirectUri = encodeURIComponent("http://localhost:5173/auth");
         clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
