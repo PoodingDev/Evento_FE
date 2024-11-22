@@ -18,9 +18,20 @@ module.exports = {
         eventoPurpleBase: "#6750A4",
         eventoPurpleDark: "#4F378B",
 
+        //캘린더 색상
+        calendarYellow: "#FFE55C",
+        calendarRed: "#F69292",
+        calendarGreen: "#95DEA1",
+        calendarLightBlue: "#9CC9FF",
+        calendarDarkPurple: "#B89BCE",
+        calendarBlue: "#95A9F0",
+        calendarPurple: "#DE95F0",
+
         // 경고 색상
         lightRed: "#FFCFCB",
         darkRed: "#E13228",
+
+        eventoYellow: "#FFC960",
 
         darkGray: "#888888",
         lightGray: "#BBBBBB",
