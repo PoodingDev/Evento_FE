@@ -13,17 +13,18 @@ export default function LogIn() {
     switch (platform) {
       case "kakao":
         clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
-        authUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${state}`;
+        authUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&state=$kakao`;
         break;
 
       case "naver":
         clientId = import.meta.env.VITE_NAVER_CLIENT_ID;
-        authUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${state}`;
+        authUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&state=$naver`;
         break;
 
       case "google":
         clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-        authUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=email profile openid&state=${state}`;
+        authUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile
+&state=google`;
         break;
 
       default:
@@ -39,7 +40,7 @@ export default function LogIn() {
 
   return (
     <div className="h-[100vh] bg-eventoWhite">
-      <div className="flex h-full flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center h-full">
         <img
           className="h-[6rem]"
           src="/src/assets/logo/event_logo.png"

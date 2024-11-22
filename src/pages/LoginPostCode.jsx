@@ -7,25 +7,18 @@ export default function LoginPostCode() {
 
   useEffect(() => {
     const authCode = searchParams.get("code");
-    const state = searchParams.get("state");
-
-    console.log("state2:", state);
+    const platform = searchParams.get("state");
 
     if (authCode) {
       try {
-        const platform = state
-          ? JSON.parse(decodeURIComponent(state)).platform
-          : null;
-
-        console.log("Auth Code:", authCode);
-        console.log("Parsed Platform:", platform);
-
         if (!platform || !["kakao", "naver", "google"].includes(platform)) {
           throw new Error("지원하지 않는 플랫폼");
         }
-        sendAuthCodeToBackend(platform, authCode, state || "state");
+
+        // 백엔드로 인가 코드 전송
+        sendAuthCodeToBackend(platform, authCode);
       } catch (error) {
-        console.error("Error", error.message);
+        console.error("Error:", error.message);
       }
     }
   }, [searchParams]);
@@ -46,7 +39,8 @@ export default function LoginPostCode() {
     // 요청 데이터 설정
     const payload = {
       code: authCode,
-      ...(platform === "naver" ? { state } : {}), //네이버
+      state: platform,
+      // ...(platform === "naver" ? { state } : {}), //네이버
     };
 
     try {
