@@ -2,16 +2,16 @@ import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import React, { useState } from "react";
 import { FaCaretDown, FaToggleOn } from "react-icons/fa";
-import { FaXmark } from "react-icons/fa6";
+import { FaRegFileCode, FaXmark } from "react-icons/fa6";
 
 // $(".ui-datepicker ").css({ "margin-left": "141px", "margin-top": "-223px" });
 
-export default function EventCreate() {
+export default function CreateEvent() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setendDate] = useState(new Date());
 
   return (
-    <div className="ml-[18rem] flex h-screen items-center justify-center">
+    <div className="ml-[18rem] flex h-screen items-center justify-center pt-[5rem]">
       <div className="h-[28rem] w-[48rem] rounded-[2.5rem] bg-eventoWhite p-[2.8rem] shadow-[0_0_2.5rem_gray]">
         <div className="flex flex-wrap justify-between">
           {/* 제목 */}
