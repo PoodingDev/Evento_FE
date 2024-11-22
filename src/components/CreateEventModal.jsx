@@ -2,9 +2,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import React, { useState } from "react";
 import { FaCaretDown, FaToggleOn } from "react-icons/fa";
-import { FaRegFileCode, FaXmark } from "react-icons/fa6";
-
-// $(".ui-datepicker ").css({ "margin-left": "141px", "margin-top": "-223px" });
+import { FaXmark } from "react-icons/fa6";
 
 export default function CreateEvent() {
   const [startDate, setStartDate] = useState(new Date());
