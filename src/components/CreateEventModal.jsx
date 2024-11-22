@@ -12,7 +12,7 @@ export default function EventCreate() {
 
   return (
     <div className="ml-[18rem] flex h-screen items-center justify-center">
-      <div className="h-[450px] w-[750px] rounded-[20px] p-[40px] shadow-[0px_0px_10px_gray]">
+      <div className="h-[450px] w-[750px] rounded-[20px] bg-eventoWhite p-[40px] shadow-[0px_0px_10px_gray]">
         <div className="flex flex-wrap justify-between">
           {/* 제목 */}
           <input
@@ -23,14 +23,14 @@ export default function EventCreate() {
           <FaXmark size={25} />
         </div>
 
-        <div className="mb-[50px] flex w-[160px] justify-center rounded-[50px] bg-[#FFC960] text-center text-[20px] font-bold">
+        <div className="bg-eventoYellow mb-[50px] flex w-[160px] justify-center rounded-[50px] text-center text-[20px] font-bold">
           <FaCaretDown size={25} />
           <p>Pooding팀</p>
         </div>
 
         {/* 시간 */}
 
-        <div className="text-[16px] font-bold text-[#8867DF]">시간</div>
+        <div className="text-[16px] font-bold text-eventoPurple">시간</div>
         <div className="mb-[20px] flex text-[32px] font-medium">
           <DatePicker
             selected={startDate}
@@ -49,7 +49,7 @@ export default function EventCreate() {
         </div>
 
         {/* 일정 상세 */}
-        <div className="text-[16px] font-bold text-[#8867DF]">일정 상세</div>
+        <div className="text-[16px] font-bold text-eventoPurple">일정 상세</div>
 
         <input
           type="text"
@@ -59,14 +59,14 @@ export default function EventCreate() {
 
         {/* 기타 아이콘 */}
         <div className="flex flex-wrap justify-between">
-          <p className="text-[20px] font-medium text-[#8867DF]">
+          <p className="text-[20px] font-medium text-eventoPurple">
             구독자에게 공개
           </p>
           <FaToggleOn size={25} />
-          <div className="ml-[300px] h-[48px] w-[87px] rounded-[10px] border-[1px] border-solid border-[#8867DF] text-center text-[20px] font-medium leading-[45px] text-[#8867DF]">
+          <div className="ml-[300px] h-[48px] w-[87px] rounded-[10px] border-[1px] border-solid border-eventoPurple text-center text-[20px] font-medium leading-[45px] text-eventoPurple">
             취소
           </div>
-          <div className="h-[48px] w-[87px] rounded-[10px] border-[1px] border-solid bg-[#8867DF] text-center text-[20px] font-medium leading-[45px] text-white">
+          <div className="h-[48px] w-[87px] rounded-[10px] border-[1px] border-solid bg-eventoPurple text-center text-[20px] font-medium leading-[45px] text-eventoWhite">
             저장
           </div>
         </div>
