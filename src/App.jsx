@@ -30,7 +30,7 @@ export default function App() {
       <Layout>
         <Routes>
           <Route path="/login" element={<LogIn />} />
-          <Route path="/auth" element={<LoginPostCode />} />
+          <Route path="/auth/*" element={<LoginPostCode />} />
           <Route path="/" element={<Calendar />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/edit" element={<ProfileEdit />} />

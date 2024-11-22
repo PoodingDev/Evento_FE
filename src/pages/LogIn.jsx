@@ -4,42 +4,51 @@ import { useSearchParams } from "react-router-dom";
 
 export default function LogIn() {
   function handleLogin(platform) {
-    let redirectUrl = "";
-    let redirectUri = "";
     let clientId = "";
+    let authUrl = "";
+
+    const redirectUri = `http://localhost:5173/auth/${platform}`;
+    const state = encodeURIComponent(JSON.stringify({ platform }));
 
     switch (platform) {
       case "kakao":
         clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
-        redirectUri = encodeURIComponent("http://localhost:5173/auth");
-        redirectUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
+        authUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${state}`;
         break;
-      // case "naver":
-      //   clientId = import.meta.env.VITE_NAVER_CLIENT_ID;
-      //   break;
+
+      case "naver":
+        clientId = import.meta.env.VITE_NAVER_CLIENT_ID;
+        authUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${state}`;
+        break;
+
       case "google":
-        redirectUri = encodeURIComponent("http://localhost:5173/auth");
         clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-        redirectUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=email profile openid`;
+        authUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=email profile openid&state=${state}`;
         break;
+
       default:
-        break;
+        console.error("지원하지 않는 플랫폼입니다.");
+        return;
     }
-    window.location.href = redirectUrl;
+
+    console.log("Auth URL:", authUrl);
+    console.log("State:", state);
+
+    window.location.href = authUrl;
   }
 
   return (
-    <div className="bg-eventoWhite h-[100vh]">
-      <div className="flex flex-col items-center justify-center h-full">
+    <div className="h-[100vh] bg-eventoWhite">
+      <div className="flex h-full flex-col items-center justify-center">
         <img
           className="h-[6rem]"
           src="/src/assets/logo/event_logo.png"
           alt="Evento"
         />
-        <div className="text-eventoPurpleBase/80 mt-[0.5rem] text-[1rem]">
+        <div className="mt-[0.5rem] text-[1rem] text-eventoPurpleBase/80">
           간편한 일정 관리
         </div>
-        <div className="text-eventoPurpleBase/80 mt-[0.5rem] text-[1rem]">
+        <div className="mt-[0.5rem] text-[1rem] text-eventoPurpleBase/80">
           <span className="font-bold">evento.</span>와 함께 시작하세요!
         </div>
         <div className="mt-[2.5rem] space-y-[0.6rem] text-[0.9rem]">
@@ -57,7 +66,7 @@ export default function LogIn() {
           </div>
           {/* 네이버 */}
           <div
-            className="text-eventoWhite relative flex h-[2.5rem] w-[15rem] cursor-pointer items-center rounded-lg bg-[#03C75A]"
+            className="relative flex h-[2.5rem] w-[15rem] cursor-pointer items-center rounded-lg bg-[#03C75A] text-eventoWhite"
             onClick={() => handleLogin("naver")}
           >
             <img
