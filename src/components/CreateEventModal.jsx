@@ -4,69 +4,71 @@ import React, { useState } from "react";
 import { FaCaretDown, FaToggleOn } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 
-// $(".ui-datepicker ").css({ "margin-left": "141px", "margin-top": "-223px" });
-
-export default function EventCreate() {
+export default function CreateEvent() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setendDate] = useState(new Date());
 
   return (
-    <div className="ml-[18rem] flex h-screen items-center justify-center">
-      <div className="h-[450px] w-[750px] rounded-[20px] p-[40px] shadow-[0px_0px_10px_gray]">
+    <div className="ml-[18rem] flex h-screen items-center justify-center pt-[5rem]">
+      <div className="h-[28rem] w-[48rem] rounded-[2.5rem] bg-eventoWhite p-[2.8rem] shadow-[0_0_2.5rem_gray]">
         <div className="flex flex-wrap justify-between">
           {/* 제목 */}
           <input
             type="text"
             placeholder="일정을 입력하세요"
-            className="w-[600px] text-[64px] font-bold"
+            className="mb-[0.5rem] w-[30rem] text-[2.8rem] font-bold"
           />
           <FaXmark size={25} />
         </div>
 
-        <div className="mb-[50px] flex w-[160px] justify-center rounded-[50px] bg-[#FFC960] text-center text-[20px] font-bold">
+        <div className="bg-eventoYellow mb-[2.8rem] flex w-[10rem] justify-center rounded-[3rem] text-center text-[1.2rem] font-bold leading-[1.7rem]">
           <FaCaretDown size={25} />
           <p>Pooding팀</p>
         </div>
 
         {/* 시간 */}
 
-        <div className="text-[16px] font-bold text-[#8867DF]">시간</div>
-        <div className="mb-[20px] flex text-[32px] font-medium">
+        <div className="mb-[0.5rem] text-[1rem] font-bold text-eventoPurple">
+          시간
+        </div>
+        <div className="mb-[1.8rem] flex text-[2rem] font-medium">
           <DatePicker
             selected={startDate}
             onChange={(date) => setStartDate(date)}
             dateFormat="yyyy-MM-dd"
-            className="w-[180px]"
+            className="w-[11rem]"
             datepicker-orientation="bottom right"
           />
-          <p className="mr-[10px] w-[30px]">-</p>
+          <p className="mr-[1rem] w-[1rem]">-</p>
           <DatePicker
             selected={endDate}
             onChange={(date) => setendDate(date)}
             dateFormat="yyyy-MM-dd"
-            className="w-[180px]"
+            className="w-[11rem]"
           />
         </div>
 
         {/* 일정 상세 */}
-        <div className="text-[16px] font-bold text-[#8867DF]">일정 상세</div>
+        <div className="mb-[0.5rem] text-[1rem] font-bold text-eventoPurple">
+          일정 상세
+        </div>
 
         <input
           type="text"
           placeholder="무슨 일정인가요?"
-          className="mb-[100px] w-[700px] text-[24px] font-medium"
+          className="mb-[1.8rem] w-[40rem] text-[1.5rem] font-medium"
         />
 
         {/* 기타 아이콘 */}
         <div className="flex flex-wrap justify-between">
-          <p className="text-[20px] font-medium text-[#8867DF]">
+          <p className="text-[1.2rem] font-medium text-eventoPurple">
             구독자에게 공개
           </p>
           <FaToggleOn size={25} />
-          <div className="ml-[300px] h-[48px] w-[87px] rounded-[10px] border-[1px] border-solid border-[#8867DF] text-center text-[20px] font-medium leading-[45px] text-[#8867DF]">
+          <div className="ml-[17rem] h-[3rem] w-[5.2rem] rounded-[0.5rem] border-[0.1rem] border-solid border-eventoPurple text-center text-[1.2rem] font-medium leading-[3rem] text-eventoPurple">
             취소
           </div>
-          <div className="h-[48px] w-[87px] rounded-[10px] border-[1px] border-solid bg-[#8867DF] text-center text-[20px] font-medium leading-[45px] text-white">
+          <div className="h-[3rem] w-[5.2rem] rounded-[0.5rem] border-[0.1rem] border-solid bg-eventoPurple text-center text-[1.2rem] font-medium leading-[3rem] text-eventoWhite">
             저장
           </div>
         </div>
