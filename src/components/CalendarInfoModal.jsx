@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaXmark } from "react-icons/fa6";
 import { FaPen, FaCopy, FaToggleOn, FaToggleOff } from "react-icons/fa";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 export default function CalendarInfo() {
   //수정 및 편집
@@ -12,10 +13,13 @@ export default function CalendarInfo() {
   const toggleIsPublic = () => setIsPublic(!isPublic);
 
   //상세
-  const [detailMemo, setDetailMemo] = useState("");
+  const [detailMemo, setDetailMemo] = useState("푸우가 코딩한다");
 
   // 색상
   const [calColor, setCalColor] = useState("calendarRed");
+
+  //초대코드
+  const [visitCode, setVisitCode] = useState("GW5F4");
 
   return (
     <div className="ml-[18rem] flex h-screen items-center justify-center pt-[5rem]">
@@ -149,9 +153,11 @@ export default function CalendarInfo() {
                 {isPublic ? "공개" : "비공개"}
               </div>
               <div className="pb-[0.8rem] pr-[0.5rem] text-[1.2rem] font-bold">
-                GW5F4
+                {`${visitCode}`}
               </div>
-              <FaCopy />
+              <CopyToClipboard text={`${visitCode}`}>
+                <FaCopy />
+              </CopyToClipboard>
             </div>
             <div className="ml-[40.5rem]">
               <FaPen size={25} onClick={toggleIsEdit} />
