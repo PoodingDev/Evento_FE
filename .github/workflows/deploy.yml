@@ -1,0 +1,6 @@
+name: Github Actions
+
+on:
+  push:
+    branches:
+      - main
