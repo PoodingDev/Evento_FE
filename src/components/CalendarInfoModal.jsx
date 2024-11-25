@@ -5,7 +5,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 
 export default function CalendarInfo() {
   //수정 및 편집
-  const [isEdit, setIsEdit] = useState(true);
+  const [isEdit, setIsEdit] = useState(false);
   const toggleIsEdit = () => setIsEdit(!isEdit);
 
   //공개
@@ -29,13 +29,13 @@ export default function CalendarInfo() {
         <div className="flex flex-wrap justify-between">
           {/* 제목 */}
           {isEdit ? (
-            <div
-              className={`mb-[2rem] text-[3rem] font-black text-${calColor}`}
-            >
+            <div className="mb-[2rem] text-[3rem] font-black text-lightGray">
               Pooding팀
             </div>
           ) : (
-            <div className="mb-[2rem] text-[3rem] font-black text-lightGray">
+            <div
+              className={`mb-[2rem] text-[3rem] font-black text-${calColor}`}
+            >
               Pooding팀
             </div>
           )}
@@ -60,13 +60,6 @@ export default function CalendarInfo() {
           </div>
         </div>
         {isEdit ? (
-          <div className="flex">
-            <div className="mb-[3rem] h-[1.3rem] w-[20rem] text-[1.2rem] font-bold">
-              {`${detailMemo}`}
-            </div>
-            <div className={`h-[1.5rem] w-[1.5rem] bg-${calColor}`}></div>
-          </div>
-        ) : (
           <div className="flex">
             <input
               type="text"
@@ -135,6 +128,13 @@ export default function CalendarInfo() {
               ></button>
             </div>
           </div>
+        ) : (
+          <div className="flex">
+            <div className="mb-[3rem] h-[1.3rem] w-[20rem] text-[1.2rem] font-bold">
+              {`${detailMemo}`}
+            </div>
+            <div className={`h-[1.5rem] w-[1.5rem] bg-${calColor}`}></div>
+          </div>
         )}
 
         {/* 공개 여부 */}
@@ -147,23 +147,6 @@ export default function CalendarInfo() {
           </div>
         </div>
         {isEdit ? (
-          <>
-            <div className="flex">
-              <div className="w-[20rem] text-[1.2rem] font-bold">
-                {isPublic ? "공개" : "비공개"}
-              </div>
-              <div className="pb-[0.8rem] pr-[0.5rem] text-[1.2rem] font-bold">
-                {`${visitCode}`}
-              </div>
-              <CopyToClipboard text={`${visitCode}`}>
-                <FaCopy />
-              </CopyToClipboard>
-            </div>
-            <div className="ml-[40.5rem]">
-              <FaPen size={25} onClick={toggleIsEdit} />
-            </div>
-          </>
-        ) : (
           <>
             <div className="flex">
               <div className="w-[13rem] text-[1.2rem] font-bold">
@@ -184,6 +167,23 @@ export default function CalendarInfo() {
               >
                 저장
               </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="flex">
+              <div className="w-[20rem] text-[1.2rem] font-bold">
+                {isPublic ? "공개" : "비공개"}
+              </div>
+              <div className="pb-[0.8rem] pr-[0.5rem] text-[1.2rem] font-bold">
+                {`${visitCode}`}
+              </div>
+              <CopyToClipboard text={`${visitCode}`}>
+                <FaCopy />
+              </CopyToClipboard>
+            </div>
+            <div className="ml-[40.5rem]">
+              <FaPen size={25} onClick={toggleIsEdit} />
             </div>
           </>
         )}
