@@ -64,7 +64,7 @@ export default function CalendarInfo() {
             <input
               type="text"
               placeholder={`${detailMemo}`}
-              className="mb-[3rem] mr-[2rem] h-[1.3rem] w-[18rem] border-b-[0.1rem] border-solid border-eventoPurple text-[1.2rem] font-bold"
+              className="mb-[3rem] mr-[2rem] h-[1.3rem] w-[18rem] border-b-[0.1rem] border-solid border-eventoPurple bg-transparent text-[1.2rem] font-bold"
               onChange={(e) => {
                 setDetailMemo(e.target.value);
               }}
@@ -158,7 +158,7 @@ export default function CalendarInfo() {
                 <FaToggleOn className="mr-[6rem]" onClick={toggleIsPublic} />
               )}
               <div className="pb-[0.8rem] text-[1.2rem] font-bold">GW5F4</div>
-              <div className="ml-[8rem] mr-[0.1rem] h-[2.5rem] w-[4.5rem] rounded-[0.5rem] border-[0.1rem] border-solid border-eventoPurple text-center text-[1.2rem] font-medium leading-[2.5rem] text-eventoPurple">
+              <div className="ml-[10rem] mr-[0.1rem] h-[2.5rem] w-[4.5rem] rounded-[0.5rem] border-[0.1rem] border-solid border-eventoPurple text-center text-[1.2rem] font-medium leading-[2.5rem] text-eventoPurple">
                 취소
               </div>
               <div
