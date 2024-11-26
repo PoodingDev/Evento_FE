@@ -8,6 +8,8 @@ export default function LogIn() {
     let authUrl = "";
 
     const redirectUri = `https://evento.kro.kr/auth/${platform}`;
+    // const redirectUri = `http://localhost:5173/auth/${platform}`;
+
     const state = encodeURIComponent(JSON.stringify({ platform }));
 
     switch (platform) {
