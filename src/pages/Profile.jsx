@@ -16,7 +16,7 @@ export default function Profile() {
 
   return (
     <>
-      <div className="bg-eventoWhite h-[100vh] pl-[18rem] pt-[5rem]">
+      <div className="h-[100vh] bg-eventoWhite pl-[18rem] pt-[4rem]">
         <div className="ml-[5rem] mt-[2rem] flex items-center text-center">
           <Link to="/">
             <IoChevronBack className="text-[1.4rem]" />
@@ -25,11 +25,11 @@ export default function Profile() {
         </div>
         <div className="flex h-full -translate-y-[6rem] items-center justify-center">
           <div className="flex h-[30rem] w-[30rem] flex-col items-center justify-center">
-            <IoPersonCircleOutline className="text-eventoPurpleBase h-[8rem] w-[8rem]" />
+            <IoPersonCircleOutline className="h-[8rem] w-[8rem] text-eventoPurpleBase" />
             <ul className="mt-[0.5rem] space-y-[0.8rem] text-[1.2rem]">
               <li className="text-center">{userNickname}</li>
               <li className="text-center">{userName}</li>
-              <li className="text-darkGray text-center text-[1.1rem]">
+              <li className="text-center text-[1.1rem] text-darkGray">
                 {userEmail}
               </li>
               <li className="flex items-center justify-center gap-1 text-center">
@@ -39,12 +39,12 @@ export default function Profile() {
             </ul>
           </div>
           <FaPen
-            className="text-darkGray -translate-x-[9rem] -translate-y-[3.5rem] cursor-pointer text-[1rem]"
+            className="-translate-x-[9rem] -translate-y-[3.5rem] cursor-pointer text-[1rem] text-darkGray"
             onClick={editClick}
           />
         </div>
         <div className="absolute bottom-[3rem] right-[4rem]">
-          <button className="text-darkGray border-darkGray w-[7rem] gap-3 rounded-[0.625rem] border-2 bg-white px-3 py-2">
+          <button className="w-[7rem] gap-3 rounded-[0.625rem] border-2 border-darkGray bg-white px-3 py-2 text-darkGray">
             회원탈퇴
           </button>
         </div>

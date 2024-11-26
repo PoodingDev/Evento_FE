@@ -6,25 +6,39 @@ export default function InviteCodeModal({ onClose }) {
   const handleInputChange = (e, index) => {
     let value = e.target.value;
 
-    // 숫자, 알파벳만 입력 가능
-    if (!/^[a-zA-Z0-9]*$/.test(value)) {
+    // 숫자 및 영어 대소문자만 입력 가능
+    if (/^[a-zA-Z0-9]$/.test(value)) {
+      // 입력값을 대문자로 변환
+      value = value.toUpperCase();
+      e.target.value = value;
+
+      // 입력 후 다음 칸으로 포커스 이동
+      if (index < inputRefs.current.length - 1) {
+        inputRefs.current[index + 1].focus();
+      }
+    } else {
+      // 잘못된 입력 제거
       e.target.value = "";
-      return;
-    }
-
-    // 입력값을 대문자로 변환
-    e.target.value = value.toUpperCase();
-
-    // 입력 후 다음 칸으로 포커스 이동
-    if (value.length === 1 && index < inputRefs.current.length - 1) {
-      inputRefs.current[index + 1].focus();
     }
   };
 
   const handleKeyDown = (e, index) => {
-    // 백스페이스: 포커스 이동
-    if (e.key === "Backspace" && index > 0 && e.target.value === "") {
-      inputRefs.current[index - 1].focus();
+    if (e.key === "Backspace") {
+      // 현재 칸이 비어있고 이전 칸으로 이동
+      if (index > 0 && e.target.value === "") {
+        inputRefs.current[index - 1].focus();
+      }
+    }
+  };
+
+  const handleSubmit = () => {
+    // 초대 코드를 조합하여 출력
+    const inviteCode = inputRefs.current.map((input) => input.value).join("");
+    if (inviteCode.length === 6) {
+      console.log("Invite Code:", inviteCode);
+      // 초대 코드 처리 로직 추가
+    } else {
+      alert("모든 칸을 채워주세요!");
     }
   };
 
@@ -42,6 +56,7 @@ export default function InviteCodeModal({ onClose }) {
               type="text"
               maxLength="1"
               className="h-[5rem] w-[4.75rem] rounded-[0.5rem] bg-lightGray/70 text-center text-[4rem] font-semibold focus:bg-eventoPurple/80 focus:outline-none"
+              onChange={(e) => handleInputChange(e, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
             />
           ))}
@@ -52,11 +67,14 @@ export default function InviteCodeModal({ onClose }) {
         <div className="mt-[5rem] flex justify-end space-x-[0.5rem]">
           <button
             className="flex h-[3rem] w-[5.5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple text-center text-[1.2rem] text-eventoPurple hover:bg-eventoPurpleLight/50 active:bg-eventoPurpleLight"
-            onClick={onClose} // 취소
+            onClick={onClose}
           >
             <span>취소</span>
           </button>
-          <button className="flex h-[3rem] w-[5.5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple text-center text-[1.2rem] text-eventoWhite hover:bg-eventoPurple/80 active:bg-eventoPurple/60">
+          <button
+            className="flex h-[3rem] w-[5.5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple text-center text-[1.2rem] text-eventoWhite hover:bg-eventoPurple/80 active:bg-eventoPurple/60"
+            onClick={handleSubmit}
+          >
             <span>참가</span>
           </button>
         </div>
