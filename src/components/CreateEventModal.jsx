@@ -9,7 +9,7 @@ export default function CreateEvent() {
   const [endDate, setendDate] = useState(new Date());
 
   return (
-    <div className="ml-[18rem] flex h-screen items-center justify-center pt-[5rem]">
+    <div className="flex h-screen items-center justify-center pt-[5rem]">
       <div className="h-[29rem] w-[43rem] rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
         <div className="flex flex-wrap justify-between">
           {/* 제목 */}
