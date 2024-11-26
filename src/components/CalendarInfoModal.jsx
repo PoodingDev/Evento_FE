@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaXmark } from "react-icons/fa6";
 import { FaPen, FaCopy, FaToggleOn, FaToggleOff } from "react-icons/fa";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -17,14 +17,30 @@ export default function CalendarInfo() {
 
   // 색상
   const [calColor, setCalColor] = useState("calendarRed");
+  const [textColor, setTextColor] = useState("");
+  useEffect(() => {
+    if (calColor === "calendarYellow") {
+      setTextColor("text-calendarYellow");
+    } else if (calColor === "calendarRed") {
+      setTextColor("text-calendarRed");
+    } else if (calColor === "calendarGreen") {
+      setTextColor("text-calendarGreen");
+    } else if (calColor === "calendarLightBlue") {
+      setTextColor("text-calendarLightBlue");
+    } else if (calColor === "calendarDarkPurple") {
+      setTextColor("text-calendarDarkPurple");
+    } else if (calColor === "calendarBlue") {
+      setTextColor("text-calendarBlue");
+    } else if (calColor === "calendarPurple") {
+      setTextColor("text-calendarPurple");
+    }
+  }, [calColor]);
 
   //초대코드
   const [visitCode, setVisitCode] = useState("GW5F4");
 
   return (
     <div className="ml-[18rem] flex h-screen items-center justify-center pt-[5rem]">
-      {console.log(calColor)}
-      {console.log(isEdit)}
       <div className="h-[28rem] w-[48rem] rounded-[2.5rem] bg-eventoWhite p-[2.8rem] shadow-[0_0_2.5rem_gray]">
         <div className="flex flex-wrap justify-between">
           {/* 제목 */}
@@ -33,9 +49,7 @@ export default function CalendarInfo() {
               Pooding팀
             </div>
           ) : (
-            <div
-              className={`mb-[2rem] text-[3rem] font-black text-${calColor}`}
-            >
+            <div className={`mb-[2rem] text-[3rem] font-black ${textColor}`}>
               Pooding팀
             </div>
           )}
