@@ -9,12 +9,13 @@ export default function Header() {
       <img className="h-[2.5rem]" src="/assets/evento_logo.png" alt="Evento" />
 
       {/* 작업할 때 아래 주석 처리 뜯고 하시면 편합니다 */}
-      {/* 
+
       <Link to="/profile">Profile</Link>
       <Link to="/event">Event</Link>
       <Link to="/new-event">Create Event</Link>
       <Link to="/login">Login</Link>
-      <Link to="/"></Link> */}
+      <Link to="/"></Link>
+      <Link to="/code">code</Link>
 
       <FontAwesomeIcon icon={faUser} className="text-2xl text-[#4F378B]" />
     </div>
