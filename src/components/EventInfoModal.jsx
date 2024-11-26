@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaXmark } from "react-icons/fa6";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -24,8 +24,43 @@ export default function EventInfo() {
   const toggleIsEdit = () => setIsEdit(!isEdit);
 
   //댓글
+  const data = [
+    {
+      id: 1,
+      username: "호선",
+      content: "저녁 머 먹지?",
+    },
+    {
+      id: 2,
+      username: "채영",
+      content: "고기 어때",
+    },
+    {
+      id: 3,
+      username: "수진",
+      content: "좋아",
+    },
+    {
+      id: 4,
+      username: "호선",
+      content: "고기 ㄱㄱ",
+    },
+  ];
   const [isComment, setIsComment] = useState(false);
   const toggleIsComment = () => setIsComment(!isComment);
+  const [input, setInput] = useState("");
+  const [commentList, setCommentList] = useState(data);
+  const addComment = () => {
+    if (input !== "") {
+      const newComment = {
+        id: commentList.length + 1,
+        username: "수진",
+        content: input,
+      };
+      setCommentList([...commentList, newComment]);
+      setInput("");
+    }
+  };
 
   //이벤트 제목(일정 이름)
   const [eventTitle, setEventTitle] = useState("저녁 약속");
@@ -135,35 +170,19 @@ export default function EventInfo() {
 
         {/* 일정 상세 */}
         {isComment ? (
+          //댓글 추가 기능
           <div className="h-[10rem] overflow-auto">
-            <div className="mb-[0.5rem] flex flex-wrap">
-              <div className="w-[42rem] font-medium">호선</div>
-              <div className="mr-[1rem] rounded-[0.3rem] bg-lightGray px-[2rem] font-medium leading-[1.5rem]">
-                저녁 머 먹지 ?
-              </div>
-              <AiOutlineLike size={20} />
-            </div>
-            <div className="mb-[0.5rem] flex flex-wrap">
-              <div className="w-[42rem] font-medium">채영</div>
-              <div className="mr-[1rem] rounded-[0.3rem] bg-lightGray px-[2rem] font-medium leading-[1.5rem]">
-                고기 어때
-              </div>
-              <AiOutlineLike size={20} />
-            </div>
-            <div className="mb-[0.5rem] flex flex-wrap">
-              <div className="w-[42rem] font-medium">수진</div>
-              <div className="mr-[1rem] rounded-[0.3rem] bg-lightGray px-[2rem] font-medium leading-[1.5rem]">
-                좋아
-              </div>
-              <AiOutlineLike size={20} />
-            </div>
-            <div className="mb-[0.5rem] flex flex-wrap">
-              <div className="w-[42rem] font-medium">호선</div>
-              <div className="mr-[1rem] rounded-[0.3rem] bg-lightGray px-[2rem] font-medium leading-[1.5rem]">
-                고기 ㄱㄱ
-              </div>
-              <AiOutlineLike size={20} />
-            </div>
+            {commentList.map((comment) => {
+              return (
+                <div key={comment.id} className="mb-[0.5rem] flex flex-wrap">
+                  <div className="w-[42rem] font-medium">{`${comment.username}`}</div>
+                  <div className="mr-[1rem] rounded-[0.3rem] bg-lightGray px-[2rem] font-medium leading-[1.5rem]">
+                    {`${comment.content}`}
+                  </div>
+                  <AiOutlineLike size={20} />
+                </div>
+              );
+            })}
           </div>
         ) : isEdit ? (
           <>
@@ -192,9 +211,13 @@ export default function EventInfo() {
 
         {/* 기타 아이콘 */}
         {isComment ? (
+          //댓글 입력 창
           <input
             type="text"
+            value={input}
             className="bottom relative mt-[0.7rem] h-[1.8rem] w-[37rem] rounded-[0.3rem] border-[0.1rem] border-darkGray bg-transparent"
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => (e.key === "Enter" ? addComment() : null)}
           />
         ) : isEdit ? (
           <div className="flex flex-wrap justify-between">
