@@ -43,7 +43,7 @@ export default function LogIn() {
       <div className="flex flex-col items-center justify-center h-full">
         <img
           className="h-[6rem]"
-          src="/src/assets/logo/event_logo.png"
+          src="/assets/logo/event_logo.png"
           alt="Evento"
         />
         <div className="mt-[0.5rem] text-[1rem] text-eventoPurpleBase/80">
@@ -59,7 +59,7 @@ export default function LogIn() {
             onClick={() => handleLogin("kakao")}
           >
             <img
-              src="/src/assets/kakao_logo.png"
+              src="/assets/kakao_logo.png"
               className="absolute left-2 ml-[0.6rem] h-[1rem]"
               alt="K"
             />
@@ -71,7 +71,7 @@ export default function LogIn() {
             onClick={() => handleLogin("naver")}
           >
             <img
-              src="src/assets/naver_logo.png"
+              src="/assets/naver_logo.png"
               className="absolute left-2 h-[2.3rem]"
               alt="N"
             />
@@ -83,7 +83,7 @@ export default function LogIn() {
             onClick={() => handleLogin("google")}
           >
             <img
-              src="src/assets/google_logo.png"
+              src="/assets/google_logo.png"
               className="absolute left-2 ml-[0.3rem] h-[1.8rem]"
               alt="G"
             />
