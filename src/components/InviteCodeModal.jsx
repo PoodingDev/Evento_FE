@@ -34,7 +34,7 @@ export default function InviteCodeModal({ onClose }) {
         <div className="mb-[2rem] text-[4rem] font-semibold text-eventoPurple">
           초대 코드
         </div>
-        <div className="mb-[2rem] mt-[5rem] flex justify-center gap-[1.4rem]">
+        <div className="mb-[2rem] mt-[4rem] flex justify-center gap-[1.4rem]">
           {Array.from({ length: 6 }, (_, index) => (
             <input
               key={index}
@@ -46,7 +46,10 @@ export default function InviteCodeModal({ onClose }) {
             />
           ))}
         </div>
-        <div className="mt-[6.5rem] flex justify-end space-x-[0.5rem]">
+        <div className="text-[1.5rem] text-eventoPurple">
+          공유 받은 참여 코드를 입력하세요!
+        </div>
+        <div className="mt-[5rem] flex justify-end space-x-[0.5rem]">
           <button
             className="flex h-[3rem] w-[5.5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple text-center text-[1.2rem] text-eventoPurple hover:bg-eventoPurpleLight/50 active:bg-eventoPurpleLight"
             onClick={onClose} // 취소
