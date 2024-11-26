@@ -1,3 +1,4 @@
+import CreateEvent from "./CreateEventModal";
 import InviteCodeModal from "./InviteCodeModal";
 import React, { useState } from "react";
 
@@ -33,7 +34,8 @@ const dDayItems = [
 
 export default function SideBarLeft() {
   const [checked, setChecked] = useState({});
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isInviteOpen, setIsInviteOpen] = useState(false);
+  const [isCreateEvent, setIsCreateEvent] = useState(false);
 
   const handleToggle = (id) => {
     setChecked((prev) => ({
@@ -42,8 +44,11 @@ export default function SideBarLeft() {
     }));
   };
 
-  const toggleModal = () => {
-    setIsModalOpen((prev) => !prev);
+  const toggleInvite = () => {
+    setIsInviteOpen((prev) => !prev);
+  };
+  const toggleCreateEvent = () => {
+    setIsCreateEvent((prev) => !prev);
   };
 
   return (
@@ -58,9 +63,12 @@ export default function SideBarLeft() {
               <div className="flex space-x-[0.5rem]">
                 <FaSignInAlt
                   className="text-[0.7rem] text-darkGray"
-                  onClick={toggleModal}
+                  onClick={toggleInvite}
                 />
-                <FaPlus className="cursor-pointer text-[0.7rem] text-darkGray" />
+                <FaPlus
+                  className="cursor-pointer text-[0.7rem] text-darkGray"
+                  onClick={toggleCreateEvent}
+                />
               </div>
             </div>
             {/* 캘린더 리스트 */}
@@ -152,9 +160,14 @@ export default function SideBarLeft() {
       </div>
 
       {/* 모달들 */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <InviteCodeModal onClose={toggleModal} />
+      {isInviteOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <InviteCodeModal onClose={toggleInvite} />
+        </div>
+      )}
+      {isCreateEvent && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <CreateEvent onClose={toggleCreateEvent} />
         </div>
       )}
     </div>
