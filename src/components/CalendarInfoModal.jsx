@@ -64,7 +64,7 @@ export default function CalendarInfo() {
             <input
               type="text"
               placeholder={`${detailMemo}`}
-              className="mb-[3rem] mr-[2rem] h-[1.3rem] w-[18rem] border-b-[0.1rem] border-solid border-eventoPurple text-[1.2rem] font-bold"
+              className="mb-[3rem] mr-[2rem] h-[1.3rem] w-[18rem] border-b-[0.1rem] border-solid border-eventoPurple bg-transparent text-[1.2rem] font-bold"
               onChange={(e) => {
                 setDetailMemo(e.target.value);
               }}

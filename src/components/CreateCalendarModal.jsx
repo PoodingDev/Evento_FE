@@ -11,7 +11,7 @@ export default function CreateCalendar() {
           <input
             type="text"
             placeholder="캘린더 이름을 입력하세요"
-            className="mb-[2rem] w-[28rem] text-[2.7rem] font-bold"
+            className="mb-[2rem] w-[28rem] bg-transparent text-[2.7rem] font-bold"
           />
           <FaXmark size={25} />
         </div>
@@ -23,7 +23,7 @@ export default function CreateCalendar() {
         <input
           type="text"
           placeholder="어떤 캘린더인가요?"
-          className="mb-[2rem] w-[20rem] border-b-[0.1rem] border-solid border-eventoPurple text-[1rem] font-bold"
+          className="mb-[2rem] w-[20rem] border-b-[0.1rem] border-solid border-eventoPurple bg-transparent text-[1rem] font-bold"
         />
 
         {/* 공개 여부 */}
@@ -39,14 +39,14 @@ export default function CreateCalendar() {
         <div className="mb-[0.8rem] text-[1rem] font-bold text-eventoPurple">
           색상
         </div>
-        <div className="bg-lightGray flex h-[4.8rem] w-[10.5rem] flex-wrap items-center rounded-[0.2rem] p-[0.5rem]">
-          <div className="bg-calendarYellow mr-[0.5rem] h-[1.5rem] w-[1.5rem]"></div>
-          <div className="bg-calendarRed mr-[0.5rem] h-[1.5rem] w-[1.5rem]"></div>
-          <div className="bg-calendarGreen mr-[0.5rem] h-[1.5rem] w-[1.5rem]"></div>
-          <div className="bg-calendarLightBlue mr-[0.5rem] h-[1.5rem] w-[1.5rem]"></div>
-          <div className="bg-calendarDarkPurple h-[1.5rem] w-[1.5rem]"></div>
-          <div className="bg-calendarBlue mr-[0.5rem] h-[1.5rem] w-[1.5rem]"></div>
-          <div className="bg-calendarPurple mr-[0.5rem] h-[1.5rem] w-[1.5rem]"></div>
+        <div className="flex h-[4.8rem] w-[10.5rem] flex-wrap items-center rounded-[0.2rem] bg-lightGray p-[0.5rem]">
+          <div className="mr-[0.5rem] h-[1.5rem] w-[1.5rem] bg-calendarYellow"></div>
+          <div className="mr-[0.5rem] h-[1.5rem] w-[1.5rem] bg-calendarRed"></div>
+          <div className="mr-[0.5rem] h-[1.5rem] w-[1.5rem] bg-calendarGreen"></div>
+          <div className="mr-[0.5rem] h-[1.5rem] w-[1.5rem] bg-calendarLightBlue"></div>
+          <div className="h-[1.5rem] w-[1.5rem] bg-calendarDarkPurple"></div>
+          <div className="mr-[0.5rem] h-[1.5rem] w-[1.5rem] bg-calendarBlue"></div>
+          <div className="mr-[0.5rem] h-[1.5rem] w-[1.5rem] bg-calendarPurple"></div>
         </div>
       </div>
     </div>

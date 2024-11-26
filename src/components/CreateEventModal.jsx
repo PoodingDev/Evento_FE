@@ -16,12 +16,12 @@ export default function CreateEvent() {
           <input
             type="text"
             placeholder="일정을 입력하세요"
-            className="mb-[0.5rem] w-[30rem] text-[2.8rem] font-bold"
+            className="mb-[0.5rem] w-[30rem] bg-transparent text-[2.8rem] font-bold"
           />
           <FaXmark size={25} />
         </div>
 
-        <div className="bg-eventoYellow mb-[2.8rem] flex w-[10rem] justify-center rounded-[3rem] text-center text-[1.2rem] font-bold leading-[1.7rem]">
+        <div className="mb-[2.8rem] flex w-[10rem] justify-center rounded-[3rem] bg-eventoYellow text-center text-[1.2rem] font-bold leading-[1.7rem]">
           <FaCaretDown size={25} />
           <p>Pooding팀</p>
         </div>
@@ -36,15 +36,14 @@ export default function CreateEvent() {
             selected={startDate}
             onChange={(date) => setStartDate(date)}
             dateFormat="yyyy-MM-dd"
-            className="w-[11rem]"
-            datepicker-orientation="bottom right"
+            className="w-[11rem] bg-transparent"
           />
           <p className="mr-[1rem] w-[1rem]">-</p>
           <DatePicker
             selected={endDate}
             onChange={(date) => setendDate(date)}
             dateFormat="yyyy-MM-dd"
-            className="w-[11rem]"
+            className="w-[11rem] bg-transparent"
           />
         </div>
 
@@ -56,7 +55,7 @@ export default function CreateEvent() {
         <input
           type="text"
           placeholder="무슨 일정인가요?"
-          className="mb-[1.8rem] w-[40rem] text-[1.5rem] font-medium"
+          className="mb-[1.8rem] w-[40rem] bg-transparent text-[1.5rem] font-medium"
         />
 
         {/* 기타 아이콘 */}
