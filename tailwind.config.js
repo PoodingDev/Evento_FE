@@ -36,6 +36,7 @@ module.exports = {
         darkGray: "#888888",
         lightGray: "#BBBBBB",
 
+        eventoGray: "#F8F8F8",
         eventoblack: "#121212",
       },
     },
