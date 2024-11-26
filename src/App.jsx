@@ -2,7 +2,6 @@ import Calendar from "/src/pages/Calendar";
 import EventCreate from "components/CreateEventModal";
 import EventInfoModal from "/src/components/EventInfoModal";
 import Header from "components/Header";
-import InviteCode from "components/InviteCode";
 import LogIn from "/src/pages/LogIn";
 import LoginPostCode from "/src/pages/LoginPostCode";
 import Profile from "/src/pages/Profile";
@@ -38,7 +37,6 @@ export default function App() {
           <Route path="/profile/edit" element={<ProfileEdit />} />
           //테스트용 - 모달을 페이지로 띄우기
           <Route path="/event" element={<EventInfoModal />} />
-          <Route path="/code" element={<InviteCode />} />
           <Route path="/new-event" element={<EventCreate />} />
           <Route path="/subscription" element={<Subscription />} />
         </Routes>

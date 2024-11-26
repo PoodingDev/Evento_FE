@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 
-export default function InviteCode() {
+export default function InviteCodeModal() {
   const inputRefs = useRef([]);
 
   const handleInputChange = (e, index) => {
@@ -22,14 +22,14 @@ export default function InviteCode() {
   };
 
   const handleKeyDown = (e, index) => {
-    // 백스페이스 처리: 이전 칸으로 포커스 이동
+    // 백스페이스: 포커스 이동
     if (e.key === "Backspace" && index > 0 && e.target.value === "") {
       inputRefs.current[index - 1].focus();
     }
   };
 
   return (
-    <div className="flex h-[29rem] w-[43rem] translate-x-[45rem] translate-y-[15rem] items-center justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
+    <div className="w-[43rem flex h-[29rem] translate-x-[3rem] items-center justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
       <div className="text-center">
         <div className="mb-[2rem] text-[4rem] font-semibold text-eventoPurple">
           초대 코드
