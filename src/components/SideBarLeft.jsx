@@ -54,7 +54,7 @@ export default function SideBarLeft() {
             </div>
           </div>
           {/* 캘린더 리스트 */}
-          <ul className="m-[1rem] mt-[1.5rem] space-y-[0.75rem] font-semibold">
+          <ul className="m-[1rem] mt-[1.5rem] space-y-[0.5rem] font-semibold">
             {myCalendars.map((calendar) => (
               <li
                 key={calendar.id}
@@ -96,7 +96,7 @@ export default function SideBarLeft() {
             <FaPen className="text-[0.7rem] text-darkGray"></FaPen>
           </div>
           {/* 캘린더 리스트 */}
-          <ul className="m-[1rem] mt-[1.5rem] space-y-[0.75rem]">
+          <ul className="m-[1rem] mt-[1.5rem] space-y-[0.5rem]">
             {subscribedCalendars.map((calendar) => (
               <li
                 key={calendar.id}
