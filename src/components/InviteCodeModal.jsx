@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 
-export default function InviteCodeModal() {
+export default function InviteCodeModal({ onClose }) {
   const inputRefs = useRef([]);
 
   const handleInputChange = (e, index) => {
@@ -29,7 +29,7 @@ export default function InviteCodeModal() {
   };
 
   return (
-    <div className="w-[43rem flex h-[29rem] translate-x-[3rem] items-center justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
+    <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] items-center justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
       <div className="text-center">
         <div className="mb-[2rem] text-[4rem] font-semibold text-eventoPurple">
           초대 코드
@@ -42,13 +42,15 @@ export default function InviteCodeModal() {
               type="text"
               maxLength="1"
               className="h-[5rem] w-[4.75rem] rounded-[0.5rem] bg-lightGray/70 text-center text-[4rem] font-semibold focus:bg-eventoPurple/80 focus:outline-none"
-              onChange={(e) => handleInputChange(e, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
             />
           ))}
         </div>
         <div className="mt-[6.5rem] flex justify-end space-x-[0.5rem]">
-          <button className="flex h-[3rem] w-[5.5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple text-center text-[1.2rem] text-eventoPurple hover:bg-eventoPurpleLight/50 active:bg-eventoPurpleLight">
+          <button
+            className="flex h-[3rem] w-[5.5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple text-center text-[1.2rem] text-eventoPurple hover:bg-eventoPurpleLight/50 active:bg-eventoPurpleLight"
+            onClick={onClose} // 취소
+          >
             <span>취소</span>
           </button>
           <button className="flex h-[3rem] w-[5.5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple text-center text-[1.2rem] text-eventoWhite hover:bg-eventoPurple/80 active:bg-eventoPurple/60">
