@@ -6,6 +6,7 @@ import LogIn from "/src/pages/LogIn";
 import LoginPostCode from "/src/pages/LoginPostCode";
 import Profile from "/src/pages/Profile";
 import ProfileEdit from "/src/pages/ProfileEdit";
+import Subscription from "/src/pages/Subscription";
 import React from "react";
 import SideBarLeft from "/src/components/SideBarLeft";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -37,6 +38,7 @@ export default function App() {
           //테스트용 - 모달을 페이지로 띄우기
           <Route path="event" element={<EventInfoModal />} />
           <Route path="new-event" element={<EventCreate />} />
+          <Route path="/subscription" element={<Subscription />} />
         </Routes>
       </Layout>
     </BrowserRouter>
