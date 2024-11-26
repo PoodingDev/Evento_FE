@@ -56,17 +56,34 @@ export default function Subscription() {
 }
 
 function CaleanderSearch({ openCalendars, toggleSubscription }) {
+  //  input 검색창 상태 관리
+  const [inputValue, setInputValue] = useState('')
+  console.log(inputValue)
+
+  const filteredSearch = inputValue
+    ? openCalendars.filter((calendar) =>
+      calendar.userNickNam.toLowerCase().includes(inputValue.toLowerCase()) ||
+      calendar.calendarName.toLowerCase().includes(inputValue.toLowerCase())
+    )
+    : [];
+
   return (
     <>
       <section className='flex justify-center align-middle  items-center w-2/3 flex-col py-[3rem]'>
         <div className='flex items-center gap-2'>
-          <input type="text" className=' focus:border-eventoPurple/80 focus:bg-eventoPurpleLight/80 focus: rounded-2xl bg-gray-200 p-[2px] px-3 py-2 text-center focus:border-[1px] focus:outline-none' />
+          <input
+            type="text"
+            value={inputValue}
+            placeholder="닉네임을 검색하세요"
+            onChange={(event) => setInputValue(event.target.value)}
+            className=' focus:border-eventoPurple/80 focus:bg-eventoPurpleLight/80 focus: rounded-2xl bg-gray-200 p-[2px] px-3 py-2 text-center focus:border-[1px] focus:outline-none' />
           <IoSearch className='text-[2rem]' />
         </div>
         <ul className='w-auto flex flex-col my-[2rem]'>
 
-          {openCalendars.map((calendar) => (
-            <li key={calendar.id} className="flex items-center gap-[1rem] w-[20rem] my-2 ">
+          {filteredSearch.map((calendar) => (
+            <li key={calendar.id}
+              className="flex items-center gap-[1rem] w-[20rem] my-2 ">
               <IoPersonCircleOutline className="w-[3.5rem] h-[3.5rem] object-cover" />
               <div >
                 <h3 className='text-[#493282]'>{calendar.calendarName}</h3>
