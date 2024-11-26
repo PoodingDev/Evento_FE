@@ -93,14 +93,14 @@ export default function EventInfo() {
                   selected={startDate}
                   onChange={(date) => setStartDate(date)}
                   dateFormat="yyyy-MM-dd"
-                  className="m-[0] w-[11rem]"
+                  className="m-[0] w-[11rem] bg-transparent"
                 />
                 <p className="mr-[1rem] w-[1rem]">-</p>
                 <DatePicker
                   selected={endDate}
                   onChange={(date) => setendDate(date)}
                   dateFormat="yyyy-MM-dd"
-                  className="w-[11rem]"
+                  className="w-[11rem] bg-transparent"
                 />
               </div>
             </>
@@ -137,7 +137,7 @@ export default function EventInfo() {
               <input
                 type="text"
                 placeholder="무슨 일정인가요?"
-                className="mb-[3.5rem] h-[1.8rem] w-[40rem] text-[1.5rem] font-medium"
+                className="mb-[3.5rem] h-[1.8rem] w-[40rem] bg-transparent text-[1.5rem] font-medium"
               />
             </>
           )
@@ -205,7 +205,7 @@ export default function EventInfo() {
         ) : (
           <input
             type="text"
-            className="bottom relative h-[1.8rem] w-[40rem] border-[0.1rem] border-darkGray"
+            className="bottom relative h-[1.8rem] w-[40rem] border-[0.1rem] border-darkGray bg-transparent"
           />
         )}
       </div>
