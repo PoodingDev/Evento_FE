@@ -5,25 +5,45 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import {
   FaLock,
+  FaUnlock,
   FaBookmark,
+  FaRegBookmark,
   FaRegTrashAlt,
   FaPen,
   FaCommentAlt,
   FaCaretDown,
   FaToggleOn,
+  FaToggleOff,
   FaChevronLeft,
 } from "react-icons/fa";
 import { AiOutlineLike } from "react-icons/ai";
 
 export default function EventInfo() {
+  //수정 및 편집
   const [isEdit, setIsEdit] = useState(false);
   const toggleIsEdit = () => setIsEdit(!isEdit);
 
+  //댓글
   const [isComment, setIsComment] = useState(false);
   const toggleIsComment = () => setIsComment(!isComment);
 
+  //이벤트 제목(일정 이름)
+  const [eventTitle, setEventTitle] = useState("저녁 약속");
+
+  //시간
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setendDate] = useState(new Date());
+
+  //이벤트 상세
+  const [detailEventMemo, setDetailEventMemo] = useState("고기 먹자");
+
+  //공개
+  const [isEventPublic, setIsEventPublic] = useState(false);
+  const toggleIsPublic = () => setIsEventPublic(!isEventPublic);
+
+  //북마크
+  const [isLike, setIsLike] = useState(false);
+  const toggleIsLike = () => setIsLike(!isLike);
 
   return (
     <div className="ml-[18rem] flex h-screen items-center justify-center pt-[5rem]">
@@ -33,16 +53,19 @@ export default function EventInfo() {
           {isEdit ? (
             <input
               type="text"
-              placeholder="일정을 입력하세요"
+              placeholder={`${eventTitle}`}
               className="h-[3.8rem] w-[30rem] bg-transparent pb-[1rem] text-[2.8rem] font-bold"
+              onChange={(e) => {
+                setEventTitle(e.target.value);
+              }}
             />
           ) : (
             <div className="flex">
               <div className="h-[3.8rem] pb-[1rem] text-[2.8rem] font-bold">
-                저녁 약속
+                {`${eventTitle}`}
               </div>
               <div className="p-[0.3rem_25rem_0_1rem]">
-                <FaLock size={25} />
+                {isEventPublic ? <FaLock size={25} /> : <FaUnlock size={25} />}
               </div>
             </div>
           )}
@@ -86,7 +109,7 @@ export default function EventInfo() {
             <div className="mb-[1.8rem] flex h-[2rem] text-[2rem] font-medium">
               <DatePicker
                 selected={startDate}
-                onChange={(date) => setStartDate(date)}
+                onChange={(e) => setStartDate(e.target.value)}
                 dateFormat="yyyy-MM-dd"
                 className="m-[0] w-[11rem] bg-transparent"
               />
@@ -149,8 +172,11 @@ export default function EventInfo() {
             </div>
             <input
               type="text"
-              placeholder="무슨 일정인가요?"
+              placeholder={`${detailEventMemo}`}
               className="mb-[1.8rem] h-[1.8rem] w-[40rem] bg-transparent text-[1.5rem] font-medium"
+              onChange={(e) => {
+                setDetailEventMemo(e.target.value);
+              }}
             />
           </>
         ) : (
@@ -159,7 +185,7 @@ export default function EventInfo() {
               일정 상세
             </div>
             <div className="mb-[3.5rem] h-[1.8rem] w-[40rem] text-[1.5rem] font-medium">
-              고기 먹자!
+              {`${detailEventMemo}`}
             </div>
           </>
         )}
@@ -175,7 +201,19 @@ export default function EventInfo() {
             <p className="text-[1.2rem] font-medium leading-[3rem] text-eventoPurple">
               구독자에게 공개
             </p>
-            <FaToggleOn size={25} className="mt-[0.7rem]" />
+            {isEventPublic ? (
+              <FaToggleOff
+                size={25}
+                className="mt-[0.7rem]"
+                onClick={toggleIsPublic}
+              />
+            ) : (
+              <FaToggleOn
+                size={25}
+                className="mt-[0.7rem]"
+                onClick={toggleIsPublic}
+              />
+            )}
             <div className="ml-[20rem] h-[3rem] w-[5.2rem] rounded-[0.5rem] border-[0.1rem] border-solid border-eventoPurple text-center text-[1.2rem] font-medium leading-[3rem] text-eventoPurple">
               취소
             </div>
@@ -190,7 +228,11 @@ export default function EventInfo() {
           <div className="flex flex-wrap justify-between">
             <FaCommentAlt size={25} onClick={toggleIsComment} />
             <div className="pr-[32rem]">
-              <FaBookmark size={25} />
+              {isLike ? (
+                <FaBookmark size={25} onClick={toggleIsLike} />
+              ) : (
+                <FaRegBookmark size={25} onClick={toggleIsLike} />
+              )}
             </div>
             <FaRegTrashAlt size={25} />
             <FaPen size={25} onClick={toggleIsEdit} />
