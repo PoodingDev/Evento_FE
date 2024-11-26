@@ -56,11 +56,11 @@ export default function SideBarLeft() {
             <div className="mr-[0.3rem] flex items-center justify-between">
               <span className="text-[0.9rem] text-darkGray">내 캘린더</span>
               <div className="flex space-x-[0.5rem]">
-                <FaSignInAlt className="text-[0.7rem] text-darkGray" />
-                <FaPlus
-                  className="cursor-pointer text-[0.7rem] text-darkGray"
+                <FaSignInAlt
+                  className="text-[0.7rem] text-darkGray"
                   onClick={toggleModal}
                 />
+                <FaPlus className="cursor-pointer text-[0.7rem] text-darkGray" />
               </div>
             </div>
             {/* 캘린더 리스트 */}
