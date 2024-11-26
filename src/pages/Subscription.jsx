@@ -59,13 +59,29 @@ function CaleanderSearch({ openCalendars, toggleSubscription }) {
   //  input 검색창 상태 관리
   const [inputValue, setInputValue] = useState('')
   console.log(inputValue)
+  const [debouncedInput, setDebouncedInput] = useState("");
+  const [filteredSearch, setFilteredSearch] = useState([]);
 
-  const filteredSearch = inputValue
-    ? openCalendars.filter((calendar) =>
-      calendar.userNickNam.toLowerCase().includes(inputValue.toLowerCase()) ||
-      calendar.calendarName.toLowerCase().includes(inputValue.toLowerCase())
-    )
-    : [];
+  // Debounce 로직
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedInput(inputValue); // 디바운스된 검색어 업데이트
+    }, 500);
+    return () => clearTimeout(timer); // 이전 타이머 클리어
+  }, [inputValue]);
+
+  // 검색 결과 업데이트
+  useEffect(() => {
+    if (!debouncedInput.trim()) {
+      setFilteredSearch([]); // 검색어가 없으면 빈 배열 반환
+    } else {
+      const newFilteredSearch = openCalendars.filter((calendar) =>
+        calendar.userNickNam.toLowerCase().includes(inputValue.toLowerCase()) ||
+        calendar.calendarName.toLowerCase().includes(inputValue.toLowerCase())
+      );
+      setFilteredSearch(newFilteredSearch); // 상태 업데이트
+    }
+  }, [debouncedInput, openCalendars]);
 
   return (
     <>
