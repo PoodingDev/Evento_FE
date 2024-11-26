@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import {
   FaRegSquare,
   FaCheckSquare,
@@ -40,33 +41,36 @@ export default function SideBarLeft() {
   };
 
   return (
-    <div className="evento-sidebarleft absolute mt-[5rem] h-[calc(100vh-5rem)] w-[18rem] rounded-tr-[2.5rem] bg-[#F1F1F1] pl-[2.25rem] pr-[1.75rem] pt-[1.6rem]">
+    <div className="evento-sidebarleft bg-eventoGray absolute mt-[5rem] h-[calc(100vh-5rem)] w-[18rem] rounded-tr-[2.5rem] pl-[2.25rem] pr-[1.75rem] pt-[1.6rem]">
       <div>
         {/* 내 캘린더 */}
-        <div className="evento-my-calendar text-[0.9rem] text-[#646464]">
+        <div className="evento-my-calendar">
           {/* 제목 */}
           <div className="mr-[0.3rem] flex items-center justify-between">
-            <span>내 캘린더</span>
-            <div className="flex space-x-1">
-              <FaSignInAlt className="text-[0.7rem] text-[#646464]" />
-              <FaPlus className="text-[0.7rem] text-[#646464]" />
+            <span className="text-[0.9rem] text-darkGray">내 캘린더</span>
+            <div className="flex space-x-[0.5rem]">
+              <FaSignInAlt className="text-[0.7rem] text-darkGray" />
+              <FaPlus className="text-[0.7rem] text-darkGray" />
             </div>
           </div>
           {/* 캘린더 리스트 */}
-          <ul className="m-[1rem] font-bold">
+          <ul className="m-[1rem] mt-[1.5rem] space-y-[0.75rem] font-semibold">
             {myCalendars.map((calendar) => (
-              <li key={calendar.id} className="flex items-center gap-[0.5rem]">
+              <li
+                key={calendar.id}
+                className="flex items-center space-x-[0.75rem]"
+              >
                 <div
                   className="cursor-pointer"
                   onClick={() => handleToggle(calendar.id)}
                 >
                   {checked[calendar.id] ? (
                     <FaCheckSquare
-                      className={`text-[0.9rem] ${calendar.color}`}
+                      className={`text-[0.93rem] ${calendar.color}`}
                     />
                   ) : (
                     <FaRegSquare
-                      className={`text-[0.9rem] ${calendar.color}`}
+                      className={`text-[0.93rem] ${calendar.color}`}
                     />
                   )}
                 </div>
@@ -82,35 +86,38 @@ export default function SideBarLeft() {
         </div>
       </div>
       {/* 중간선 */}
-      <hr className="m-[0.8rem] border-[0.1px] border-[#646464]/50" />
+      {/* <hr className="m-[0.8rem] border-[0.1px] border-lightGray" /> */}
       {/* 구독한 캘린더 */}
-      <div className="mt-6">
-        <div className="evento-subscription mb-2 text-[0.9rem] text-[#646464]">
+      <div className="mt-[2rem]">
+        <div className="evento-subscription">
           {/* 제목 */}
-          <div className="ml-[0.3rem] mr-[0.3rem] flex items-center justify-between">
-            <span>구독한 캘린더</span>
-            <FaPen className="text-[0.7rem] text-[#646464]"></FaPen>
+          <div className="mr-[0.3rem] flex items-center justify-between">
+            <span className="text-[0.9rem] text-darkGray">구독한 캘린더</span>
+            <FaPen className="text-[0.7rem] text-darkGray"></FaPen>
           </div>
           {/* 캘린더 리스트 */}
-          <ul className="m-[1rem]">
+          <ul className="m-[1rem] mt-[1.5rem] space-y-[0.75rem]">
             {subscribedCalendars.map((calendar) => (
-              <li key={calendar.id} className="flex items-center space-x-2">
+              <li
+                key={calendar.id}
+                className="flex items-center space-x-[0.75rem]"
+              >
                 <div
                   className="cursor-pointer"
                   onClick={() => handleToggle(calendar.id)}
                 >
                   {checked[calendar.id] ? (
-                    <FaCheckSquare className="text-[0.9rem] text-[#493282]" />
+                    <FaCheckSquare className="text-[0.9rem] text-eventoPurpleBase" />
                   ) : (
-                    <FaRegSquare className="text-[0.9rem] text-[#493282]" />
+                    <FaRegSquare className="text-[0.9rem] text-eventoPurpleBase" />
                   )}
                 </div>
                 <label
                   htmlFor={calendar.id}
-                  className="flex items-center text-[0.9rem] text-[#493282]"
+                  className="flex items-center text-[0.9rem] text-eventoPurpleBase"
                 >
                   {calendar.label}
-                  <span className="ml-2 text-[0.7rem] text-[#646464]">
+                  <span className="ml-2 text-[0.7rem] font-light text-darkGray">
                     {calendar.description}
                   </span>
                 </label>
@@ -124,7 +131,7 @@ export default function SideBarLeft() {
         <ul className="space-y-[1.2rem]">
           {dDayItems.map((item, index) => (
             <li key={index} className="flex">
-              <span className="w-[3rem] text-left font-bold text-[#493282]">
+              <span className="w-[3rem] text-left font-bold text-eventoPurpleBase">
                 {item.day}
               </span>
               <span className="flex-1 pl-2 text-left text-[0.9rem] text-[#646464]">
