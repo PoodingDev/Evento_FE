@@ -60,11 +60,11 @@ export default function CreateEvent() {
 
         {/* 기타 아이콘 */}
         <div className="flex flex-wrap justify-between">
-          <p className="text-[1.2rem] font-medium text-eventoPurple">
+          <p className="text-[1.2rem] font-medium leading-[3rem] text-eventoPurple">
             구독자에게 공개
           </p>
-          <FaToggleOn size={25} />
-          <div className="ml-[17rem] h-[3rem] w-[5.2rem] rounded-[0.5rem] border-[0.1rem] border-solid border-eventoPurple text-center text-[1.2rem] font-medium leading-[3rem] text-eventoPurple">
+          <FaToggleOn size={25} className="mt-[0.7rem]" />
+          <div className="ml-[20rem] h-[3rem] w-[5.2rem] rounded-[0.5rem] border-[0.1rem] border-solid border-eventoPurple text-center text-[1.2rem] font-medium leading-[3rem] text-eventoPurple">
             취소
           </div>
           <div className="h-[3rem] w-[5.2rem] rounded-[0.5rem] border-[0.1rem] border-solid bg-eventoPurple text-center text-[1.2rem] font-medium leading-[3rem] text-eventoWhite">
