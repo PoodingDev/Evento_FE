@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { IoChevronBack, IoPersonCircleOutline, IoSearch } from 'react-icons/io5'
 import { Link } from 'react-router-dom'
 
@@ -93,7 +93,7 @@ function SubsciptionCaleander({ openCalendars, toggleSubscription }) {
     <>
       <div className="relative after:content-[''] after:absolute after:top-0 after:left-0 after:bottom-0 after:w-[2px] after:bg-gray-200">
       </div>
-      <section className='  flex justify-center items-center w-1/3 flex-col '>
+      <section className='  flex items-center w-1/3 flex-col '>
         <h1>구독한 캘린더</h1>
         <ul className='w-auto flex flex-col'>
           {openCalendars
