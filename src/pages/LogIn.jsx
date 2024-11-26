@@ -40,12 +40,8 @@ export default function LogIn() {
 
   return (
     <div className="h-[100vh] bg-eventoWhite">
-      <div className="flex flex-col items-center justify-center h-full">
-        <img
-          className="h-[6rem]"
-          src="/assets/logo/event_logo.png"
-          alt="Evento"
-        />
+      <div className="flex h-full flex-col items-center justify-center">
+        <img className="h-[6rem]" src="/assets/evento_logo.png" alt="Evento" />
         <div className="mt-[0.5rem] text-[1rem] text-eventoPurpleBase/80">
           간편한 일정 관리
         </div>
