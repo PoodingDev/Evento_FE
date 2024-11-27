@@ -38,8 +38,7 @@ export default function ProfileEdit() {
     handleSaveNickName(); // 닉네임 저장
     setSaveToggleState(isToggled); // 토글 상태 저장
     // 이후 저장 로직 (예: 서버에 저장, 로컬스토리지 저장 등)
-    alert("변경된 닉네임과 공개 상태가 저장되었습니다!")
-    navigate(-1); // 이전 페이지로 이동
+    alert("변경된 닉네임과 공개 상태가 저장되었습니다!");
   };
 
   // 취소 버튼 클릭 시 서버와 통신 없이 바로 이전 페이지로 이동
@@ -62,8 +61,8 @@ export default function ProfileEdit() {
                   type="text"
                   value={newNickName}
                   onChange={handleNickName}
-                  placeholder="닉네임 수정"
                   className="focus: w-[9rem] rounded-lg bg-gray-200 p-[2px] px-3 py-2 text-center focus:border-[1px] focus:border-eventoPurple/80 focus:bg-eventoPurpleLight/80 focus:outline-none"
+                  placeholder="닉네임 수정"
                 />
               </div>
 
