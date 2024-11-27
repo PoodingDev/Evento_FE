@@ -5,6 +5,14 @@ import { FaCaretDown, FaToggleOn, FaToggleOff } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 
 export default function CreateEvent({ onClose }) {
+  //캘린더 더미데이터
+  const data = [
+    { id: 1, calName: "PoodingDev" },
+    { id: 2, calName: "캘린이의 삶" },
+    { id: 3, calName: "학교 시험" },
+    { id: 4, calName: "운동Day" },
+  ];
+
   //캘린더 리스트
   const [showCalList, setShowCalList] = useState(false);
   const showList = () => setShowCalList(!showCalList);
@@ -35,22 +43,25 @@ export default function CreateEvent({ onClose }) {
         </div>
         <div className="mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoYellow text-center text-[1rem] font-bold">
           <div className="flex -translate-x-[0.3rem] items-center">
-            <FaCaretDown size={25} onClick={showList} />
+            <FaCaretDown
+              size={25}
+              onClick={() => {
+                showList();
+              }}
+            />
             <p>Pooding팀</p>
             {showCalList && (
               <div className="absolute left-[0rem] top-[1.55rem] flex h-[4rem] flex-col overflow-auto">
-                <button className="h-[1.5rem] w-[6.7rem] border-[0.1rem] border-solid border-darkGray bg-lightGray leading-[1.5rem]">
-                  PoodingDev
-                </button>
-                <button className="h-[1.5rem] w-[6.7rem] border-[0.1rem] border-solid border-darkGray bg-lightGray leading-[1.5rem]">
-                  캘린이의 삶
-                </button>
-                <button className="h-[1.5rem] w-[6.7rem] border-[0.1rem] border-solid border-darkGray bg-lightGray leading-[1.5rem]">
-                  학교 시험
-                </button>
-                <button className="h-[1.5rem] w-[6.7rem] border-[0.1rem] border-solid border-darkGray bg-lightGray leading-[1.5rem]">
-                  운동Day
-                </button>
+                {data.map((cal) => {
+                  return (
+                    <button
+                      key={cal.id}
+                      className="h-[1.5rem] w-[6.7rem] border-[0.1rem] border-solid border-darkGray bg-lightGray leading-[1.5rem]"
+                    >
+                      {`${cal.calName}`}
+                    </button>
+                  );
+                })}
               </div>
             )}
           </div>
