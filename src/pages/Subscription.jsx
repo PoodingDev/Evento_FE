@@ -2,12 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { IoChevronBack, IoPersonCircleOutline, IoSearch } from 'react-icons/io5'
 import { Link } from 'react-router-dom'
 
-import {
-  IoChevronBack,
-  IoPersonCircleOutline,
-  IoSearch,
-} from "react-icons/io5";
-
 export default function Subscription() {
   //더미데이터
   const [openCalendars, setOpenCalendars] = useState([
