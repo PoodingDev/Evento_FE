@@ -72,7 +72,7 @@ export default function InviteCodeModal({ onClose }) {
         </div>
         <div className="mt-[4.2rem] flex translate-x-[1rem] justify-end space-x-[0.5rem]">
           <button
-            className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple/80 text-center text-[1.1rem] text-eventoPurple/80 hover:bg-eventoPurpleLight/70 active:bg-eventoPurpleLight"
+           className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple/80 text-center text-[1.1rem] text-eventoPurple/80 hover:bg-eventoPurpleLight/70 active:bg-eventoPurpleLight" 
             onClick={onClose}
           >
             <span>취소</span>

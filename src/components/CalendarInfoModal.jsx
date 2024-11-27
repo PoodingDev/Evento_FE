@@ -3,7 +3,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FaCopy, FaPen, FaToggleOff, FaToggleOn } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 
-export default function CalendarInfo() {
+export default function CalendarInfo({ onClose }) {
   //수정 및 편집
   const [isEdit, setIsEdit] = useState(false);
   const toggleIsEdit = () => setIsEdit(!isEdit);
@@ -17,6 +17,7 @@ export default function CalendarInfo() {
 
   // 색상
   const [calColor, setCalColor] = useState("calendarRed");
+  const [title, setTitle] = useState("Pooding팀");
   const [textColor, setTextColor] = useState("");
   useEffect(() => {
     if (calColor === "calendarYellow") {
@@ -40,36 +41,46 @@ export default function CalendarInfo() {
   const [visitCode, setVisitCode] = useState("GW5F4");
 
   return (
-    <div className="ml-[18rem] flex h-screen items-center justify-center pt-[5rem]">
-      <div className="h-[29rem] w-[43rem] rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
-        <div className="flex flex-wrap justify-between">
+    <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
+      <FaXmark
+        size={25}
+        className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
+        onClick={onClose}
+      />
+      <div className="flex w-full flex-col">
+        <div className="mb-[2.8rem] flex items-center justify-between">
           {/* 제목 */}
           {isEdit ? (
-            <div className="mb-[1.75rem] text-[4rem] font-bold text-lightGray">
-              Pooding팀
-            </div>
+            <input
+              type="text"
+              value={title}
+              className="w-full bg-transparent text-[3em] font-bold text-darkGray focus:outline-none"
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
+            />
           ) : (
-            <div className={`mb-[1.75rem] text-[4rem] font-bold ${textColor}`}>
-              Pooding팀
-            </div>
+            <div
+              className={`w-full bg-transparent text-[3em] font-bold ${textColor}`}
+            >{`${title}`}</div>
           )}
-          <FaXmark size={25} />
         </div>
-
         {/* 멤버 */}
-        <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
-          멤버
-        </div>
-        <div className="mb-[2.8rem] w-[40rem] text-[1.25rem] font-bold">
-          호도니, 뚜디니, 때용이 + 10
+        <div className="mb-[2rem]">
+          <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
+            멤버
+          </div>
+          <div className="w-[40rem] text-[1.1rem] font-bold text-darkGray">
+            호도니, 뚜디니, 때용이 + 10
+          </div>
         </div>
 
         {/* 일정 상세 */}
-        <div className="flex">
-          <div className="mb-[0.75rem] w-[20rem] text-[1rem] font-bold text-eventoPurple">
+        <div className="flex space-x-[15.5rem]">
+          <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
             캘린더 상세
           </div>
-          <div className="mb-[0.8rem] text-[1rem] font-bold text-eventoPurple">
+          <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
             색상
           </div>
         </div>
@@ -78,12 +89,12 @@ export default function CalendarInfo() {
             <input
               type="text"
               placeholder={`${detailMemo}`}
-              className="mb-[3rem] mr-[2rem] h-[1.3rem] w-[18rem] border-b-[0.1rem] border-solid border-eventoPurple bg-transparent text-[1.2rem] font-bold"
+              className="mb-[3rem] h-[1.3rem] w-[20rem] bg-transparent text-[1.1rem] font-bold text-darkGray"
               onChange={(e) => {
                 setDetailMemo(e.target.value);
               }}
             />
-            <div className="flex h-[2rem] w-[10rem] items-center rounded-[0.2rem] bg-lightGray p-[0.5rem]">
+            <div className="flex h-[2rem] w-[10rem] items-center rounded-[0.2rem]">
               <button
                 onClick={() => setCalColor("calendarYellow")}
                 className={
@@ -144,7 +155,7 @@ export default function CalendarInfo() {
           </div>
         ) : (
           <div className="flex">
-            <div className="mb-[3rem] h-[1.3rem] w-[20rem] text-[1.25rem] font-bold">
+            <div className="mb-[3rem] h-[1.3rem] w-[20rem] text-[1.1rem] font-bold text-darkGray">
               {`${detailMemo}`}
             </div>
             <div className={`h-[1.38rem] w-[1.5rem] bg-${calColor}`}></div>
@@ -162,48 +173,67 @@ export default function CalendarInfo() {
         </div>
         {isEdit ? (
           <>
-            <div className="flex">
-              <div className="w-[13rem] text-[1.25rem] font-bold">
-                비공개 캘린더로 설정하기
+            <div className="flex space-x-[6.5rem]">
+              <div className="flex items-center space-x-[1rem] text-center">
+                <div className="text-[1.1rem] font-bold text-darkGray">
+                  비공개 캘린더로 설정하기
+                </div>
+                {isPublic ? (
+                  <FaToggleOff
+                    size={25}
+                    className="cursor-pointer text-eventoPurple"
+                    onClick={toggleIsPublic}
+                  />
+                ) : (
+                  <FaToggleOn
+                    size={25}
+                    className="cursor-pointer text-eventoPurple"
+                    onClick={toggleIsPublic}
+                  />
+                )}
               </div>
-              {isPublic ? (
-                <FaToggleOff className="mr-[6rem]" onClick={toggleIsPublic} />
-              ) : (
-                <FaToggleOn className="mr-[6rem]" onClick={toggleIsPublic} />
-              )}
-              <div className="text-[1.25rem] font-bold">GW5F4</div>
-            </div>
-            <div className="flex justify-end space-x-[0.5rem]">
-              <button className="flex h-[3rem] w-[5.5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple text-center text-[1.2rem] text-eventoPurple hover:bg-eventoPurpleLight/50 active:bg-eventoPurpleLight">
-                <span>취소</span>
-              </button>
-              <button
-                onClick={toggleIsEdit}
-                className="flex h-[3rem] w-[5.5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple text-center text-[1.2rem] text-eventoWhite hover:bg-eventoPurple/80 active:bg-eventoPurple/60"
-              >
-                <span>저장</span>
-              </button>
+              <div className="pr-[0.5rem] text-[1.1rem] font-bold text-darkGray">
+                GW5F4
+              </div>
             </div>
           </>
         ) : (
           <>
             <div className="flex">
-              <div className="w-[20rem] text-[1.25rem] font-bold">
+              <div className="w-[20rem] text-[1.1rem] font-bold text-darkGray">
                 {isPublic ? "공개" : "비공개"}
               </div>
-              <div className="pr-[0.5rem] text-[1.25rem] font-bold">
+              <div className="pr-[0.5rem] text-[1.1rem] font-bold text-darkGray">
                 {`${visitCode}`}
               </div>
-              <CopyToClipboard text={`${visitCode}`}>
+              <CopyToClipboard
+                className="cursor-pointer text-eventoblack active:text-darkGray"
+                text={`${visitCode}`}
+              >
                 <FaCopy />
               </CopyToClipboard>
-            </div>
-            <div className="flex justify-end">
-              <FaPen size={25} onClick={toggleIsEdit} />
             </div>
           </>
         )}
       </div>
+      {isEdit ? (
+        <div className="absolute bottom-[2rem] right-[2rem] flex space-x-[0.5rem]">
+          <button className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple/80 text-center text-[1.1rem] text-eventoPurple/80 hover:bg-eventoPurpleLight/70 active:bg-eventoPurpleLight">
+            <span>취소</span>
+          </button>
+          <button
+            onClick={toggleIsEdit}
+            className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple/90 text-center text-[1.1rem] text-eventoWhite hover:bg-eventoPurple/70 active:bg-eventoPurple/50"
+          >
+            <span>저장</span>
+          </button>
+        </div>
+      ) : (
+        <FaPen
+          className="absolute bottom-[3rem] right-[3rem] text-[1.5rem] text-darkGray"
+          onClick={toggleIsEdit}
+        />
+      )}
     </div>
   );
 }
