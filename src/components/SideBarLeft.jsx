@@ -1,6 +1,7 @@
 import CreateEvent from "./CreateEventModal";
 import InviteCodeModal from "./InviteCodeModal";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
   FaRegSquare,
@@ -33,9 +34,10 @@ const dDayItems = [
 ];
 
 export default function SideBarLeft() {
+  const navigate = useNavigate();
   const [checked, setChecked] = useState({});
   const [isInviteOpen, setIsInviteOpen] = useState(false);
-  const [isCreateEvent, setIsCreateEvent] = useState(false);
+  const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
 
   const handleToggle = (id) => {
     setChecked((prev) => ({
@@ -48,7 +50,7 @@ export default function SideBarLeft() {
     setIsInviteOpen((prev) => !prev);
   };
   const toggleCreateEvent = () => {
-    setIsCreateEvent((prev) => !prev);
+    setIsCreateEventOpen((prev) => !prev);
   };
 
   return (
@@ -62,11 +64,11 @@ export default function SideBarLeft() {
               <span className="text-[0.9rem] text-darkGray">내 캘린더</span>
               <div className="flex space-x-[0.5rem]">
                 <FaSignInAlt
-                  className="text-[0.7rem] text-darkGray"
+                  className="cursor-pointer text-[0.9rem] text-darkGray"
                   onClick={toggleInvite}
                 />
                 <FaPlus
-                  className="cursor-pointer text-[0.7rem] text-darkGray"
+                  className="cursor-pointer text-[0.9rem] text-darkGray"
                   onClick={toggleCreateEvent}
                 />
               </div>
@@ -109,7 +111,10 @@ export default function SideBarLeft() {
             {/* 제목 */}
             <div className="mr-[0.3rem] flex items-center justify-between">
               <span className="text-[0.9rem] text-darkGray">구독한 캘린더</span>
-              <FaPen className="text-[0.7rem] text-darkGray"></FaPen>
+              <FaPen
+                className="cursor-pointer text-[0.9rem] text-darkGray"
+                onClick={() => navigate("/subscription")}
+              ></FaPen>
             </div>
             {/* 캘린더 리스트 */}
             <ul className="m-[1rem] mt-[1.5rem] space-y-[0.5rem]">
@@ -165,7 +170,7 @@ export default function SideBarLeft() {
           <InviteCodeModal onClose={toggleInvite} />
         </div>
       )}
-      {isCreateEvent && (
+      {isCreateEventOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
           <CreateEvent onClose={toggleCreateEvent} />
         </div>
