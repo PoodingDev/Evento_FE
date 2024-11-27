@@ -1,4 +1,5 @@
 import CreateEvent from "components/CreateEventModal";
+import EventInfo from "components/EventInfoModal";
 import React, { useState } from "react";
 
 export default function Calendar() {
@@ -24,6 +25,9 @@ export default function Calendar() {
           <CreateEvent onClose={toggleCreateEvent} />
         </div>
       )}
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+        <EventInfo />
+      </div>
     </>
   );
 }

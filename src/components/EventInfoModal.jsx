@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { FaXmark } from "react-icons/fa6";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
+import React, { useEffect, useState } from "react";
+import { AiOutlineLike } from "react-icons/ai";
+import { FaXmark } from "react-icons/fa6";
 
 import {
   FaLock,
@@ -15,10 +16,11 @@ import {
   FaToggleOn,
   FaToggleOff,
   FaChevronLeft,
+  FaComment,
+  FaRegCommentDots,
 } from "react-icons/fa";
-import { AiOutlineLike } from "react-icons/ai";
 
-export default function EventInfo() {
+export default function EventInfo(onClose) {
   //수정 및 편집
   const [isEdit, setIsEdit] = useState(false);
   const toggleIsEdit = () => setIsEdit(!isEdit);
@@ -81,50 +83,67 @@ export default function EventInfo() {
   const toggleIsLike = () => setIsLike(!isLike);
 
   return (
-    <div className="ml-[18rem] flex h-screen items-center justify-center pt-[5rem]">
-      <div className="h-[29rem] w-[43rem] rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
-        <div className="flex flex-wrap justify-between">
+    <div className="w-[43rem flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
+      <FaXmark
+        size={25}
+        className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
+        onClick={onClose}
+      />
+      <div className="flex flex-col w-full">
+        <div className="mb-[1.5rem] flex items-center justify-between">
           {/* 이벤트 제목 */}
           {isEdit ? (
-            <input
-              type="text"
-              placeholder={`${eventTitle}`}
-              className="mb-[0.8rem] h-[4.75rem] w-[30rem] bg-transparent text-[4rem] font-bold"
-              onChange={(e) => {
-                setEventTitle(e.target.value);
-              }}
-            />
+            <div className="flex items-center">
+              <input
+                type="text"
+                value={eventTitle}
+                className="h-[2.2rem] w-full bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
+                onChange={(e) => {
+                  setEventTitle(e.target.value);
+                }}
+              />
+            </div>
           ) : (
-            <div className="flex">
-              <div className="mb-[0.8rem] h-[4.75rem] text-[4rem] font-bold">
-                {`${eventTitle}`}
-              </div>
-              <div className="ml-[2rem] mt-[1rem]">
+            <div className="flex items-center">
+              <input
+                type="text"
+                value={eventTitle}
+                className="h-[2.2rem] w-[15rem] bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
+                onChange={(e) => {
+                  setEventTitle(e.target.value);
+                }}
+                disabled
+              />
+              <div className="text-darkGray">
                 {isEventPublic ? <FaLock size={25} /> : <FaUnlock size={25} />}
               </div>
             </div>
           )}
-          <FaXmark size={25} />
         </div>
 
         {/* 캘린더 제목 */}
         {isComment ? (
           <div className="flex">
-            <div className="mb-[1.6rem] h-[1.5rem] w-[10rem] rounded-[3rem] bg-eventoYellow text-center text-[1.25rem] font-bold leading-[1.7rem]">
-              Pooding팀
-            </div>
-            <div className="ml-[1rem] text-[1.5rem] font-bold leading-[1.7rem]">
-              고기 먹자!
+            <div className="mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoYellow text-center text-[1rem] font-bold">
+              <div className="flex items-center">
+                <p>Pooding팀</p>
+              </div>
             </div>
           </div>
         ) : isEdit ? (
-          <div className="mb-[2.5rem] flex h-[1.5rem] w-[10rem] justify-center rounded-[3rem] bg-eventoYellow text-center text-[1.25rem] font-bold leading-[1.7rem]">
-            <FaCaretDown size={25} />
-            <p>Pooding팀</p>
+          <div className="flex">
+            <div className="mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoYellow text-center text-[1rem] font-bold">
+              <div className="flex -translate-x-[0.3rem] items-center">
+                <FaCaretDown size={25} />
+                <p>Pooding팀</p>
+              </div>
+            </div>
           </div>
         ) : (
-          <div className="mb-[2.5rem] h-[1.5rem] w-[10rem] rounded-[3rem] bg-eventoYellow text-center text-[1.25rem] font-bold leading-[1.7rem]">
-            Pooding팀
+          <div className="mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoYellow text-center text-[1rem] font-bold">
+            <div className="flex items-center">
+              <p>Pooding팀</p>
+            </div>
           </div>
         )}
 
@@ -138,32 +157,46 @@ export default function EventInfo() {
           </div>
         ) : isEdit ? (
           <>
-            <div className="mb-[0.25rem] text-[1rem] font-bold text-eventoPurple">
+            <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
               시간
             </div>
-            <div className="mb-[2rem] flex h-[2rem] text-[2rem] font-bold">
+            <div className="mb-[2rem] flex w-[25rem] -translate-x-[0.3rem] items-center text-[2rem] font-bold text-darkGray">
               <DatePicker
                 selected={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
+                onChange={(date) => setStartDate(date)}
                 dateFormat="yyyy-MM-dd"
-                className="m-[0] w-[11rem] bg-transparent"
+                className="w-[12rem] bg-transparent text-center"
               />
-              <p className="mr-[1rem] w-[1rem]">-</p>
+              <span className="w-[2rem] text-center">-</span>
               <DatePicker
                 selected={endDate}
                 onChange={(date) => setendDate(date)}
                 dateFormat="yyyy-MM-dd"
-                className="w-[11rem] bg-transparent"
+                className="w-[12rem] bg-transparent text-center"
               />
             </div>
           </>
         ) : (
           <>
-            <div className="mb-[0.25rem] text-[1rem] font-bold text-eventoPurple">
+            <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
               시간
             </div>
-            <div className="mb-[2rem] h-[2rem] w-[24rem] text-[2rem] font-bold">
-              2024-09-10 - 2024-09-10
+            <div className="mb-[2rem] flex w-[25rem] -translate-x-[0.3rem] items-center text-[2rem] font-bold text-darkGray">
+              <DatePicker
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+                dateFormat="yyyy-MM-dd"
+                className="w-[12rem] bg-transparent text-center"
+                disabled
+              />
+              <span className="w-[2rem] text-center">-</span>
+              <DatePicker
+                selected={endDate}
+                onChange={(date) => setendDate(date)}
+                dateFormat="yyyy-MM-dd"
+                className="w-[12rem] bg-transparent text-center"
+                disabled
+              />
             </div>
           </>
         )}
@@ -186,24 +219,23 @@ export default function EventInfo() {
           </div>
         ) : isEdit ? (
           <>
-            <div className="mb-[0.25rem] text-[1rem] font-bold text-eventoPurple">
-              일정 상세
+            <div className="mb-[2rem]">
+              <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
+                일정 상세
+              </div>
+              <input
+                type="text"
+                value={detailEventMemo}
+                className="border- w-[15rem] border-b-[0.1rem] border-solid border-eventoPurple bg-transparent pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
+              />
             </div>
-            <input
-              type="text"
-              placeholder={`${detailEventMemo}`}
-              className="mb-[2.5rem] h-[1.8rem] w-[40rem] bg-transparent text-[1.5rem] font-medium"
-              onChange={(e) => {
-                setDetailEventMemo(e.target.value);
-              }}
-            />
           </>
         ) : (
           <>
-            <div className="mb-[0.25rem] text-[1rem] font-bold text-eventoPurple">
+            <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
               일정 상세
             </div>
-            <div className="mb-[4rem] h-[1.8rem] w-[40rem] text-[1.5rem] font-bold">
+            <div className="border- w-[15rem] bg-transparent pb-[0.5rem] text-[1rem] text-darkGray">
               {`${detailEventMemo}`}
             </div>
           </>
@@ -220,56 +252,52 @@ export default function EventInfo() {
             onKeyDown={(e) => (e.key === "Enter" ? addComment() : null)}
           />
         ) : isEdit ? (
-          <div className="flex flex-wrap justify-between">
-            <div className="flex space-x-[0.5rem]">
-              <p className="text-[1.2rem] font-medium leading-[3rem] text-eventoPurple">
-                구독자에게 공개
-              </p>
-              {isEventPublic ? (
-                <FaToggleOff
-                  size={25}
-                  className="mt-[0.7rem]"
-                  onClick={toggleIsPublic}
-                />
-              ) : (
-                <FaToggleOn
-                  size={25}
-                  className="mt-[0.7rem]"
-                  onClick={toggleIsPublic}
-                />
-              )}
+          <div className="mb-[2rem]">
+            <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
+              이벤트 공개 여부
             </div>
-            <div className="flex space-x-[0.5rem]">
-              <button className="flex h-[3rem] w-[5.5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple text-center text-[1.2rem] text-eventoPurple hover:bg-eventoPurpleLight/50 active:bg-eventoPurpleLight">
-                <span>취소</span>
-              </button>
-              <button
-                onClick={toggleIsEdit}
-                className="flex h-[3rem] w-[5.5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple text-center text-[1.2rem] text-eventoWhite hover:bg-eventoPurple/80 active:bg-eventoPurple/60"
-              >
-                <span>저장</span>
-              </button>
+            <div className="flex items-center space-x-[0.5rem] text-[1rem] text-darkGray">
+              <p>구독자들에게 공개하기</p>
+              <FaToggleOn
+                size={25}
+                className="cursor-pointer text-eventoPurple"
+              />
             </div>
           </div>
         ) : (
-          <div className="flex justify-between">
-            <div className="flex space-x-[0.5rem]">
-              <FaCommentAlt size={25} onClick={toggleIsComment} />
-              <div>
-                {isLike ? (
-                  <FaBookmark size={25} onClick={toggleIsLike} />
-                ) : (
-                  <FaRegBookmark size={25} onClick={toggleIsLike} />
-                )}
-              </div>
-            </div>
-            <div className="flex space-x-[0.5rem]">
-              <FaRegTrashAlt size={25} />
-              <FaPen size={25} onClick={toggleIsEdit} />
-            </div>
-          </div>
+          ""
         )}
       </div>
+      {isEdit ? (
+        <div className="absolute bottom-[2rem] right-[2rem] flex space-x-[0.5rem]">
+          <button className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple/80 text-center text-[1.1rem] text-eventoPurple/80 hover:bg-eventoPurpleLight/70 active:bg-eventoPurpleLight">
+            <span>취소</span>
+          </button>
+          <button
+            onClick={toggleIsEdit}
+            className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple/90 text-center text-[1.1rem] text-eventoWhite hover:bg-eventoPurple/70 active:bg-eventoPurple/50"
+          >
+            <span>저장</span>
+          </button>
+        </div>
+      ) : isComment ? (
+        ""
+      ) : (
+        <>
+          <div className="absolute bottom-[3rem] left-[3rem] flex space-x-[0.5rem] text-[1.5rem] text-darkGray">
+            {isLike ? (
+              <FaBookmark size={25} onClick={toggleIsLike} />
+            ) : (
+              <FaRegBookmark size={25} onClick={toggleIsLike} />
+            )}
+            <FaRegCommentDots size={25} onClick={toggleIsComment} />
+          </div>
+          <div className="absolute bottom-[3rem] right-[3rem] flex space-x-[0.5rem] text-[1.5rem] text-darkGray">
+            <FaPen onClick={toggleIsEdit} />
+            <FaRegTrashAlt />
+          </div>
+        </>
+      )}
     </div>
   );
 }

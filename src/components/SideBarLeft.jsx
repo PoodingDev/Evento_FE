@@ -36,7 +36,7 @@ const dDayItems = [
 
 export default function SideBarLeft() {
   const [isCalendarInfoOpen, setCalendarInfoOpen] = useState(false);
-  const toggleCalendarInfoOpen = () => {
+  const toggleCalendarInfo = () => {
     setCalendarInfoOpen((prev) => !prev);
   };
   const navigate = useNavigate();
@@ -102,7 +102,7 @@ export default function SideBarLeft() {
                   <label
                     htmlFor={calendar.id}
                     className={`${calendar.color} text-[0.9rem]`}
-                    onClick={toggleCalendarInfoOpen}
+                    onClick={toggleCalendarInfo}
                   >
                     {calendar.label}
                   </label>
@@ -179,10 +179,10 @@ export default function SideBarLeft() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
           <CreateCalendar onClose={toggleCreateCalendar} />
         </div>
-      )}{" "}
+      )}
       {isCalendarInfoOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-          <CalendarInfo onClose={toggleCalendarInfoOpen} />
+          <CalendarInfo onClose={toggleCalendarInfo} />
         </div>
       )}
     </div>
