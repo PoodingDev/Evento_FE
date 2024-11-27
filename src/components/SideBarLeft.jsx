@@ -1,4 +1,4 @@
-import CreateEvent from "./CreateEventModal";
+import CreateCalendar from "./CreateCalendarModal";
 import InviteCodeModal from "./InviteCodeModal";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -172,7 +172,7 @@ export default function SideBarLeft() {
       )}
       {isCreateEventOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-          <CreateEvent onClose={toggleCreateEvent} />
+          <CreateCalendar onClose={toggleCreateEvent} />
         </div>
       )}
     </div>
