@@ -3,7 +3,7 @@ import { FaXmark } from "react-icons/fa6";
 
 export default function DeleteAccountModal() {
   return (
-    <div className="flex h-[30rem] w-[37rem] translate-x-[45rem] translate-y-[15rem] flex-col items-center justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
+    <div className="flex h-[30rem] w-[37rem] translate-x-[3rem] flex-col items-center justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
       <FaXmark size={25} className="absolute right-[2.8rem] top-[2.8rem]" />
       <p className="mb-[2rem] mt-[3rem] w-[31.4rem] text-[2rem] font-bold text-eventoPurple">
         정말 탈퇴하시겠어요?
