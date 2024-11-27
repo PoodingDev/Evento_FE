@@ -1,4 +1,8 @@
+import CreateEvent from "./CreateEventModal";
+import InviteCodeModal from "./InviteCodeModal";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import {
   FaRegSquare,
   FaCheckSquare,
@@ -30,7 +34,10 @@ const dDayItems = [
 ];
 
 export default function SideBarLeft() {
+  const navigate = useNavigate();
   const [checked, setChecked] = useState({});
+  const [isInviteOpen, setIsInviteOpen] = useState(false);
+  const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
 
   const handleToggle = (id) => {
     setChecked((prev) => ({
@@ -39,101 +46,135 @@ export default function SideBarLeft() {
     }));
   };
 
+  const toggleInvite = () => {
+    setIsInviteOpen((prev) => !prev);
+  };
+  const toggleCreateEvent = () => {
+    setIsCreateEventOpen((prev) => !prev);
+  };
+
   return (
-    <div className="evento-sidebarleft absolute mt-[5rem] h-[calc(100vh-5rem)] w-[18rem] rounded-tr-[2.5rem] bg-[#F1F1F1] pl-[2.25rem] pr-[1.75rem] pt-[1.6rem]">
-      <div>
-        {/* 내 캘린더 */}
-        <div className="evento-my-calendar text-[0.9rem] text-[#646464]">
-          {/* 제목 */}
-          <div className="mr-[0.3rem] flex items-center justify-between">
-            <span>내 캘린더</span>
-            <div className="flex space-x-1">
-              <FaSignInAlt className="text-[0.7rem] text-[#646464]" />
-              <FaPlus className="text-[0.7rem] text-[#646464]" />
+    <div>
+      <div className="evento-sidebarleft bg-eventoGray absolute mt-[5rem] h-[calc(100vh-5rem)] w-[18rem] rounded-tr-[2.5rem] pl-[2.25rem] pr-[1.75rem] pt-[1.6rem]">
+        <div>
+          {/* 내 캘린더 */}
+          <div className="evento-my-calendar">
+            {/* 제목 */}
+            <div className="mr-[0.3rem] flex items-center justify-between">
+              <span className="text-[0.9rem] text-darkGray">내 캘린더</span>
+              <div className="flex space-x-[0.5rem]">
+                <FaSignInAlt
+                  className="cursor-pointer text-[0.9rem] text-darkGray"
+                  onClick={toggleInvite}
+                />
+                <FaPlus
+                  className="cursor-pointer text-[0.9rem] text-darkGray"
+                  onClick={toggleCreateEvent}
+                />
+              </div>
             </div>
+            {/* 캘린더 리스트 */}
+            <ul className="m-[1rem] mt-[1.5rem] space-y-[0.5rem] font-semibold">
+              {myCalendars.map((calendar) => (
+                <li
+                  key={calendar.id}
+                  className="flex items-center space-x-[0.75rem]"
+                >
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => handleToggle(calendar.id)}
+                  >
+                    {checked[calendar.id] ? (
+                      <FaCheckSquare
+                        className={`text-[0.93rem] ${calendar.color}`}
+                      />
+                    ) : (
+                      <FaRegSquare
+                        className={`text-[0.93rem] ${calendar.color}`}
+                      />
+                    )}
+                  </div>
+                  <label
+                    htmlFor={calendar.id}
+                    className={`${calendar.color} text-[0.9rem]`}
+                  >
+                    {calendar.label}
+                  </label>
+                </li>
+              ))}
+            </ul>
           </div>
-          {/* 캘린더 리스트 */}
-          <ul className="m-[1rem] font-bold">
-            {myCalendars.map((calendar) => (
-              <li key={calendar.id} className="flex items-center gap-[0.5rem]">
-                <div
-                  className="cursor-pointer"
-                  onClick={() => handleToggle(calendar.id)}
+        </div>
+        {/* 구독한 캘린더 */}
+        <div className="mt-[2rem]">
+          <div className="evento-subscription">
+            {/* 제목 */}
+            <div className="mr-[0.3rem] flex items-center justify-between">
+              <span className="text-[0.9rem] text-darkGray">구독한 캘린더</span>
+              <FaPen
+                className="cursor-pointer text-[0.9rem] text-darkGray"
+                onClick={() => navigate("/subscription")}
+              ></FaPen>
+            </div>
+            {/* 캘린더 리스트 */}
+            <ul className="m-[1rem] mt-[1.5rem] space-y-[0.5rem]">
+              {subscribedCalendars.map((calendar) => (
+                <li
+                  key={calendar.id}
+                  className="flex items-center space-x-[0.75rem]"
                 >
-                  {checked[calendar.id] ? (
-                    <FaCheckSquare
-                      className={`text-[0.9rem] ${calendar.color}`}
-                    />
-                  ) : (
-                    <FaRegSquare
-                      className={`text-[0.9rem] ${calendar.color}`}
-                    />
-                  )}
-                </div>
-                <label
-                  htmlFor={calendar.id}
-                  className={`${calendar.color} text-[0.9rem]`}
-                >
-                  {calendar.label}
-                </label>
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => handleToggle(calendar.id)}
+                  >
+                    {checked[calendar.id] ? (
+                      <FaCheckSquare className="text-[0.9rem] text-eventoPurpleBase" />
+                    ) : (
+                      <FaRegSquare className="text-[0.9rem] text-eventoPurpleBase" />
+                    )}
+                  </div>
+                  <label
+                    htmlFor={calendar.id}
+                    className="flex items-center text-[0.9rem] text-eventoPurpleBase"
+                  >
+                    {calendar.label}
+                    <span className="ml-2 text-[0.7rem] font-light text-darkGray">
+                      {calendar.description}
+                    </span>
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        {/* 디데이 */}
+        <div className="fixed bottom-[4rem] left-[4rem] flex flex-col items-center justify-center">
+          <ul className="space-y-[1.2rem]">
+            {dDayItems.map((item, index) => (
+              <li key={index} className="flex">
+                <span className="w-[3rem] text-left font-bold text-eventoPurpleBase">
+                  {item.day}
+                </span>
+                <span className="flex-1 pl-2 text-left text-[0.9rem] text-[#646464]">
+                  {item.description}
+                </span>
               </li>
             ))}
           </ul>
         </div>
       </div>
-      {/* 중간선 */}
-      <hr className="m-[0.8rem] border-[0.1px] border-[#646464]/50" />
-      {/* 구독한 캘린더 */}
-      <div className="mt-6">
-        <div className="evento-subscription mb-2 text-[0.9rem] text-[#646464]">
-          {/* 제목 */}
-          <div className="ml-[0.3rem] mr-[0.3rem] flex items-center justify-between">
-            <span>구독한 캘린더</span>
-            <FaPen className="text-[0.7rem] text-[#646464]"></FaPen>
-          </div>
-          {/* 캘린더 리스트 */}
-          <ul className="m-[1rem]">
-            {subscribedCalendars.map((calendar) => (
-              <li key={calendar.id} className="flex items-center space-x-2">
-                <div
-                  className="cursor-pointer"
-                  onClick={() => handleToggle(calendar.id)}
-                >
-                  {checked[calendar.id] ? (
-                    <FaCheckSquare className="text-[0.9rem] text-[#493282]" />
-                  ) : (
-                    <FaRegSquare className="text-[0.9rem] text-[#493282]" />
-                  )}
-                </div>
-                <label
-                  htmlFor={calendar.id}
-                  className="flex items-center text-[0.9rem] text-[#493282]"
-                >
-                  {calendar.label}
-                  <span className="ml-2 text-[0.7rem] text-[#646464]">
-                    {calendar.description}
-                  </span>
-                </label>
-              </li>
-            ))}
-          </ul>
+
+      {/* 모달들 */}
+      {isInviteOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <InviteCodeModal onClose={toggleInvite} />
         </div>
-      </div>
-      {/* 디데이 */}
-      <div className="fixed bottom-[4rem] left-[4rem] flex flex-col items-center justify-center">
-        <ul className="space-y-[1.2rem]">
-          {dDayItems.map((item, index) => (
-            <li key={index} className="flex">
-              <span className="w-[3rem] text-left font-bold text-[#493282]">
-                {item.day}
-              </span>
-              <span className="flex-1 pl-2 text-left text-[0.9rem] text-[#646464]">
-                {item.description}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
+      )}
+      {isCreateEventOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <CreateEvent onClose={toggleCreateEvent} />
+        </div>
+      )}
     </div>
   );
 }

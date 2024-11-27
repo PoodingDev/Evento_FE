@@ -7,7 +7,9 @@ export default function LogIn() {
     let clientId = "";
     let authUrl = "";
 
-    const redirectUri = `http://localhost:5173/auth/${platform}`;
+    const redirectUri = `https://evento.kro.kr/auth/${platform}`;
+    // const redirectUri = `http://localhost:5173/auth/${platform}`;
+
     const state = encodeURIComponent(JSON.stringify({ platform }));
 
     switch (platform) {
@@ -40,26 +42,26 @@ export default function LogIn() {
 
   return (
     <div className="h-[100vh] bg-eventoWhite">
-      <div className="flex flex-col items-center justify-center h-full">
+      <div className="flex h-full -translate-y-[1rem] flex-col items-center justify-center">
         <img
-          className="h-[6rem]"
-          src="/src/assets/logo/event_logo.png"
+          className="h-[5rem] translate-x-[0.7rem]"
+          src="/assets/evento_logo.png"
           alt="Evento"
         />
-        <div className="mt-[0.5rem] text-[1rem] text-eventoPurpleBase/80">
+        <div className="mt-[2rem] text-[1rem] text-eventoPurpleBase/80">
           간편한 일정 관리
         </div>
         <div className="mt-[0.5rem] text-[1rem] text-eventoPurpleBase/80">
           <span className="font-bold">evento.</span>와 함께 시작하세요!
         </div>
-        <div className="mt-[2.5rem] space-y-[0.6rem] text-[0.9rem]">
+        <div className="mt-[6rem] space-y-[0.7rem] text-[0.9rem]">
           {/* 카카오 */}
           <div
             className="relative flex h-[2.5rem] w-[15rem] cursor-pointer items-center rounded-lg bg-[#FEE500] text-[#181600]/85"
             onClick={() => handleLogin("kakao")}
           >
             <img
-              src="/src/assets/kakao_logo.png"
+              src="/assets/kakao_logo.png"
               className="absolute left-2 ml-[0.6rem] h-[1rem]"
               alt="K"
             />
@@ -71,7 +73,7 @@ export default function LogIn() {
             onClick={() => handleLogin("naver")}
           >
             <img
-              src="src/assets/naver_logo.png"
+              src="/assets/naver_logo.png"
               className="absolute left-2 h-[2.3rem]"
               alt="N"
             />
@@ -83,7 +85,7 @@ export default function LogIn() {
             onClick={() => handleLogin("google")}
           >
             <img
-              src="src/assets/google_logo.png"
+              src="/assets/google_logo.png"
               className="absolute left-2 ml-[0.3rem] h-[1.8rem]"
               alt="G"
             />

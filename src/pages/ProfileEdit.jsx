@@ -48,7 +48,7 @@ export default function ProfileEdit() {
 
   return (
     <>
-      <div className="h-[100vh] bg-eventoWhite pl-[18rem] pt-[5rem]">
+      <div className="h-[100vh] bg-eventoWhite pl-[18rem] pt-[4rem]">
         <div className="ml-[5rem] mt-[2rem] flex items-center text-center">
           <p className="text-[1.4rem]">&nbsp; 내 프로필 수정</p>
         </div>
