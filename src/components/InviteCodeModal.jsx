@@ -61,20 +61,17 @@ export default function InviteCodeModal({ onClose }) {
             />
           ))}
         </div>
-        <div className="text-[1.5rem] text-eventoPurple">
+        <div className="text-[1.5rem] text-darkGray/80">
           공유 받은 참여 코드를 입력하세요!
         </div>
-        <div className="mt-[5rem] flex translate-x-[1rem] justify-end space-x-[0.5rem]">
+        <div className="mt-[4.2rem] flex translate-x-[1rem] justify-end space-x-[0.5rem]">
           <button
-            className="flex h-[3rem] w-[5.5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple/80 text-center text-[1.2rem] text-eventoPurple/80 hover:bg-eventoPurpleLight/70 active:bg-eventoPurpleLight"
+            className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple/80 text-center text-[1.1rem] text-eventoPurple/80 hover:bg-eventoPurpleLight/70 active:bg-eventoPurpleLight"
             onClick={onClose}
           >
             <span>취소</span>
           </button>
-          <button
-            className="flex h-[3rem] w-[5.5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple/80 text-center text-[1.2rem] text-eventoWhite hover:bg-eventoPurple/60 active:bg-eventoPurple/40"
-            onClick={handleSubmit}
-          >
+          <button className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple/90 text-center text-[1.1rem] text-eventoWhite hover:bg-eventoPurple/70 active:bg-eventoPurple/50">
             <span>참가</span>
           </button>
         </div>

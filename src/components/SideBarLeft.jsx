@@ -37,7 +37,7 @@ export default function SideBarLeft() {
   const navigate = useNavigate();
   const [checked, setChecked] = useState({});
   const [isInviteOpen, setIsInviteOpen] = useState(false);
-  const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
+  const [isCreateCalendarOpen, setIsCreateCalendarOpen] = useState(false);
 
   const handleToggle = (id) => {
     setChecked((prev) => ({
@@ -49,8 +49,8 @@ export default function SideBarLeft() {
   const toggleInvite = () => {
     setIsInviteOpen((prev) => !prev);
   };
-  const toggleCreateEvent = () => {
-    setIsCreateEventOpen((prev) => !prev);
+  const toggleCreateCalendar = () => {
+    setIsCreateCalendarOpen((prev) => !prev);
   };
 
   return (
@@ -69,7 +69,7 @@ export default function SideBarLeft() {
                 />
                 <FaPlus
                   className="cursor-pointer text-[0.9rem] text-darkGray"
-                  onClick={toggleCreateEvent}
+                  onClick={toggleCreateCalendar}
                 />
               </div>
             </div>
@@ -170,9 +170,9 @@ export default function SideBarLeft() {
           <InviteCodeModal onClose={toggleInvite} />
         </div>
       )}
-      {isCreateEventOpen && (
+      {isCreateCalendarOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-          <CreateCalendar onClose={toggleCreateEvent} />
+          <CreateCalendar onClose={toggleCreateCalendar} />
         </div>
       )}
     </div>

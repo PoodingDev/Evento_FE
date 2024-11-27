@@ -4,76 +4,87 @@ import React, { useState } from "react";
 import { FaCaretDown, FaToggleOn } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 
-export default function CreateEvent() {
+export default function CreateEvent({ onClose }) {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setendDate] = useState(new Date());
 
   return (
-    <div className="flex h-screen items-center justify-center pt-[5rem]">
-      <div className="h-[29rem] w-[43rem] rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
-        <div className="flex flex-wrap justify-between">
+    <div className="w-[43rem flex h-[29rem] w-[37rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
+      <div className="flex w-full flex-col">
+        <div className="mb-[1rem] flex items-center justify-between">
           {/* 제목 */}
           <input
             type="text"
-            placeholder="일정을 입력하세요"
-            className="mb-[0.8rem] w-[30rem] bg-transparent text-[4rem] font-bold"
+            placeholder="일정 이름을 입력하세요"
+            className="w-full bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
           />
-          <FaXmark size={25} />
+          <FaXmark
+            size={25}
+            className="cursor-pointer text-darkGray"
+            onClick={onClose}
+          />
         </div>
-
-        <div className="mb-[2.37rem] flex h-[2rem] w-[10rem] justify-center rounded-[2.5rem] bg-eventoYellow text-center text-[1.25rem] font-bold leading-[2rem]">
-          <FaCaretDown size={25} />
-          <p>Pooding팀</p>
+        <div className="mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoYellow text-center text-[1rem] font-bold">
+          <div className="flex -translate-x-[0.3rem] items-center">
+            <FaCaretDown size={25} />
+            <p>Pooding팀</p>
+          </div>
         </div>
 
         {/* 시간 */}
-
-        <div className="mb-[0.25rem] text-[1rem] font-bold text-eventoPurple">
+        <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
           시간
         </div>
-        <div className="mb-[2rem] flex text-[2rem] font-bold">
+        <div className="mb-[2rem] flex w-[25rem] -translate-x-[0.3rem] items-center text-[2rem] font-bold text-darkGray">
           <DatePicker
             selected={startDate}
             onChange={(date) => setStartDate(date)}
             dateFormat="yyyy-MM-dd"
-            className="w-[11rem] bg-transparent"
+            className="w-[12rem] bg-transparent text-center"
           />
-          <p className="mr-[1rem] w-[1rem]">-</p>
+          <span className="w-[2rem] text-center">-</span>
           <DatePicker
             selected={endDate}
             onChange={(date) => setendDate(date)}
             dateFormat="yyyy-MM-dd"
-            className="w-[11rem] bg-transparent"
+            className="w-[12rem] bg-transparent text-center"
           />
         </div>
 
         {/* 일정 상세 */}
-        <div className="mb-[0.25rem] text-[1rem] font-bold text-eventoPurple">
-          일정 상세
+        <div className="mb-[2rem]">
+          <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
+            일정 상세
+          </div>
+          <input
+            type="text"
+            placeholder="어떤 일정인가요?"
+            className="border- w-[15rem] border-b-[0.1rem] border-solid border-eventoPurple bg-transparent pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
+          />
         </div>
 
-        <input
-          type="text"
-          placeholder="무슨 일정인가요?"
-          className="mb-[1.8rem] w-[40rem] bg-transparent text-[1.5rem] font-medium"
-        />
-
-        {/* 기타 아이콘 */}
-        <div className="flex justify-between">
-          <div className="flex">
-            <p className="w-[8rem] text-[1.2rem] font-medium leading-[3rem] text-eventoPurple">
-              구독자에게 공개
-            </p>
-            <FaToggleOn size={25} className="mt-[0.7rem]" />
+        <div className="mb-[2rem]">
+          <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
+            이벤트 공개 여부
           </div>
-          <div className="flex space-x-[0.5rem]">
-            <button className="flex h-[3rem] w-[5.5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple text-center text-[1.2rem] text-eventoPurple hover:bg-eventoPurpleLight/50 active:bg-eventoPurpleLight">
-              <span>취소</span>
-            </button>
-            <button className="flex h-[3rem] w-[5.5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple text-center text-[1.2rem] text-eventoWhite hover:bg-eventoPurple/80 active:bg-eventoPurple/60">
-              <span>저장</span>
-            </button>
+          <div className="flex items-center space-x-[0.5rem] text-[1rem] text-darkGray">
+            <p>구독자들에게 공개하기</p>
+            <FaToggleOn
+              size={25}
+              className="cursor-pointer text-eventoPurple"
+            />
           </div>
+        </div>
+        <div className="absolute bottom-[2rem] right-[3rem] mt-[5rem] flex translate-x-[1rem] justify-end space-x-[0.5rem]">
+          <button
+            className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple/80 text-center text-[1.1rem] text-eventoPurple/80 hover:bg-eventoPurpleLight/70 active:bg-eventoPurpleLight"
+            onClick={onClose}
+          >
+            <span>취소</span>
+          </button>
+          <button className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple/90 text-center text-[1.1rem] text-eventoWhite hover:bg-eventoPurple/70 active:bg-eventoPurple/50">
+            <span>저장</span>
+          </button>
         </div>
       </div>
     </div>

@@ -6,8 +6,8 @@ export default function CreateCalendar({ onClose }) {
   const inputRefs = useRef([]);
 
   return (
-    <div className="w-[43rem flex h-[29rem] w-[37rem] translate-x-[3rem] items-center justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
-      <div className="flex w-full flex-col">
+    <div className="w-[43rem flex h-[29rem] w-[37rem] translate-x-[3rem]  justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
+      <div className="flex flex-col w-full">
         <div className="mb-[2.8rem] flex items-center justify-between">
           <input
             type="text"
