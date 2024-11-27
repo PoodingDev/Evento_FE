@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { FaXmark } from "react-icons/fa6";
-import { FaPen, FaCopy, FaToggleOn, FaToggleOff } from "react-icons/fa";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { FaCopy, FaPen, FaToggleOff, FaToggleOn } from "react-icons/fa";
+import { FaXmark } from "react-icons/fa6";
 
 export default function CalendarInfo() {
   //수정 및 편집

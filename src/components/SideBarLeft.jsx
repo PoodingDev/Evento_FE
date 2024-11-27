@@ -1,4 +1,5 @@
-import CreateEvent from "./CreateEventModal";
+import CalendarInfo from "./CalendarInfoModal";
+import CreateCalendar from "./CreateCalendarModal";
 import InviteCodeModal from "./InviteCodeModal";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -34,10 +35,14 @@ const dDayItems = [
 ];
 
 export default function SideBarLeft() {
+  const [isCalendarInfoOpen, setCalendarInfoOpen] = useState(false);
+  const toggleCalendarInfoOpen = () => {
+    setCalendarInfoOpen((prev) => !prev);
+  };
   const navigate = useNavigate();
   const [checked, setChecked] = useState({});
   const [isInviteOpen, setIsInviteOpen] = useState(false);
-  const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
+  const [isCreateCalendarOpen, setIsCreateCalendarOpen] = useState(false);
 
   const handleToggle = (id) => {
     setChecked((prev) => ({
@@ -49,8 +54,8 @@ export default function SideBarLeft() {
   const toggleInvite = () => {
     setIsInviteOpen((prev) => !prev);
   };
-  const toggleCreateEvent = () => {
-    setIsCreateEventOpen((prev) => !prev);
+  const toggleCreateCalendar = () => {
+    setIsCreateCalendarOpen((prev) => !prev);
   };
 
   return (
@@ -69,7 +74,7 @@ export default function SideBarLeft() {
                 />
                 <FaPlus
                   className="cursor-pointer text-[0.9rem] text-darkGray"
-                  onClick={toggleCreateEvent}
+                  onClick={toggleCreateCalendar}
                 />
               </div>
             </div>
@@ -97,6 +102,7 @@ export default function SideBarLeft() {
                   <label
                     htmlFor={calendar.id}
                     className={`${calendar.color} text-[0.9rem]`}
+                    onClick={toggleCalendarInfoOpen}
                   >
                     {calendar.label}
                   </label>
@@ -163,16 +169,20 @@ export default function SideBarLeft() {
           </ul>
         </div>
       </div>
-
       {/* 모달들 */}
       {isInviteOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
           <InviteCodeModal onClose={toggleInvite} />
         </div>
       )}
-      {isCreateEventOpen && (
+      {isCreateCalendarOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-          <CreateEvent onClose={toggleCreateEvent} />
+          <CreateCalendar onClose={toggleCreateCalendar} />
+        </div>
+      )}{" "}
+      {isCalendarInfoOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <CalendarInfo onClose={toggleCalendarInfoOpen} />
         </div>
       )}
     </div>
