@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { IoChevronBack, IoPersonCircleOutline, IoSearch } from 'react-icons/io5'
-import { Link } from 'react-router-dom'
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 import {
   IoChevronBack,
@@ -61,55 +60,26 @@ export default function Subscription() {
 }
 
 function CaleanderSearch({ openCalendars, toggleSubscription }) {
-  //  input 검색창 상태 관리
-  const [inputValue, setInputValue] = useState('')
-  console.log(inputValue)
-  const [debouncedInput, setDebouncedInput] = useState("");
-  const [filteredSearch, setFilteredSearch] = useState([]);
-
-  // Debounce 로직
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedInput(inputValue); // 디바운스된 검색어 업데이트
-    }, 500);
-    return () => clearTimeout(timer); // 이전 타이머 클리어
-  }, [inputValue]);
-
-  // 검색 결과 업데이트
-  useEffect(() => {
-    if (!debouncedInput.trim()) {
-      setFilteredSearch([]); // 검색어가 없으면 빈 배열 반환
-    } else {
-      const newFilteredSearch = openCalendars.filter((calendar) =>
-        calendar.userNickNam.toLowerCase().includes(inputValue.toLowerCase()) ||
-        calendar.calendarName.toLowerCase().includes(inputValue.toLowerCase())
-      );
-      setFilteredSearch(newFilteredSearch); // 상태 업데이트
-    }
-  }, [debouncedInput, openCalendars]);
-
   return (
     <>
-      <section className='flex justify-center align-middle  items-center w-2/3 flex-col py-[3rem]'>
-        <div className='flex items-center gap-2'>
+      <section className="flex w-2/3 flex-col items-center justify-center py-[3rem] align-middle">
+        <div className="flex items-center gap-2">
           <input
             type="text"
-            value={inputValue}
-            placeholder="닉네임을 검색하세요"
-            onChange={(event) => setInputValue(event.target.value)}
-            className=' focus:border-eventoPurple/80 focus:bg-eventoPurpleLight/80 focus: rounded-2xl bg-gray-200 p-[2px] px-3 py-2 text-center focus:border-[1px] focus:outline-none' />
-          <IoSearch className='text-[2rem]' />
+            className="focus: rounded-2xl bg-gray-200 p-[2px] px-3 py-2 text-center focus:border-[1px] focus:border-eventoPurple/80 focus:bg-eventoPurpleLight/80 focus:outline-none"
+          />
+          <IoSearch className="text-[2rem]" />
         </div>
-        <ul className='w-auto flex flex-col my-[2rem]'>
-
-          {filteredSearch.map((calendar) => (
-            <li key={calendar.id}
-              className="flex items-center gap-[1rem] w-[20rem] my-2 ">
-              <IoPersonCircleOutline className="w-[3.5rem] h-[3.5rem] object-cover" />
-              <div >
-                <h3 className='text-[#493282]'>{calendar.calendarName}</h3>
-                <p className='text-[#646464]'>{calendar.userNickNam}</p>
-
+        <ul className="my-[2rem] flex w-auto flex-col">
+          {openCalendars.map((calendar) => (
+            <li
+              key={calendar.id}
+              className="my-2 flex w-[20rem] items-center gap-[1rem]"
+            >
+              <IoPersonCircleOutline className="h-[3.5rem] w-[3.5rem] object-cover" />
+              <div>
+                <h3 className="text-[#493282]">{calendar.calendarName}</h3>
+                <p className="text-[#646464]">{calendar.userNickNam}</p>
               </div>
               <button
                 className={`ml-auto h-[2rem] w-[5rem] rounded-[0.625rem] border-2 p-1 align-middle ${
@@ -132,11 +102,8 @@ function CaleanderSearch({ openCalendars, toggleSubscription }) {
 function SubsciptionCaleander({ openCalendars, toggleSubscription }) {
   return (
     <>
-
-      <div className="relative after:content-[''] after:absolute after:top-0 after:left-0 after:bottom-0 after:w-[2px] after:bg-gray-200">
-      </div>
-      <section className='  flex items-center w-1/3 flex-col '>
-
+      <div className="relative after:absolute after:bottom-0 after:left-0 after:top-0 after:w-[2px] after:bg-gray-200 after:content-['']"></div>
+      <section className="flex w-1/3 flex-col items-center justify-center">
         <h1>구독한 캘린더</h1>
         <ul className="flex w-auto flex-col">
           {openCalendars
