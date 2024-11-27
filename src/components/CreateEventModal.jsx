@@ -10,6 +10,11 @@ export default function CreateEvent({ onClose }) {
 
   return (
     <div className="w-[43rem flex h-[29rem] w-[37rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
+      <FaXmark
+        size={25}
+        className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
+        onClick={onClose}
+      />
       <div className="flex w-full flex-col">
         <div className="mb-[1rem] flex items-center justify-between">
           {/* 제목 */}
@@ -17,11 +22,6 @@ export default function CreateEvent({ onClose }) {
             type="text"
             placeholder="일정 이름을 입력하세요"
             className="w-full bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
-          />
-          <FaXmark
-            size={25}
-            className="cursor-pointer text-darkGray"
-            onClick={onClose}
           />
         </div>
         <div className="mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoYellow text-center text-[1rem] font-bold">

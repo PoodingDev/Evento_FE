@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { FaXmark } from "react-icons/fa6";
 
 export default function InviteCodeModal({ onClose }) {
   const inputRefs = useRef([]);
@@ -44,6 +45,11 @@ export default function InviteCodeModal({ onClose }) {
 
   return (
     <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] items-center justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
+      <FaXmark
+        size={25}
+        className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
+        onClick={onClose}
+      />
       <div className="text-center">
         <div className="mb-[2rem] text-[4rem] font-semibold text-eventoPurple/80">
           초대 코드

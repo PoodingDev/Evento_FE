@@ -6,18 +6,18 @@ export default function CreateCalendar({ onClose }) {
   const inputRefs = useRef([]);
 
   return (
-    <div className="w-[43rem flex h-[29rem] w-[37rem] translate-x-[3rem]  justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
-      <div className="flex flex-col w-full">
+    <div className="w-[43rem flex h-[29rem] w-[37rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
+      <FaXmark
+        size={25}
+        className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
+        onClick={onClose}
+      />
+      <div className="flex w-full flex-col">
         <div className="mb-[2.8rem] flex items-center justify-between">
           <input
             type="text"
             placeholder="캘린더 이름을 입력하세요"
             className="w-full bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
-          />
-          <FaXmark
-            size={25}
-            className="cursor-pointer text-darkGray"
-            onClick={onClose}
           />
         </div>
 
