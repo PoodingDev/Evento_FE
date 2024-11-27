@@ -301,6 +301,3 @@ export default function EventInfo(onClose) {
     </div>
   );
 }
-
-
-          type="text"
