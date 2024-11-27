@@ -1,3 +1,4 @@
+import CalendarInfo from "./CalendarInfoModal";
 import CreateCalendar from "./CreateCalendarModal";
 import InviteCodeModal from "./InviteCodeModal";
 import React, { useState } from "react";
@@ -34,6 +35,10 @@ const dDayItems = [
 ];
 
 export default function SideBarLeft() {
+  const [isCalendarInfoOpen, setCalendarInfoOpen] = useState(false);
+  const toggleCalendarInfoOpen = () => {
+    setCalendarInfoOpen((prev) => !prev);
+  };
   const navigate = useNavigate();
   const [checked, setChecked] = useState({});
   const [isInviteOpen, setIsInviteOpen] = useState(false);
@@ -97,6 +102,7 @@ export default function SideBarLeft() {
                   <label
                     htmlFor={calendar.id}
                     className={`${calendar.color} text-[0.9rem]`}
+                    onClick={toggleCalendarInfoOpen}
                   >
                     {calendar.label}
                   </label>
@@ -163,7 +169,6 @@ export default function SideBarLeft() {
           </ul>
         </div>
       </div>
-
       {/* 모달들 */}
       {isInviteOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
@@ -173,6 +178,11 @@ export default function SideBarLeft() {
       {isCreateCalendarOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
           <CreateCalendar onClose={toggleCreateCalendar} />
+        </div>
+      )}{" "}
+      {isCalendarInfoOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <CalendarInfo onClose={toggleCalendarInfoOpen} />
         </div>
       )}
     </div>
