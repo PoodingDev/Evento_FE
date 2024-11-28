@@ -47,7 +47,7 @@ export default function CalendarInfo({ onClose }) {
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex w-full flex-col">
+      <div className="flex flex-col w-full">
         <div className="mb-[2.8rem] flex items-center justify-between">
           {/* 제목 */}
           {isEdit ? (

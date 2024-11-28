@@ -20,7 +20,7 @@ import {
   FaRegCommentDots,
 } from "react-icons/fa";
 
-export default function EventInfo(onClose) {
+export default function EventInfo({ onClose }) {
   //수정 및 편집
   const [isEdit, setIsEdit] = useState(false);
   const toggleIsEdit = () => setIsEdit(!isEdit);
