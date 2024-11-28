@@ -1,4 +1,5 @@
-import React from "react";
+import DeleteAccountModal from "components/DeleteAccountModal";
+import React, { useState } from "react";
 import { FaBirthdayCake, FaPen } from "react-icons/fa";
 import { IoChevronBack, IoPersonCircleOutline } from "react-icons/io5";
 import { Link, Navigate, useNavigate } from "react-router-dom";
@@ -13,6 +14,10 @@ export default function Profile() {
   const userNickname = `dlwlrma`;
   const userEmail = `dlalrma@pooding.com`;
   const userBirth = `2024-11-11`;
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const toggleConfirm = () => {
+    setIsConfirmOpen((prev) => !prev);
+  };
 
   return (
     <>
@@ -44,10 +49,18 @@ export default function Profile() {
           />
         </div>
         <div className="absolute bottom-[3rem] right-[4rem]">
-          <button className="w-[7rem] gap-3 rounded-[0.625rem] border-2 border-darkGray bg-white px-3 py-2 text-darkGray">
+          <button
+            onClick={toggleConfirm}
+            className="w-[7rem] gap-3 rounded-[0.625rem] border-2 border-darkGray bg-white px-3 py-2 text-darkGray"
+          >
             회원탈퇴
           </button>
         </div>
+        {isConfirmOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+            <DeleteAccountModal onClose={toggleConfirm} />
+          </div>
+        )}
       </div>
     </>
   );

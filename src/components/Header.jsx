@@ -1,3 +1,4 @@
+import EventInfo from "./EventInfoModal";
 import React, { useState } from "react";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,6 +11,12 @@ export default function Header() {
     setIsView(!isView);
   };
 
+  // 이벤트 수정 임시 링크 - 캘린더 수정 완료 후 복붙
+  const [isEventInfoOpen, setIsEventInfoOpen] = useState(false);
+  const toggleEventInfo = () => {
+    setIsEventInfoOpen((prev) => !prev);
+  };
+
   return (
     <div className="evento-header absolute flex h-[5rem] w-full cursor-pointer items-center justify-between py-[1.25rem] pl-[2rem] pr-[2rem]">
       <img
@@ -18,14 +25,12 @@ export default function Header() {
         alt="Evento"
         onClick={() => navigate("/")}
       />
-
       {/* 작업할 때 아래 주석 처리 뜯고 하시면 편합니다 */}
-
       {/* <Link to="/profile">Profile</Link>
       <Link to="/login">Login</Link>
       <Link to="/"></Link>
       <Link to="/code">code</Link> */}
-
+      <div onClick={toggleEventInfo}>이벤트 수정(임시링크)</div>
       <FontAwesomeIcon
         icon={faUser}
         className="text-2xl text-[#4F378B]"
@@ -53,6 +58,13 @@ export default function Header() {
           <button className="h-[2.5rem] w-[10rem] rounded-[3rem] border-[0.1rem] border-solid border-darkRed text-[1.25rem] font-bold text-darkRed">
             로그아웃
           </button>
+        </div>
+      )}
+
+      {/* 이벤트 수정 임시 링크 - 캘린더 수정 완료 후 복붙*/}
+      {isEventInfoOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <EventInfo onClose={toggleEventInfo} />
         </div>
       )}
     </div>

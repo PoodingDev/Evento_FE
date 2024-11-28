@@ -20,7 +20,7 @@ import {
   FaRegCommentDots,
 } from "react-icons/fa";
 
-export default function EventInfo(onClose) {
+export default function EventInfo({ onClose }) {
   //수정 및 편집
   const [isEdit, setIsEdit] = useState(false);
   const toggleIsEdit = () => setIsEdit(!isEdit);
@@ -30,17 +30,17 @@ export default function EventInfo(onClose) {
     {
       id: 1,
       username: "호선",
-      content: "저녁 머 먹지?",
+      content: "이날 뭐 먹을까용?",
     },
     {
       id: 2,
       username: "채영",
-      content: "고기 어때",
+      content: "고기 어때유",
     },
     {
       id: 3,
       username: "수진",
-      content: "좋아",
+      content: "오 너무 좋아용",
     },
     {
       id: 4,
@@ -82,6 +82,19 @@ export default function EventInfo(onClose) {
   const [isLike, setIsLike] = useState(false);
   const toggleIsLike = () => setIsLike(!isLike);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (input.trim() !== "") {
+      const newComment = {
+        id: commentList.length + 1,
+        username: "수진", //현재 사용자 이름
+        content: input,
+      };
+      setCommentList([...commentList, newComment]);
+      setInput("");
+    }
+  };
+
   return (
     <div className="w-[43rem flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
       <FaXmark
@@ -94,10 +107,13 @@ export default function EventInfo(onClose) {
           {/* 이벤트 제목 */}
           {isEdit ? (
             <div className="flex items-center">
+              <div className="text-darkGray">
+                {isEventPublic ? <FaLock size={20} /> : <FaUnlock size={20} />}
+              </div>
               <input
                 type="text"
                 value={eventTitle}
-                className="h-[2.2rem] w-full bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
+                className="ml-[1rem] h-[2.2rem] w-full bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
                 onChange={(e) => {
                   setEventTitle(e.target.value);
                 }}
@@ -105,24 +121,26 @@ export default function EventInfo(onClose) {
             </div>
           ) : (
             <div className="flex items-center">
+              <div className="text-darkGray">
+                {isEventPublic ? <FaLock size={20} /> : <FaUnlock size={20} />}
+              </div>
               <input
                 type="text"
                 value={eventTitle}
-                className="h-[2.2rem] w-[15rem] bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
+                className="ml-[1rem] h-[2.2rem] w-[15rem] bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
                 onChange={(e) => {
                   setEventTitle(e.target.value);
                 }}
                 disabled
               />
-              <div className="text-darkGray">
-                {isEventPublic ? <FaLock size={25} /> : <FaUnlock size={25} />}
-              </div>
             </div>
           )}
         </div>
 
         {/* 캘린더 제목 */}
         {isComment ? (
+          ""
+        ) : (
           <div className="flex">
             <div className="mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoYellow text-center text-[1rem] font-bold">
               <div className="flex items-center">
@@ -130,30 +148,12 @@ export default function EventInfo(onClose) {
               </div>
             </div>
           </div>
-        ) : isEdit ? (
-          <div className="flex">
-            <div className="mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoYellow text-center text-[1rem] font-bold">
-              <div className="flex -translate-x-[0.3rem] items-center">
-                <FaCaretDown size={25} />
-                <p>Pooding팀</p>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoYellow text-center text-[1rem] font-bold">
-            <div className="flex items-center">
-              <p>Pooding팀</p>
-            </div>
-          </div>
         )}
 
         {/* 시간 */}
         {isComment ? (
-          <div className="flex">
+          <div className="mb-[1rem] flex">
             <FaChevronLeft size={20} onClick={toggleIsComment} />
-            <div className="mb-[1rem] ml-[0.5rem] font-medium leading-[1.3rem]">
-              댓글
-            </div>
           </div>
         ) : isEdit ? (
           <>
@@ -203,16 +203,21 @@ export default function EventInfo(onClose) {
 
         {/* 일정 상세 */}
         {isComment ? (
-          //댓글 추가 기능
-          <div className="h-[10rem] overflow-auto">
+          <div className="h-[16rem] overflow-auto">
             {commentList.map((comment) => {
               return (
-                <div key={comment.id} className="mb-[0.5rem] flex flex-wrap">
-                  <div className="w-[42rem] font-medium">{`${comment.username}`}</div>
-                  <div className="mr-[1rem] rounded-[0.3rem] bg-lightGray px-[2rem] font-medium leading-[1.5rem]">
+                <div
+                  key={comment.id}
+                  className="mb-[0.5rem] flex flex-wrap pt-[0.5rem]"
+                >
+                  <div className="w-[42rem] text-lightGray">{`${comment.username}`}</div>
+                  <div className="mr-[1rem] flex items-center rounded-[0.3rem] font-medium leading-[1.5rem]">
                     {`${comment.content}`}
+                    <AiOutlineLike
+                      className="ml-[1rem] text-eventoPurple"
+                      size={15}
+                    />
                   </div>
-                  <AiOutlineLike size={20} />
                 </div>
               );
             })}
@@ -226,17 +231,28 @@ export default function EventInfo(onClose) {
               <input
                 type="text"
                 value={detailEventMemo}
-                className="border- w-[15rem] border-b-[0.1rem] border-solid border-eventoPurple bg-transparent pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
+                onChange={(e) => {
+                  setDetailEventMemo(e.target.value);
+                }}
+                className="w-[15rem] border-b-[0.1rem] border-solid border-eventoPurple bg-transparent pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
               />
             </div>
           </>
         ) : (
           <>
-            <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
-              일정 상세
-            </div>
-            <div className="border- w-[15rem] bg-transparent pb-[0.5rem] text-[1rem] text-darkGray">
-              {`${detailEventMemo}`}
+            <div className="mb-[2rem]">
+              <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
+                일정 상세
+              </div>
+              <input
+                type="text"
+                value={detailEventMemo}
+                onChange={(e) => {
+                  setDetailEventMemo(e.target.value);
+                }}
+                className="w-[15rem] bg-transparent pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
+                disabled
+              />
             </div>
           </>
         )}
@@ -244,13 +260,15 @@ export default function EventInfo(onClose) {
         {/* 기타 아이콘 */}
         {isComment ? (
           //댓글 입력 창
-          <input
-            type="text"
-            value={input}
-            className="bottom relative mt-[0.7rem] h-[1.8rem] w-[37rem] rounded-[0.3rem] border-[0.1rem] border-darkGray bg-transparent"
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => (e.key === "Enter" ? addComment() : null)}
-          />
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              value={input}
+              className="relative mt-[0.7rem] h-[1.8rem] w-[37rem] rounded-full border-[0.15rem] border-lightGray bg-transparent px-[1rem] text-darkGray focus:outline-none"
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="댓글을 입력하세요"
+            />
+          </form>
         ) : isEdit ? (
           <div className="mb-[2rem]">
             <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
@@ -258,10 +276,19 @@ export default function EventInfo(onClose) {
             </div>
             <div className="flex items-center space-x-[0.5rem] text-[1rem] text-darkGray">
               <p>구독자들에게 공개하기</p>
-              <FaToggleOn
-                size={25}
-                className="cursor-pointer text-eventoPurple"
-              />
+              {isEventPublic ? (
+                <FaToggleOff
+                  size={25}
+                  className="cursor-pointer text-eventoPurple"
+                  onClick={toggleIsPublic}
+                />
+              ) : (
+                <FaToggleOn
+                  size={25}
+                  className="cursor-pointer text-eventoPurple"
+                  onClick={toggleIsPublic}
+                />
+              )}
             </div>
           </div>
         ) : (

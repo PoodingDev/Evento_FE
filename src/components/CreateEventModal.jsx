@@ -1,7 +1,7 @@
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import React, { useEffect, useState } from "react";
-import { FaCaretDown, FaToggleOn, FaToggleOff } from "react-icons/fa";
+import { FaCaretDown, FaToggleOff, FaToggleOn } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 
 export default function CreateEvent({ onClose }) {
