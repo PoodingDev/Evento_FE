@@ -100,7 +100,7 @@ export default function CalendarInfo({ onClose }) {
                 setDetailMemo(e.target.value);
               }}
             />
-            <div className="flex h-[2rem] w-[10rem] items-center rounded-[0.2rem]">
+            <div className="flex h-[2rem] w-[10rem] items-center">
               <button
                 onClick={() => setCalColor("calendarYellow")}
                 className={
@@ -160,15 +160,18 @@ export default function CalendarInfo({ onClose }) {
             </div>
           </div>
         ) : (
-          <input
-            type="text"
-            placeholder={`${detailMemo}`}
-            className="mb-[3rem] h-[1.3rem] w-[20rem] bg-transparent text-[1.1rem] font-bold text-darkGray"
-            onChange={(e) => {
-              setDetailMemo(e.target.value);
-            }}
-            disabled
-          />
+          <div className="flex">
+            <input
+              type="text"
+              placeholder={`${detailMemo}`}
+              className="mb-[3rem] h-[1.3rem] w-[20rem] bg-transparent text-[1.1rem] font-bold text-darkGray"
+              onChange={(e) => {
+                setDetailMemo(e.target.value);
+              }}
+              disabled
+            />
+            <div className={`h-[1.38rem] w-[1.5rem] bg-${calColor}`}></div>
+          </div>
         )}
 
         {/* 공개 여부 */}
