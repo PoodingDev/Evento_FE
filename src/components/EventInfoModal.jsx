@@ -271,10 +271,19 @@ export default function EventInfo({ onClose }) {
             </div>
             <div className="flex items-center space-x-[0.5rem] text-[1rem] text-darkGray">
               <p>구독자들에게 공개하기</p>
-              <FaToggleOn
-                size={25}
-                className="cursor-pointer text-eventoPurple"
-              />
+              {isEventPublic ? (
+                <FaToggleOff
+                  size={25}
+                  className="cursor-pointer text-eventoPurple"
+                  onClick={toggleIsPublic}
+                />
+              ) : (
+                <FaToggleOn
+                  size={25}
+                  className="cursor-pointer text-eventoPurple"
+                  onClick={toggleIsPublic}
+                />
+              )}
             </div>
           </div>
         ) : (
