@@ -94,10 +94,13 @@ export default function EventInfo({ onClose }) {
           {/* 이벤트 제목 */}
           {isEdit ? (
             <div className="flex items-center">
+              <div className="text-darkGray">
+                {isEventPublic ? <FaLock size={20} /> : <FaUnlock size={20} />}
+              </div>
               <input
                 type="text"
                 value={eventTitle}
-                className="h-[2.2rem] w-full bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
+                className="ml-[1rem] h-[2.2rem] w-full bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
                 onChange={(e) => {
                   setEventTitle(e.target.value);
                 }}
@@ -105,18 +108,18 @@ export default function EventInfo({ onClose }) {
             </div>
           ) : (
             <div className="flex items-center">
+              <div className="text-darkGray">
+                {isEventPublic ? <FaLock size={20} /> : <FaUnlock size={20} />}
+              </div>
               <input
                 type="text"
                 value={eventTitle}
-                className="h-[2.2rem] w-[15rem] bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
+                className="ml-[1rem] h-[2.2rem] w-[15rem] bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
                 onChange={(e) => {
                   setEventTitle(e.target.value);
                 }}
                 disabled
               />
-              <div className="text-darkGray">
-                {isEventPublic ? <FaLock size={25} /> : <FaUnlock size={25} />}
-              </div>
             </div>
           )}
         </div>
@@ -203,7 +206,6 @@ export default function EventInfo({ onClose }) {
 
         {/* 일정 상세 */}
         {isComment ? (
-          //댓글 추가 기능
           <div className="h-[10rem] overflow-auto">
             {commentList.map((comment) => {
               return (
@@ -226,17 +228,28 @@ export default function EventInfo({ onClose }) {
               <input
                 type="text"
                 value={detailEventMemo}
-                className="border- w-[15rem] border-b-[0.1rem] border-solid border-eventoPurple bg-transparent pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
+                onChange={(e) => {
+                  setDetailEventMemo(e.target.value);
+                }}
+                className="w-[15rem] border-b-[0.1rem] border-solid border-eventoPurple bg-transparent pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
               />
             </div>
           </>
         ) : (
           <>
-            <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
-              일정 상세
-            </div>
-            <div className="border- w-[15rem] bg-transparent pb-[0.5rem] text-[1rem] text-darkGray">
-              {`${detailEventMemo}`}
+            <div className="mb-[2rem]">
+              <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
+                일정 상세
+              </div>
+              <input
+                type="text"
+                value={detailEventMemo}
+                onChange={(e) => {
+                  setDetailEventMemo(e.target.value);
+                }}
+                className="w-[15rem] bg-transparent pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
+                disabled
+              />
             </div>
           </>
         )}
