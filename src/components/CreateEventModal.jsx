@@ -17,61 +17,76 @@ export default function CreateEvent({ onClose }) {
   const [showCalList, setShowCalList] = useState(false);
   const showList = () => setShowCalList(!showCalList);
 
+  //이벤트 제목(일정 이름)
+  const [eventTitle, setEventTitle] = useState("");
+
+  //캘린더 이름
+  const [title, setTitle] = useState("Pooding팀");
+
   //시간
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setendDate] = useState(new Date());
+
+  //이벤트 상세
+  const [detailEventMemo, setDetailEventMemo] = useState("");
 
   //공개여부
   const [isEventPublic, setIsEventPublic] = useState(true);
   const toggleIsPublic = () => setIsEventPublic(!isEventPublic);
 
   return (
-    <div className="w-[43rem flex h-[29rem] w-[37rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
+    <div className="flex h-[29rem] w-[37rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
       <FaXmark
         size={25}
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex flex-col w-full">
+      <div className="flex w-full flex-col">
         <div className="mb-[1rem] flex items-center justify-between">
           {/* 제목 */}
           <input
             type="text"
             placeholder="일정 이름을 입력하세요"
             className="w-full bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
+            onChange={(e) => {
+              setEventTitle(e.target.value);
+            }}
           />
         </div>
-        <div className="mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoYellow text-center text-[1rem] font-bold">
-          <div className="flex -translate-x-[0.3rem] items-center">
+        <div className="relative z-20 mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoYellow text-center text-[1rem] font-bold">
+          <div className="flex h-[1.55rem] -translate-x-[0.3rem] items-center justify-between">
             <FaCaretDown
               size={25}
               onClick={() => {
                 showList();
               }}
             />
-            <p>Pooding팀</p>
-            {showCalList && (
-              <div className="absolute left-[0rem] top-[1.55rem] flex h-[4rem] flex-col overflow-auto">
-                {data.map((cal) => {
-                  return (
-                    <button
-                      key={cal.id}
-                      className="h-[1.5rem] w-[6.7rem] border-[0.1rem] border-solid border-darkGray bg-lightGray leading-[1.5rem]"
-                    >
-                      {`${cal.calName}`}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
+            <p className="">{`${title}`}</p>
           </div>
+          {showCalList && (
+            <div className="absolute left-[1.3rem] top-[1.55rem] flex h-[6rem] w-[8rem] flex-col overflow-auto">
+              {data.map((cal) => {
+                return (
+                  <button
+                    key={cal.id}
+                    className="h-[1.5rem] w-[6.7rem] border-[0.1rem] border-solid border-darkGray bg-lightGray leading-[1.5rem]"
+                    onClick={() => {
+                      setTitle(`${cal.calName}`);
+                    }}
+                  >
+                    {`${cal.calName}`}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* 시간 */}
         <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
           시간
         </div>
-        <div className="mb-[2rem] flex w-[25rem] -translate-x-[0.3rem] items-center text-[2rem] font-bold text-darkGray">
+        <div className="relative z-10 mb-[2rem] flex w-[25rem] -translate-x-[0.3rem] items-center text-[2rem] font-bold text-darkGray">
           <DatePicker
             selected={startDate}
             onChange={(date) => setStartDate(date)}
@@ -96,6 +111,9 @@ export default function CreateEvent({ onClose }) {
             type="text"
             placeholder="어떤 일정인가요?"
             className="border- w-[15rem] border-b-[0.1rem] border-solid border-eventoPurple bg-transparent pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
+            onChange={(e) => {
+              setDetailEventMemo(e.target.value);
+            }}
           />
         </div>
 
