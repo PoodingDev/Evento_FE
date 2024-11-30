@@ -1,7 +1,7 @@
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import React, { useEffect, useState } from "react";
-import { AiOutlineLike } from "react-icons/ai";
+import { AiOutlineLike, AiTwotoneLike } from "react-icons/ai";
 import { FaXmark } from "react-icons/fa6";
 
 import {
@@ -31,52 +31,58 @@ export default function EventInfo({ onClose }) {
       id: 1,
       username: "호선",
       content: "이날 뭐 먹을까용?",
+      isLike: false,
+      likeNum: 0,
     },
     {
       id: 2,
       username: "채영",
       content: "고기 어때유",
+      isLike: false,
+      likeNum: 0,
     },
     {
       id: 3,
       username: "수진",
       content: "오 너무 좋아용",
+      isLike: false,
+      likeNum: 0,
     },
     {
       id: 4,
       username: "호선",
       content: "고기 ㄱㄱ",
+      isLike: false,
+      likeNum: 0,
     },
   ];
   const [isComment, setIsComment] = useState(false);
   const toggleIsComment = () => setIsComment(!isComment);
   const [input, setInput] = useState("");
   const [commentList, setCommentList] = useState(data);
-  const addComment = () => {
-    if (input !== "") {
-      const newComment = {
-        id: commentList.length + 1,
-        username: "수진",
-        content: input,
-      };
-      setCommentList([...commentList, newComment]);
-      setInput("");
-    }
-  };
+
+  //댓글 공감
+  const [IsCommentLike, setCommentLike] = useState(false);
+  const toggleIsCommentLike = () => setCommentLike(!IsCommentLike);
 
   //이벤트 제목(일정 이름)
   const [eventTitle, setEventTitle] = useState("저녁 약속");
+  const [newEventTitle, setNewEventTitle] = useState(eventTitle);
 
   //시간
   const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setendDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [newStartDate, setNewStartDate] = useState(startDate);
+  const [newEndDate, setNewEndDate] = useState(endDate);
 
   //이벤트 상세
   const [detailEventMemo, setDetailEventMemo] = useState("고기 먹자");
+  const [newEventDetail, setNewEventDetail] = useState(detailEventMemo);
 
   //공개
   const [isEventPublic, setIsEventPublic] = useState(false);
-  const toggleIsPublic = () => setIsEventPublic(!isEventPublic);
+  const [newEventPublic, setNewEventPublic] = useState(isEventPublic);
+  const toggleIsPublic = () => setNewEventPublic(!newEventPublic);
 
   //북마크
   const [isLike, setIsLike] = useState(false);
@@ -95,27 +101,47 @@ export default function EventInfo({ onClose }) {
     }
   };
 
+  //저장
+  const save = () => {
+    setEventTitle(newEventTitle);
+    setStartDate(newStartDate);
+    setEndDate(newEndDate);
+    setDetailEventMemo(newEventDetail);
+    setIsEventPublic(newEventPublic);
+    toggleIsEdit();
+  };
+
+  //취소
+  const cancle = () => {
+    setNewEventTitle(eventTitle);
+    setNewStartDate(startDate);
+    setNewEndDate(endDate);
+    setNewEventDetail(detailEventMemo);
+    setNewEventPublic(isEventPublic);
+    toggleIsEdit();
+  };
+
   return (
-    <div className="w-[43rem flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
+    <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
       <FaXmark
         size={25}
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex flex-col w-full">
+      <div className="flex w-full flex-col">
         <div className="mb-[1.5rem] flex items-center justify-between">
           {/* 이벤트 제목 */}
           {isEdit ? (
             <div className="flex items-center">
               <div className="text-darkGray">
-                {isEventPublic ? <FaLock size={20} /> : <FaUnlock size={20} />}
+                {newEventPublic ? <FaLock size={20} /> : <FaUnlock size={20} />}
               </div>
               <input
                 type="text"
-                value={eventTitle}
-                className="ml-[1rem] h-[2.2rem] w-full bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
+                value={newEventTitle}
+                className="ml-[1rem] h-[2.5rem] w-full rounded-md bg-eventoPurple bg-lightGray/20 text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
                 onChange={(e) => {
-                  setEventTitle(e.target.value);
+                  setNewEventTitle(e.target.value);
                 }}
               />
             </div>
@@ -127,7 +153,7 @@ export default function EventInfo({ onClose }) {
               <input
                 type="text"
                 value={eventTitle}
-                className="ml-[1rem] h-[2.2rem] w-[15rem] bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
+                className="ml-[1rem] h-[2.5rem] w-full bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
                 onChange={(e) => {
                   setEventTitle(e.target.value);
                 }}
@@ -162,17 +188,17 @@ export default function EventInfo({ onClose }) {
             </div>
             <div className="mb-[2rem] flex w-[25rem] -translate-x-[0.3rem] items-center text-[2rem] font-bold text-darkGray">
               <DatePicker
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
+                selected={newStartDate}
+                onChange={(date) => setNewStartDate(date)}
                 dateFormat="yyyy-MM-dd"
-                className="w-[12rem] bg-transparent text-center"
+                className="w-[12rem] rounded-md bg-lightGray/20 text-center"
               />
               <span className="w-[2rem] text-center">-</span>
               <DatePicker
-                selected={endDate}
-                onChange={(date) => setendDate(date)}
+                selected={newEndDate}
+                onChange={(date) => setNewEndDate(date)}
                 dateFormat="yyyy-MM-dd"
-                className="w-[12rem] bg-transparent text-center"
+                className="w-[12rem] rounded-md bg-lightGray/20 text-center"
               />
             </div>
           </>
@@ -213,10 +239,19 @@ export default function EventInfo({ onClose }) {
                   <div className="w-[42rem] text-lightGray">{`${comment.username}`}</div>
                   <div className="mr-[1rem] flex items-center rounded-[0.3rem] font-medium leading-[1.5rem]">
                     {`${comment.content}`}
-                    <AiOutlineLike
-                      className="ml-[1rem] text-eventoPurple"
-                      size={15}
-                    />
+                    {IsCommentLike ? (
+                      <AiTwotoneLike
+                        className="ml-[1rem] text-eventoPurple"
+                        onClick={toggleIsCommentLike}
+                        size={15}
+                      />
+                    ) : (
+                      <AiOutlineLike
+                        className="ml-[1rem] text-eventoPurple"
+                        onClick={toggleIsCommentLike}
+                        size={15}
+                      />
+                    )}
                   </div>
                 </div>
               );
@@ -230,11 +265,11 @@ export default function EventInfo({ onClose }) {
               </div>
               <input
                 type="text"
-                value={detailEventMemo}
+                value={newEventDetail}
                 onChange={(e) => {
-                  setDetailEventMemo(e.target.value);
+                  setNewEventDetail(e.target.value);
                 }}
-                className="w-[15rem] border-b-[0.1rem] border-solid border-eventoPurple bg-transparent pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
+                className="w-[15rem] rounded-md border-b-[0.1rem] border-solid border-eventoPurple bg-lightGray/20 pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
               />
             </div>
           </>
@@ -276,7 +311,7 @@ export default function EventInfo({ onClose }) {
             </div>
             <div className="flex items-center space-x-[0.5rem] text-[1rem] text-darkGray">
               <p>구독자들에게 공개하기</p>
-              {isEventPublic ? (
+              {newEventPublic ? (
                 <FaToggleOff
                   size={25}
                   className="cursor-pointer text-eventoPurple"
@@ -297,11 +332,14 @@ export default function EventInfo({ onClose }) {
       </div>
       {isEdit ? (
         <div className="absolute bottom-[2rem] right-[2rem] flex space-x-[0.5rem]">
-          <button className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple/80 text-center text-[1.1rem] text-eventoPurple/80 hover:bg-eventoPurpleLight/70 active:bg-eventoPurpleLight">
+          <button
+            className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple/80 text-center text-[1.1rem] text-eventoPurple/80 hover:bg-eventoPurpleLight/70 active:bg-eventoPurpleLight"
+            onClick={cancle}
+          >
             <span>취소</span>
           </button>
           <button
-            onClick={toggleIsEdit}
+            onClick={save}
             className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple/90 text-center text-[1.1rem] text-eventoWhite hover:bg-eventoPurple/70 active:bg-eventoPurple/50"
           >
             <span>저장</span>
