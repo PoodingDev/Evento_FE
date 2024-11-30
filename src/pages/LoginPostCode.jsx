@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { requestSocialLogin } from "../api/auth";
 
 export default function LoginPostCode({ setLogedIn, setUserInfo }) {
   const [searchParams] = useSearchParams();
@@ -12,26 +12,19 @@ export default function LoginPostCode({ setLogedIn, setUserInfo }) {
     const platform = searchParams.get("state");
 
     async function authenticate() {
-      try {
-        if (!authCode || !platform) throw new Error("잘못된 인증 요청입니다.");
-
-        // 백엔드와 연결 실패해도 로그인 상태되도록 구현함 - 채영
-        setLogedIn(true);
-        setUserInfo({ platform, authCode }); // 플랫폼 인가 코드
-
-        // 토큰 요청
-        const platformEndpoints = {
-          kakao: import.meta.env.VITE_BACKEND_KAKAO_URL,
-          naver: import.meta.env.VITE_BACKEND_NAVER_URL,
-          google: import.meta.env.VITE_BACKEND_GOOGLE_URL,
-        };
-        await axios.post(platformEndpoints[platform], { code: authCode });
-
-        // 성공
-        navigate("/");
-      } catch (error) {
-        setErrorMessage("로그인 실패");
+      if (!authCode || !platform) {
+        setErrorMessage("잘못된 인증 요청입니다.");
+        return;
       }
+
+      console.log("Authenticating for platform:", platform, "code:", authCode);
+
+      const response = await requestSocialLogin(platform, authCode);
+      console.log("Authentication success:", response);
+      setLogedIn(true);
+      setUserInfo({ ...response.userInfo, token: response.token });
+
+      navigate("/");
     }
 
     authenticate();

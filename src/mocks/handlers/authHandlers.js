@@ -1,30 +1,40 @@
-import { rest } from "msw";
+import { HttpResponse, http } from "msw";
 
 export const authHandlers = [
-  rest.post("/api/auth/social-login", (req, res, ctx) => {
-    const { provider, access_token } = req.body;
+  http.post("/api/auth/social-login", async ({ request }) => {
+    try {
+      // 요청 본문에서 데이터 추출
+      const body = await request.json();
+      const { platform, code } = body;
 
-    if (provider && access_token) {
-      return res(ctx.status(200), ctx.json({ provider }));
-    } else {
-      return res(
-        ctx.status(400),
-        ctx.json({ error: "소셜 로그인 실패. 필수 정보가 없습니다." }),
-      );
-    }
-  }),
+      // 로그 추가: 핸들러 호출 및 데이터 확인
+      console.log("Handler received:", platform, code);
 
-  rest.post("/api/auth/logout", (req, res, ctx) => {
-    const authHeader = req.headers.get("Authorization");
-    if (authHeader) {
-      return res(
-        ctx.status(200),
-        ctx.json({ message: "로그아웃이 완료되었습니다." }),
+      // 필수 데이터가 누락된 경우
+      if (!platform || !code) {
+        return HttpResponse.json(
+          { error: "플랫폼 또는 인증 코드가 누락되었습니다." },
+          { status: 400 },
+        );
+      }
+
+      // 성공적인 응답
+      return HttpResponse.json(
+        {
+          message: "토큰 발급 성공",
+          token: `mock_${platform}_access_token`,
+          userInfo: {
+            name: `${platform} User`,
+            email: `${platform}@example.com`,
+          },
+        },
+        { status: 200 },
       );
-    } else {
-      return res(
-        ctx.status(401),
-        ctx.json({ error: "인증되지 않은 요청입니다." }),
+    } catch (error) {
+      console.error("Error parsing request JSON:", error);
+      return HttpResponse.json(
+        { error: "잘못된 요청 본문 형식입니다." },
+        { status: 400 },
       );
     }
   }),
