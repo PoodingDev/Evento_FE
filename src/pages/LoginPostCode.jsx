@@ -17,14 +17,30 @@ export default function LoginPostCode({ setLogedIn, setUserInfo }) {
         return;
       }
 
-      console.log("Authenticating for platform:", platform, "code:", authCode);
+      try {
+        console.log(
+          "Authenticating for platform:",
+          platform,
+          "code:",
+          authCode,
+        );
 
-      const response = await requestSocialLogin(platform, authCode);
-      console.log("Authentication success:", response);
-      setLogedIn(true);
-      setUserInfo({ ...response.userInfo, token: response.token });
+        const response = await requestSocialLogin(platform, authCode);
+        console.log("Authentication success:", response);
 
-      navigate("/");
+        // 로컬 스토리지에 토큰 저장
+        localStorage.setItem("token", response.token);
+
+        // 사용자 정보 상태 설정
+        setLogedIn(true);
+        setUserInfo({ ...response.userInfo, token: response.token });
+
+        // 홈 화면으로 이동
+        navigate("/");
+      } catch (error) {
+        setErrorMessage("인증에 실패했습니다. 다시 시도해 주세요.");
+        console.error("Authentication error:", error);
+      }
     }
 
     authenticate();
