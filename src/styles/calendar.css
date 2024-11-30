@@ -1,0 +1,61 @@
+/*  레이아웃  */
+.mainCalendar {
+  height: 100vh; /* 100% 뷰포트 높이 */
+  display: flex; /* Flexbox를 사용 */
+  flex-direction: column; /* 자식 요소들을 세로로 배치 */
+  padding-left: 18rem; /* 왼쪽 패딩 18rem */
+  padding-top: 5rem; /* 위쪽 패딩 5rem */
+  margin: 0 1rem;
+}
+
+/*  button */
+
+.fc .fc-button {
+  font-size: 16px;
+  color: #8867df;
+  background-color: #fff;
+  border: none;
+}
+
+.fc .fc-button-primary:hover {
+  font-size: 16px;
+  color: #8867df;
+  background-color: #fff;
+}
+
+.fc .fc-button:disabled {
+  opacity: 1;
+}
+
+.fc .fc-button-primary {
+  color: #fff;
+  background-color: #8867df;
+}
+
+.fc .fc-button-primary:disabled {
+  font-size: 16px;
+  color: #8867df;
+  background-color: #fff;
+}
+
+/* 확인용 */
+:root {
+  --fc-button-active-bg-color: #3498db;
+  --fc-button-active-border-color: #2980b9;
+}
+
+/* 
+자주 사용하는 FullCalendar 이벤트 속성
+
+title: 이벤트의 제목.
+start: 이벤트의 시작 시간 (날짜 또는 날짜-시간 형식).
+end: 이벤트의 종료 시간 (선택적).
+description: 이벤트 설명 (선택적).
+location: 이벤트의 위치 (선택적).
+allDay: 종일 이벤트인지 여부 (true 또는 false).
+backgroundColor: 이벤트의 배경 색상 (선택적).
+borderColor: 이벤트의 경계 색상 (선택적).
+textColor: 텍스트 색상 (선택적).
+group: 여러 이벤트를 그룹화하는데 사용될 수 있음 (선택적). 
+
+*/
