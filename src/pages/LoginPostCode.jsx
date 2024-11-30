@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { requestSocialLogin } from "../api/auth";
+import { useAuth } from "../context/AuthContext";
 
-export default function LoginPostCode({ setLogedIn, setUserInfo }) {
+export default function LoginPostCode() {
   const [searchParams] = useSearchParams();
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+  const { setLoggedIn, setUserInfo } = useAuth(); // useAuth 사용하여 상태 함수 가져오기
 
   useEffect(() => {
     const authCode = searchParams.get("code");
@@ -32,7 +34,7 @@ export default function LoginPostCode({ setLogedIn, setUserInfo }) {
         localStorage.setItem("token", response.token);
 
         // 사용자 정보 상태 설정
-        setLogedIn(true);
+        setLoggedIn(true);
         setUserInfo({ ...response.userInfo, token: response.token });
 
         // 홈 화면으로 이동
@@ -44,7 +46,7 @@ export default function LoginPostCode({ setLogedIn, setUserInfo }) {
     }
 
     authenticate();
-  }, [searchParams, setLogedIn, setUserInfo, navigate]);
+  }, [searchParams, setLoggedIn, setUserInfo, navigate]);
 
   return (
     <div className="flex h-[100vh] items-center justify-center bg-eventoWhite">
