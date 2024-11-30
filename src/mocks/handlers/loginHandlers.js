@@ -30,15 +30,14 @@ export const loginHandlers = [
     }
 
     // 가짜 토큰 및 사용자 정보 생성
-    let fakeToken = `${provider}_token`;
+    let fakeToken = `fake_token`;
     let userInfo = {
       user_id: 1,
-      user_name: `${provider}_user1`,
-      user_email: `user@${provider}.com`,
-      user_nickname: `${provider}User`,
+      user_name: `김벤토`,
+      user_email: `vento@evento.com`,
+      user_nickname: `vento1`,
     };
 
-    // 정상적인 응답 반환
     return res(
       ctx.status(200),
       ctx.json({
