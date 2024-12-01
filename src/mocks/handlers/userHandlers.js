@@ -55,12 +55,19 @@ export const userHandlers = [
       );
     }
 
+    // 특정 데이터가 올바르지 않은 경우 수정
     if (!user_nickname || !user_birth) {
+      console.warn("잘못된 요청 데이터:", {
+        user_nickname,
+        user_birth,
+        is_birth_public,
+      });
+
       return res(
         ctx.status(400),
         ctx.json({
-          error: "닉네임 중복",
-          message: "이미 사용 중인 닉네임입니다. 다른 닉네임을 선택해 주세요.",
+          error: "잘못된 데이터",
+          message: "닉네임과 생일 정보가 필요합니다. 다시 입력해 주세요.",
         }),
       );
     }

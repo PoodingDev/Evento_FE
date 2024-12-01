@@ -3,42 +3,22 @@ import axios from "axios";
 import { FaToggleOff, FaToggleOn } from "react-icons/fa6";
 import { IoCalendarOutline, IoPersonCircleOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function ProfileEdit() {
   const navigate = useNavigate();
-  const [userName, setUserName] = useState("");
-  const [userNickname, setUserNickname] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [userBirth, setUserBirth] = useState("");
+  const { userInfo, setUserInfo } = useAuth(); // 전역 상태 가져오기
+  const [userName, setUserName] = useState(userInfo.user_name);
+  const [userNickname, setUserNickname] = useState(userInfo.user_nickname);
+  const [userEmail, setUserEmail] = useState(userInfo.user_email);
+  const [userBirth, setUserBirth] = useState(userInfo.user_birth || "");
   const [isToggled, setIsToggled] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // 사용자 정보 가져오기 (GET 요청)
-  useEffect(() => {
-    async function fetchUserData() {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get("/api/users/me", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const userData = response.data;
-
-        setUserName(userData.user_name);
-        setUserNickname(userData.user_nickname);
-        setUserEmail(userData.user_email);
-        setUserBirth(userData.user_birth);
-      } catch (error) {
-        console.error("사용자 정보 조회 실패:", error);
-        setErrorMessage(
-          "사용자 정보를 불러오지 못했습니다. 다시 시도해 주세요.",
-        );
-      }
-    }
-
-    fetchUserData();
-  }, []);
+  // 생일 수정 핸들러
+  const handleBirthChange = (e) => {
+    setUserBirth(e.target.value);
+  };
 
   // 닉네임 수정 핸들러
   const handleNickName = (e) => {
@@ -55,7 +35,7 @@ export default function ProfileEdit() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `/api/users/${1}`, // 사용자의 ID를 지정 (임시로 ID 1 사용)
+        `/api/users/${userInfo.user_id}`,
         {
           user_nickname: userNickname,
           user_birth: userBirth,
@@ -71,6 +51,15 @@ export default function ProfileEdit() {
 
       if (response.status === 200) {
         alert("변경된 닉네임과 공개 상태가 저장되었습니다!");
+
+        // 전역 상태 업데이트
+        setUserInfo((prev) => ({
+          ...prev,
+          user_nickname: userNickname,
+          user_birth: userBirth,
+          is_birth_public: isToggled,
+        }));
+
         navigate(-1); // 이전 페이지로 이동
       }
     } catch (error) {
@@ -107,21 +96,29 @@ export default function ProfileEdit() {
               <ul className="flex w-[20rem] flex-col space-y-[1.5rem] p-[2px]">
                 <li className="flex items-center justify-between">
                   <span className="text-darkGray">이름</span>
-                  <span className="text-eventoblack">{userName}</span>
+                  <span className="font-semibold text-darkGray">
+                    {userName}
+                  </span>
                 </li>
                 <li className="flex items-center justify-between">
                   <span className="text-darkGray">이메일</span>
-                  <span className="text-eventoblack">{userEmail}</span>
+                  <span className="font-semibold text-darkGray">
+                    {userEmail}
+                  </span>
                 </li>
                 <li className="flex items-center justify-between">
                   <span className="text-darkGray">내 생일</span>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-eventoblack">{userBirth}</span>
-                    <IoCalendarOutline className="text-eventoPurpleDark" />
+                  <div className="flex translate-x-[0.5rem] items-center">
+                    <input
+                      type="date"
+                      value={userBirth}
+                      onChange={handleBirthChange}
+                      className="rounded-lg bg-eventoWhite p-1 font-semibold text-darkGray"
+                    />
                   </div>
                 </li>
-                <li className="flex items-center justify-between">
-                  <span className="text-darkGray">공개</span>
+                {/* <li className="flex items-center justify-between">
+                  <span className="text-darkGray">생일 공개</span>
                   <span onClick={handleToggle}>
                     {isToggled ? (
                       <FaToggleOn className="text-[1.3rem] text-eventoPurpleBase" />
@@ -129,7 +126,7 @@ export default function ProfileEdit() {
                       <FaToggleOff className="text-[1.3rem] text-eventoPurpleBase" />
                     )}
                   </span>
-                </li>
+                </li> */}
               </ul>
             </div>
             {errorMessage && (
