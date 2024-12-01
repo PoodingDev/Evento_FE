@@ -53,17 +53,28 @@ export const userHandlers = [
       );
     }
 
-    if (!user_nickname || !user_birth) {
+    // 닉네임 중복 검사
+    if (user_nickname === "중복테스트") {
       return res(
         ctx.status(400),
         ctx.json({
-          error: "잘못된 데이터",
-          message: "닉네임과 생일 정보가 필요합니다. 다시 입력해 주세요.",
+          error: "닉네임 중복",
+          message: "이미 사용 중인 닉네임입니다. 다른 닉네임을 선택해 주세요.",
         }),
       );
     }
 
-    // 수정된 정보를 반영
+    // if (!user_nickname || !user_birth) {
+    //   return res(
+    //     ctx.status(400),
+    //     ctx.json({
+    //       error: "잘못된 데이터",
+    //       message: "닉네임과 생일 정보가 필요합니다. 다시 입력해 주세요.",
+    //     }),
+    //   );
+    // }
+
+    // 수정된 정보
     mockUserData = {
       ...mockUserData,
       user_nickname,
