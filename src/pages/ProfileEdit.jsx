@@ -3,17 +3,60 @@ import axios from "axios";
 import { FaToggleOff, FaToggleOn } from "react-icons/fa6";
 import { IoCalendarOutline, IoPersonCircleOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 
 export default function ProfileEdit() {
   const navigate = useNavigate();
-  const { userInfo, setUserInfo } = useAuth(); // 전역 상태 가져오기
-  const [userName, setUserName] = useState(userInfo.user_name);
-  const [userNickname, setUserNickname] = useState(userInfo.user_nickname);
-  const [userEmail, setUserEmail] = useState(userInfo.user_email);
-  const [userBirth, setUserBirth] = useState(userInfo.user_birth || "");
+  const [userId, setUserId] = useState(null); // 사용자 ID
+  const [userName, setUserName] = useState("");
+  const [userNickname, setUserNickname] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userBirth, setUserBirth] = useState("");
   const [isToggled, setIsToggled] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+
+  // 사용자 정보 가져오기
+  useEffect(() => {
+    async function fetchUserInfo() {
+      try {
+        const token = localStorage.getItem("token"); //토큰 가져오기
+        const response = await axios.get("/api/users/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const {
+          user_id,
+          user_name,
+          user_nickname,
+          user_email,
+          user_birth,
+          is_birth_public,
+        } = response.data;
+
+        // 상태 업데이트
+        setUserId(user_id);
+        setUserName(user_name);
+        setUserNickname(user_nickname);
+        setUserEmail(user_email);
+        setIsToggled(is_birth_public);
+        // date input
+        if (user_birth) {
+          const parsedDate = new Date(user_birth);
+          if (!isNaN(parsedDate.getTime())) {
+            setUserBirth(parsedDate.toISOString().substring(0, 10));
+          }
+        }
+      } catch (error) {
+        console.error("사용자 정보를 가져오는 중 오류 발생:", error);
+        setErrorMessage(
+          "사용자 정보를 불러오지 못했습니다. 다시 시도해 주세요.",
+        );
+      }
+    }
+
+    fetchUserInfo();
+  }, []);
 
   // 생일 수정 핸들러
   const handleBirthChange = (e) => {
@@ -30,15 +73,19 @@ export default function ProfileEdit() {
     setIsToggled(!isToggled);
   };
 
-  // 저장 버튼 클릭 핸들러 (POST 요청)
+  // 저장 버튼 클릭 핸들러
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("token");
+      if (!userId) {
+        throw new Error("사용자 ID를 찾을 수 없습니다.");
+      }
+
       const response = await axios.post(
-        `/api/users/${userInfo.user_id}`,
+        `/api/users/${userId}`, // 사용자 정보 수정
         {
           user_nickname: userNickname,
-          user_birth: userBirth,
+          user_birth: userBirth || null,
           is_birth_public: isToggled,
         },
         {
@@ -52,15 +99,7 @@ export default function ProfileEdit() {
       if (response.status === 200) {
         alert("변경된 닉네임과 공개 상태가 저장되었습니다!");
 
-        // 전역 상태 업데이트
-        setUserInfo((prev) => ({
-          ...prev,
-          user_nickname: userNickname,
-          user_birth: userBirth,
-          is_birth_public: isToggled,
-        }));
-
-        navigate(-1); // 이전 페이지로 이동
+        navigate(-1);
       }
     } catch (error) {
       console.error("사용자 정보 수정 실패:", error);
@@ -68,9 +107,8 @@ export default function ProfileEdit() {
     }
   };
 
-  // 취소 버튼 클릭 핸들러
   const handleCancel = () => {
-    navigate(-1); // 이전 페이지로 이동
+    navigate(-1);
   };
 
   return (
@@ -117,16 +155,6 @@ export default function ProfileEdit() {
                     />
                   </div>
                 </li>
-                {/* <li className="flex items-center justify-between">
-                  <span className="text-darkGray">생일 공개</span>
-                  <span onClick={handleToggle}>
-                    {isToggled ? (
-                      <FaToggleOn className="text-[1.3rem] text-eventoPurpleBase" />
-                    ) : (
-                      <FaToggleOff className="text-[1.3rem] text-eventoPurpleBase" />
-                    )}
-                  </span>
-                </li> */}
               </ul>
             </div>
             {errorMessage && (
