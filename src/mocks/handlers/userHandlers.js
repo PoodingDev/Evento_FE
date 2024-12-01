@@ -64,15 +64,15 @@ export const userHandlers = [
       );
     }
 
-    // if (!user_nickname || !user_birth) {
-    //   return res(
-    //     ctx.status(400),
-    //     ctx.json({
-    //       error: "잘못된 데이터",
-    //       message: "닉네임과 생일 정보가 필요합니다. 다시 입력해 주세요.",
-    //     }),
-    //   );
-    // }
+    if (!user_nickname || !user_birth) {
+      return res(
+        ctx.status(400),
+        ctx.json({
+          error: "잘못된 데이터",
+          message: "닉네임과 생일 정보가 필요합니다.",
+        }),
+      );
+    }
 
     // 수정된 정보
     mockUserData = {

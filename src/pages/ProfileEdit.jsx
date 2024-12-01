@@ -18,7 +18,7 @@ export default function ProfileEdit() {
   useEffect(() => {
     async function fetchUserInfo() {
       try {
-        const token = localStorage.getItem("token"); //토큰 가져오기
+        const token = localStorage.getItem("token"); // 토큰 가져오기
         const response = await axios.get("/api/users/me", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -98,12 +98,34 @@ export default function ProfileEdit() {
 
       if (response.status === 200) {
         alert("변경된 닉네임과 공개 상태가 저장되었습니다!");
-
         navigate(-1);
       }
     } catch (error) {
       console.error("사용자 정보 수정 실패:", error);
-      setErrorMessage("사용자 정보를 수정하지 못했습니다. 다시 시도해 주세요.");
+
+      if (error.response) {
+        // 서버 응답이 있는 경우
+        const { status, data } = error.response;
+
+        if (status === 401) {
+          setErrorMessage("로그인이 필요합니다.");
+        } else if (status === 404) {
+          setErrorMessage("현재 로그인된 사용자의 정보를 찾을 수 없습니다.");
+        } else if (status === 400) {
+          if (data.error === "닉네임 중복") {
+            setErrorMessage("이미 사용 중인 닉네임입니다.");
+          } else {
+            setErrorMessage("닉네임과 생일 정보가 필요합니다.");
+          }
+        } else {
+          setErrorMessage("사용자 정보를 수정하지 못했습니다.");
+        }
+      } else {
+        // 서버 응답이 없는 경우
+        setErrorMessage(
+          "네트워크 오류가 발생했습니다. 인터넷 연결을 확인해 주세요.",
+        );
+      }
     }
   };
 
@@ -127,7 +149,7 @@ export default function ProfileEdit() {
                   value={userNickname}
                   onChange={handleNickName}
                   placeholder="닉네임 수정"
-                  className="focus: w-[9rem] rounded-lg bg-gray-200 p-[2px] px-3 py-2 text-center focus:border-[1px] focus:border-eventoPurple/80 focus:bg-eventoPurpleLight/80 focus:outline-none"
+                  className="w-[9rem] rounded-lg bg-gray-200 p-[2px] px-3 py-2 text-center focus:border-[1px] focus:border-none focus:bg-eventoPurpleLight/80 focus:outline-none"
                 />
               </div>
 
@@ -157,23 +179,26 @@ export default function ProfileEdit() {
                 </li>
               </ul>
             </div>
-            {errorMessage && (
-              <div className="mt-4 text-red-600">{errorMessage}</div>
-            )}
-            <div className="mt-[5rem] flex justify-center space-x-[1rem]">
+
+            <div className="inset-3 mt-[3rem] flex justify-center space-x-[0.5rem]">
               <button
                 onClick={handleCancel}
-                className="w-[7rem] gap-3 rounded-[0.625rem] border-2 border-eventoPurpleBase bg-white px-3 py-2 text-eventoPurpleBase"
+                className="w-[5rem] rounded-[0.625rem] border-2 border-eventoPurpleBase bg-white px-3 py-2 text-eventoPurpleBase"
               >
                 취소
               </button>
               <button
                 onClick={handleSave}
-                className="w-[7rem] gap-3 rounded-[0.625rem] bg-eventoPurpleBase px-3 py-2 text-white"
+                className="w-[5rem] rounded-[0.625rem] bg-eventoPurpleBase px-3 py-2 text-white"
               >
                 저장
               </button>
             </div>
+            {errorMessage && (
+              <div className="mt-[2rem] text-center text-[1rem] text-darkRed">
+                {errorMessage}
+              </div>
+            )}
           </div>
         </div>
       </div>
