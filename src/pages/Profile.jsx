@@ -1,20 +1,52 @@
 import DeleteAccountModal from "components/DeleteAccountModal";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { FaBirthdayCake, FaPen } from "react-icons/fa";
 import { IoChevronBack, IoPersonCircleOutline } from "react-icons/io5";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Profile() {
   const navigate = useNavigate();
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [userInfo, setUserInfo] = useState({
+    userName: "",
+    userNickname: "",
+    userEmail: "",
+    userBirth: "",
+  });
+
+  useEffect(() => {
+    async function fetchUserInfo() {
+      try {
+        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
+        const response = await axios.get("/api/users/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // 사용자 정보 -> 상태
+        const { user_name, user_nickname, user_email, user_birth } =
+          response.data;
+        setUserInfo({
+          userName: user_name,
+          userNickname: user_nickname,
+          userEmail: user_email,
+          userBirth: user_birth,
+        });
+      } catch (error) {
+        console.error("사용자 정보를 가져오는 중 오류 발생:", error);
+      }
+    }
+
+    fetchUserInfo();
+  }, []);
+
   const editClick = () =>
     navigate("/profile/edit", {
-      state: { userName, userNickname, userEmail, userBirth },
+      state: { ...userInfo },
     });
-  const userName = `이지금`;
-  const userNickname = `dlwlrma`;
-  const userEmail = `dlalrma@pooding.com`;
-  const userBirth = `2024-11-11`;
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+
   const toggleConfirm = () => {
     setIsConfirmOpen((prev) => !prev);
   };
@@ -32,14 +64,20 @@ export default function Profile() {
           <div className="flex h-[30rem] w-[30rem] flex-col items-center justify-center">
             <IoPersonCircleOutline className="h-[8rem] w-[8rem] text-eventoPurpleBase" />
             <ul className="mt-[0.5rem] space-y-[0.8rem] text-[1.2rem]">
-              <li className="text-center">{userNickname}</li>
-              <li className="text-center">{userName}</li>
+              <li className="text-center text-[1.5rem] font-semibold text-eventoblack">
+                {userInfo.userNickname}
+              </li>
+              <li className="text-center text-[1.4rem] font-semibold text-darkGray">
+                {userInfo.userName}
+              </li>
               <li className="text-center text-[1.1rem] text-darkGray">
-                {userEmail}
+                {userInfo.userEmail}
               </li>
               <li className="flex items-center justify-center gap-1 text-center">
-                <FaBirthdayCake className="text-[1.2rem]" />
-                <span>{userBirth}</span>
+                <FaBirthdayCake className="text-[1.1rem] text-eventoPurpleBase/80" />
+                <span className="text-[1.1rem] text-darkGray">
+                  {userInfo.userBirth}
+                </span>
               </li>
             </ul>
           </div>
@@ -51,7 +89,7 @@ export default function Profile() {
         <div className="absolute bottom-[3rem] right-[4rem]">
           <button
             onClick={toggleConfirm}
-            className="w-[7rem] gap-3 rounded-[0.625rem] border-2 border-darkGray bg-white px-3 py-2 text-darkGray"
+            className="w-[7rem] gap-3 rounded-[0.625rem] border-2 border-lightGray bg-lightGray px-3 py-2 text-eventoWhite hover:border-lightRed hover:bg-lightRed hover:text-darkRed active:border-darkRed active:bg-darkRed active:text-white"
           >
             회원탈퇴
           </button>
