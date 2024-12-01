@@ -64,14 +64,20 @@ export default function Profile() {
           <div className="flex h-[30rem] w-[30rem] flex-col items-center justify-center">
             <IoPersonCircleOutline className="h-[8rem] w-[8rem] text-eventoPurpleBase" />
             <ul className="mt-[0.5rem] space-y-[0.8rem] text-[1.2rem]">
-              <li className="text-center">{userInfo.userNickname}</li>
-              <li className="text-center">{userInfo.userName}</li>
+              <li className="text-center text-[1.5rem] font-semibold text-eventoblack">
+                {userInfo.userNickname}
+              </li>
+              <li className="text-center text-[1.4rem] font-semibold text-darkGray">
+                {userInfo.userName}
+              </li>
               <li className="text-center text-[1.1rem] text-darkGray">
                 {userInfo.userEmail}
               </li>
               <li className="flex items-center justify-center gap-1 text-center">
-                <FaBirthdayCake className="text-[1.2rem]" />
-                <span>{userInfo.userBirth}</span>
+                <FaBirthdayCake className="text-[1.1rem] text-eventoPurpleBase/80" />
+                <span className="text-[1.1rem] text-darkGray">
+                  {userInfo.userBirth}
+                </span>
               </li>
             </ul>
           </div>
@@ -83,7 +89,7 @@ export default function Profile() {
         <div className="absolute bottom-[3rem] right-[4rem]">
           <button
             onClick={toggleConfirm}
-            className="w-[7rem] gap-3 rounded-[0.625rem] border-2 border-darkGray bg-white px-3 py-2 text-darkGray"
+            className="w-[7rem] gap-3 rounded-[0.625rem] border-2 border-lightGray bg-lightGray px-3 py-2 text-eventoWhite hover:border-lightRed hover:bg-lightRed hover:text-darkRed active:border-darkRed active:bg-darkRed active:text-white"
           >
             회원탈퇴
           </button>
