@@ -89,7 +89,7 @@ export default function Profile() {
         <div className="absolute bottom-[3rem] right-[4rem]">
           <button
             onClick={toggleConfirm}
-            className="w-[7rem] gap-3 rounded-[0.625rem] border-2 border-lightGray bg-lightGray px-3 py-2 text-eventoWhite hover:border-lightRed hover:bg-lightRed hover:text-darkRed active:border-darkRed active:bg-darkRed active:text-white"
+            className="w-[7rem] gap-3 rounded-[0.625rem] border-[0.15rem] border-lightGray bg-eventoWhite px-3 py-2 text-darkGray/80 hover:border-lightRed hover:bg-lightRed hover:text-darkRed active:border-darkRed active:bg-darkRed active:text-white"
           >
             회원탈퇴
           </button>
