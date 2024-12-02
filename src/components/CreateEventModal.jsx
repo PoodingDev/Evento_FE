@@ -4,8 +4,9 @@ import React, { useEffect, useState } from "react";
 import { FaCaretDown, FaToggleOff, FaToggleOn } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import axios from "axios";
+import { fromJSON } from "postcss";
 
-export default function CreateEvent({ onClose }) {
+export default function CreateEvent({ onClose, setEvents }) {
   //캘린더 더미데이터
   const data = [
     { id: 1, calName: "PoodingDev" },
@@ -65,6 +66,26 @@ export default function CreateEvent({ onClose }) {
       );
 
       if (response.status === 201) {
+        const start_date = new Date(response.data.start_time);
+        const end_date = new Date(response.data.end_time);
+
+        const formattedStartDate = start_date.toLocaleDateString("en-CA");
+        const formattedEndDate = end_date.toLocaleDateString("en-CA");
+
+        const newEvent = {
+          allDay: true,
+          title: response.data.event_title,
+          start: start_date,
+          end: end_date,
+          extendedProps: {
+            memo: response.data.event_description
+          },
+          color: "#ff5733",
+          editable: true, // 이벤트 편집 가능
+        };
+        setEvents((prevEvents) => [...prevEvents, newEvent]); // 새로운 이벤트 추가
+
+        console.log('Response Data:', JSON.stringify(response.data, null, 2));
         alert("이벤트가 성공적으로 생성되었습니다!");
         onClose(); // 모달 닫기
       }
@@ -72,7 +93,7 @@ export default function CreateEvent({ onClose }) {
       console.error("이벤트 생성 실패:", error);
       setErrorMessage(
         error.response?.data?.message ||
-          "이벤트를 생성하지 못했습니다. 다시 시도해 주세요.",
+        "이벤트를 생성하지 못했습니다. 다시 시도해 주세요.",
       );
     }
   };
