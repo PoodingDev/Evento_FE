@@ -115,17 +115,17 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
         onClick={onClose}
       />
       <div className="flex w-full flex-col">
-        <div className="mb-[2.8rem] flex items-center justify-between">
+        <div className="mb-[2.8rem] flex justify-between">
           {isEdit ? (
             <input
               type="text"
               value={newTitle}
-              className="w-full rounded-md bg-lightGray/20 text-[3em] font-bold text-darkGray focus:outline-none"
+              className="h-[3.8rem] w-[35rem] rounded-md bg-lightGray/20 text-[3em] font-bold text-darkGray focus:outline-none"
               onChange={(e) => setNewTitle(e.target.value)}
             />
           ) : (
             <div
-              className="w-full text-[3em] font-bold"
+              className="flex h-[3.8rem] w-[35rem] items-center rounded-md text-[3em] font-bold focus:outline-none"
               style={{ color: calColor }}
             >
               {title}
@@ -153,10 +153,10 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
             <input
               type="text"
               value={newDetail}
-              className="mb-[3rem] mr-[2rem] h-[1.3rem] w-[18rem] rounded-md bg-lightGray/20 text-[1.1rem] font-semibold text-darkGray"
+              className="mb-[3rem] mr-[2rem] flex h-[1.5rem] w-[18rem] items-center rounded-md bg-lightGray/20 text-[1.1rem] font-semibold text-darkGray"
               onChange={(e) => setNewDetail(e.target.value)}
             />
-            <div className="flex h-[2rem] w-[10rem] items-center">
+            <div className="ml-[0.2rem] flex h-[2rem] w-[10rem]">
               {[
                 { color: "#FF5C5C", label: "calendarRed" },
                 { color: "#FFC960", label: "calendarYellow" },
@@ -169,7 +169,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
                 <button
                   key={label}
                   onClick={() => setNewColor(color)}
-                  className={`relative mb-[0.25rem] mr-[0.3rem] flex h-[1rem] w-[1rem] items-center justify-center`}
+                  className={`relative mr-[0.3rem] flex h-[1rem] w-[1rem] items-center justify-center`}
                   style={{ backgroundColor: color }}
                 >
                   {newColor === color && (
@@ -181,11 +181,11 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
           </div>
         ) : (
           <div className="flex">
-            <div className="mb-[3rem] h-[1.3rem] w-[20rem] text-[1.1rem] font-semibold text-darkGray">
+            <div className="mb-[3rem] flex h-[1.5rem] w-[20rem] items-center text-[1.1rem] font-semibold text-darkGray">
               {detailMemo}
             </div>
             <div
-              className="h-[1.38rem] w-[1.5rem]"
+              className="ml-[0.2rem] h-[1rem] w-[1rem] items-center"
               style={{ backgroundColor: calColor }}
             />
           </div>
@@ -202,7 +202,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
           <>
             <div className="flex space-x-[6.5rem]">
               <div className="flex items-center space-x-[1rem] text-center">
-                <div className="text-[1.1rem] font-semibold text-darkGray">
+                <div className="flex h-[1rem] items-center text-[1.1rem] font-semibold text-darkGray">
                   비공개 캘린더로 설정하기
                 </div>
                 {newPublic ? (
@@ -227,7 +227,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
         ) : (
           <>
             <div className="flex">
-              <div className="w-[20rem] text-[1.1rem] font-semibold text-darkGray">
+              <div className="flex h-[1rem] w-[20rem] items-center text-[1.1rem] font-semibold text-darkGray">
                 {isPublic ? "공개" : "비공개"}
               </div>
               <div className="pr-[0.5rem] text-[1.1rem] font-semibold text-darkGray">
