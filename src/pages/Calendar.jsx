@@ -1,67 +1,66 @@
-import CreateEvent from "components/CreateEventModal";
+import React, { useState } from "react";
 import FullCalendar from "@fullcalendar/react";
-import React, { useEffect, useState } from "react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import timeGridPlugin from "@fullcalendar/timegrid";
+import dayGridPlugin from "@fullcalendar/daygrid"; // 월 뷰 플러그인
+import interactionPlugin from "@fullcalendar/interaction"; // 상호작용 플러그인 (이벤트 클릭 등)
+import CreateEvent from "components/CreateEventModal";
+import EventInfoModal from "/src/components/EventInfoModal";
+import "../styles/calendar.css";
 
 export default function Calendar() {
   const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
+  const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜 상태
+  const [events, setEvents] = useState([]); // 이벤트 상태s
+
   const toggleCreateEvent = () => {
     setIsCreateEventOpen((prev) => !prev);
   };
 
+  // 날짜 클릭 핸들러
+  const handleDateClick = (info) => {
+    setSelectedDate(info.dateStr); // 클릭된 날짜 저장
+    setIsModalOpen(true); // 모달 열기
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false); // 모달 닫기
+    setSelectedDate(null); // 선택된 날짜 초기화
+  };
+
   return (
     <>
-      <div className="flex h-[100vh] bg-eventoWhite text-center text-2xl">
-        {/* 부모 div의 높이를 calc()로 설정하여 100vh에서 다른 요소들의 높이를 제외 */}
-        <div className="ml-[21rem] mt-[4rem] h-[calc(100vh-9rem)] w-[calc(100vw-24rem)] items-center justify-center rounded-sm bg-eventoWhite">
-          <MainCalendar className="h-[calc(100vh-9rem)]" />
-        </div>
-        <div
-          onClick={toggleCreateEvent}
-          className="absolute bottom-[6rem] right-[6rem] z-10 flex h-[6rem] w-[6rem] cursor-pointer items-center justify-center rounded-full bg-eventoPurple/70 text-center text-[4rem] text-eventoWhite"
-        >
-          +
-        </div>
+      <div className="mainCalendar">
+        <FullCalendar
+          plugins={[dayGridPlugin, interactionPlugin]} // 플러그인 추가
+          initialView="dayGridMonth" // 기본 뷰 설정 (월 뷰)
+          headerToolbar={{
+            left: "", // 왼쪽 버튼 제거
+            center: "title", // 가운데에 제목 배치
+            right: "prev,today,next", // 오른쪽에 이전/다음 버튼 배치
+          }}
+          events={events} // 상태에서 가져온 이벤트
+          aspectRatio={2.1}
+          dateClick={handleDateClick} // 날짜 클릭 핸들러 등록
+        />
       </div>
+      {isModalOpen && (
+        <EventInfoModal
+          date={selectedDate}
+          onClose={closeModal}
+        />
+      )}
+      <div
+        onClick={toggleCreateEvent}
+        className="absolute bottom-[6rem] right-[6rem] flex h-[8rem] w-[8rem] cursor-pointer items-center justify-center rounded-full bg-eventoPurple/70 text-center text-[4rem] text-eventoWhite z-[100]"
+      >
+        +
+      </div>
+
       {isCreateEventOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-          <CreateEvent onClose={toggleCreateEvent} />
+          <CreateEvent onClose={toggleCreateEvent} setEvents={setEvents} />
         </div>
       )}
-    </>
-  );
-}
-
-// MainCalendar 컴포넌트
-function MainCalendar() {
-  const [events, setEvents] = useState([]);
-
-  // 데이터 불러오기 (예시: API 호출)
-  useEffect(() => {
-    setTimeout(() => {
-      setEvents([
-        { title: "Event 1", start: "2024-12-01" },
-        { title: "Event 2", start: "2024-12-07", end: "2024-12-10" },
-      ]);
-    }, 1000);
-  }, []);
-
-  return (
-    <>
-      <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]} // 플러그인 추가
-        initialView="dayGridMonth" // 기본 뷰 설정 (월 뷰)
-        headerToolbar={{
-          center: "title", // 중앙: 제목
-          // left: 'prev,next today', // 왼쪽: 이전, 다음, 오늘
-          // right: 'dayGridMonth,timeGridWeek,timeGridDay', // 오른쪽: 월, 주, 일 뷰 버튼
-        }}
-        events={events} // 상태에서 가져온 이벤트
-        aspectRatio={2.1}
-        // dayMaxRowCount={5} // 최대 5줄까지만 표시
-      />
     </>
   );
 }
