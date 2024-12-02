@@ -1,7 +1,8 @@
 import CalendarInfo from "./CalendarInfoModal";
 import CreateCalendar from "./CreateCalendarModal";
 import InviteCodeModal from "./InviteCodeModal";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -12,37 +13,56 @@ import {
   FaSignInAlt,
 } from "react-icons/fa";
 
-// 더미 데이터
-const myCalendars = [
-  { id: "1", label: "PoodingDev", color: "text-[#4685FF]" },
-  { id: "2", label: "캘린이의 삶", color: "text-[#F36F6F]" },
-  { id: "3", label: "학교 시험", color: "text-[#03C75A]" },
-  { id: "4", label: "운동Day", color: "text-[#FFC960]" },
-];
-
-const subscribedCalendars = [
-  { id: "5", label: "therock", description: "Dwayne Johnson" },
-  { id: "6", label: "bts.bighitofficial", description: "BTS" },
-  { id: "7", label: "dlwlrma", description: "IU" },
-  { id: "8", label: "xxxibgdrgn", description: "G-DRAGON" },
-  { id: "9", label: "songkang_b", description: "송강" },
-];
-
-const dDayItems = [
-  { day: "D-1", description: "evento 배포" },
-  { day: "D-6", description: "푸딩즈 회식!" },
-  { day: "D-69", description: "졸업 언제하냐" },
-];
-
 export default function SideBarLeft() {
   const [isCalendarInfoOpen, setCalendarInfoOpen] = useState(false);
-  const toggleCalendarInfo = () => {
-    setCalendarInfoOpen((prev) => !prev);
-  };
+  const [selectedCalendar, setSelectedCalendar] = useState(null);
+  const [myCalendars, setMyCalendars] = useState([]);
+  const [myUserId, setMyUserId] = useState(null); // 사용자 ID를 저장할 상태 추가
   const navigate = useNavigate();
   const [checked, setChecked] = useState({});
   const [isInviteOpen, setIsInviteOpen] = useState(false);
   const [isCreateCalendarOpen, setIsCreateCalendarOpen] = useState(false);
+
+  // 내 캘린더 데이터 가져오기
+  useEffect(() => {
+    async function fetchCalendars() {
+      try {
+        const token = localStorage.getItem("token"); // 토큰 가져오기
+        const response = await axios.get("/api/calendars", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.status === 200) {
+          setMyCalendars(response.data);
+        }
+      } catch (error) {
+        console.error("캘린더 정보를 가져오는 중 오류 발생:", error);
+      }
+    }
+
+    async function fetchUser() {
+      try {
+        const token = localStorage.getItem("token"); // 토큰 가져오기
+        const response = await axios.get("/api/users/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.status === 200) {
+          setMyUserId(response.data.user_id); // 사용자 ID 설정
+        }
+      } catch (error) {
+        console.error("사용자 정보를 가져오는 중 오류 발생:", error);
+      }
+    }
+
+    // 사용자 정보와 캘린더 정보 모두 가져오기
+    fetchCalendars();
+    fetchUser();
+  }, [isCalendarInfoOpen, isCreateCalendarOpen]);
 
   const handleToggle = (id) => {
     setChecked((prev) => ({
@@ -58,9 +78,28 @@ export default function SideBarLeft() {
     setIsCreateCalendarOpen((prev) => !prev);
   };
 
+  // 캘린더 정보 보기 및 수정 저장 핸들러
+  const handleViewCalendar = (calendar) => {
+    setSelectedCalendar(calendar);
+    setCalendarInfoOpen(true);
+  };
+
+  const handleSaveCalendar = (updatedCalendar) => {
+    // 수정된 내용을 사이드바에도 즉시 반영
+    setMyCalendars((prevCalendars) =>
+      prevCalendars.map((calendar) =>
+        calendar.calendar_id === updatedCalendar.calendar_id
+          ? updatedCalendar
+          : calendar,
+      ),
+    );
+    // 모달을 닫음
+    setCalendarInfoOpen(false);
+  };
+
   return (
     <div>
-      <div className="evento-sidebarleft bg-eventoGray absolute mt-[5rem] h-[calc(100vh-5rem)] w-[18rem] rounded-tr-[2.5rem] pl-[2.25rem] pr-[1.75rem] pt-[1.6rem]">
+      <div className="evento-sidebarleft absolute mt-[5rem] h-[calc(100vh-5rem)] w-[18rem] rounded-tr-[2.5rem] bg-eventoGray pl-[2.25rem] pr-[1.75rem] pt-[1.6rem]">
         <div>
           {/* 내 캘린더 */}
           <div className="evento-my-calendar">
@@ -79,32 +118,35 @@ export default function SideBarLeft() {
               </div>
             </div>
             {/* 캘린더 리스트 */}
-            <ul className="m-[1rem] mt-[1.5rem] space-y-[0.5rem] font-semibold">
+            <ul className="m-[1rem] mt-[1.5rem] space-y-[0.5rem]">
               {myCalendars.map((calendar) => (
                 <li
-                  key={calendar.id}
-                  className="flex items-center space-x-[0.75rem]"
+                  key={calendar.calendar_id}
+                  className="flex items-center space-x-[0.5rem]"
                 >
                   <div
                     className="cursor-pointer"
-                    onClick={() => handleToggle(calendar.id)}
+                    onClick={() => handleToggle(calendar.calendar_id)}
                   >
-                    {checked[calendar.id] ? (
+                    {checked[calendar.calendar_id] ? (
                       <FaCheckSquare
-                        className={`text-[0.93rem] ${calendar.color}`}
+                        className="text-[0.93rem]"
+                        style={{ color: calendar.calendar_color }}
                       />
                     ) : (
                       <FaRegSquare
-                        className={`text-[0.93rem] ${calendar.color}`}
+                        className="text-[0.93rem]"
+                        style={{ color: calendar.calendar_color }}
                       />
                     )}
                   </div>
                   <label
-                    htmlFor={calendar.id}
-                    className={`${calendar.color} text-[0.9rem]`}
-                    onClick={toggleCalendarInfo}
+                    htmlFor={calendar.calendar_id}
+                    className="cursor-pointer text-[0.9rem] font-medium"
+                    style={{ color: calendar.calendar_color }}
+                    onClick={() => handleViewCalendar(calendar)}
                   >
-                    {calendar.label}
+                    {calendar.calendar_name}
                   </label>
                 </li>
               ))}
@@ -118,16 +160,16 @@ export default function SideBarLeft() {
             <div className="mr-[0.3rem] flex items-center justify-between">
               <span className="text-[0.9rem] text-darkGray">구독한 캘린더</span>
               <FaPen
-                className="cursor-pointer text-[0.9rem] text-darkGray"
+                className="cursor-pointer text-[0.75rem] text-darkGray"
                 onClick={() => navigate("/subscription")}
-              ></FaPen>
+              />
             </div>
             {/* 캘린더 리스트 */}
             <ul className="m-[1rem] mt-[1.5rem] space-y-[0.5rem]">
               {subscribedCalendars.map((calendar) => (
                 <li
                   key={calendar.id}
-                  className="flex items-center space-x-[0.75rem]"
+                  className="flex items-center space-x-[0.5rem]"
                 >
                   <div
                     className="cursor-pointer"
@@ -141,7 +183,7 @@ export default function SideBarLeft() {
                   </div>
                   <label
                     htmlFor={calendar.id}
-                    className="flex items-center text-[0.9rem] text-eventoPurpleBase"
+                    className="flex items-center text-[0.9rem] font-medium text-eventoPurpleBase"
                   >
                     {calendar.label}
                     <span className="ml-2 text-[0.7rem] font-light text-darkGray">
@@ -161,7 +203,7 @@ export default function SideBarLeft() {
                 <span className="w-[3rem] text-left font-bold text-eventoPurpleBase">
                   {item.day}
                 </span>
-                <span className="flex-1 pl-2 text-left text-[0.9rem] text-[#646464]">
+                <span className="flex-1 pl-2 text-left text-[0.93rem] text-[#646464]">
                   {item.description}
                 </span>
               </li>
@@ -180,11 +222,31 @@ export default function SideBarLeft() {
           <CreateCalendar onClose={toggleCreateCalendar} />
         </div>
       )}
-      {isCalendarInfoOpen && (
+      {isCalendarInfoOpen && selectedCalendar && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-          <CalendarInfo onClose={toggleCalendarInfo} />
+          <CalendarInfo
+            calendar={selectedCalendar}
+            onClose={() => setCalendarInfoOpen(false)}
+            onSave={handleSaveCalendar}
+            userId={myUserId} // 현재 로그인한 사용자 ID 전달
+          />
         </div>
       )}
     </div>
   );
 }
+
+// 기존 더미 데이터 사용 - 구독한 캘린더
+const subscribedCalendars = [
+  { id: "5", label: "therock", description: "Dwayne Johnson" },
+  { id: "6", label: "bts.bighitofficial", description: "BTS" },
+  { id: "7", label: "dlwlrma", description: "IU" },
+  { id: "8", label: "xxxibgdrgn", description: "G-DRAGON" },
+  { id: "9", label: "songkang_b", description: "송강" },
+];
+
+const dDayItems = [
+  { day: "D-1", description: "evento 배포" },
+  { day: "D-6", description: "푸딩즈 회식!" },
+  { day: "D-69", description: "졸업 언제하냐" },
+];

@@ -1,27 +1,68 @@
 import React, { useRef, useState } from "react";
-import { FaToggleOn, FaToggleOff } from "react-icons/fa";
+import axios from "axios";
+import { FaCheck, FaToggleOff, FaToggleOn } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 
 export default function CreateCalendar({ onClose }) {
   const inputRefs = useRef([]);
 
-  //캘린더 제목
+  // 캘린더 제목
   const [title, setTitle] = useState("");
 
-  //캘린더 상세
+  // 캘린더 상세
   const [detailMemo, setDetailMemo] = useState("");
 
-  //공개 여부
+  // 공개 여부
   const [isPublic, setIsPublic] = useState(false);
   const toggleIsPublic = () => {
     setIsPublic(!isPublic);
   };
 
-  //색상
-  const [calColor, setCalColor] = useState("calendarRed");
+  // 색상
+  const [calColor, setCalColor] = useState("#E05C5C"); // 초기 값
+
+  // 에러 메시지 상태 추가
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // 캘린더 생성 요청 핸들러
+  const handleCreateCalendar = async () => {
+    try {
+      const token = localStorage.getItem("token"); // 토큰 가져오기
+      if (!title) {
+        throw new Error("캘린더 제목을 입력해주세요.");
+      }
+
+      const response = await axios.post(
+        "/api/calendars",
+        {
+          calendar_name: title,
+          calendar_description: detailMemo,
+          is_public: isPublic,
+          calendar_color: calColor,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      if (response.status === 201) {
+        alert("캘린더가 성공적으로 생성되었습니다!");
+        onClose(); // 모달 닫기
+      }
+    } catch (error) {
+      console.error("캘린더 생성 실패:", error);
+      setErrorMessage(
+        error.response?.data?.message ||
+          "캘린더를 생성하지 못했습니다. 다시 시도해 주세요.",
+      );
+    }
+  };
 
   return (
-    <div className="w-[43rem flex h-[29rem] w-[37rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
+    <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
       <FaXmark
         size={25}
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
@@ -47,7 +88,7 @@ export default function CreateCalendar({ onClose }) {
           <input
             type="text"
             placeholder="어떤 캘린더인가요?"
-            className="border- w-[15rem] border-b-[0.1rem] border-solid border-eventoPurple bg-transparent pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
+            className="w-[15rem] border-b-[0.1rem] border-solid border-eventoPurple bg-transparent pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
             onChange={(e) => {
               setDetailMemo(e.target.value);
             }}
@@ -79,72 +120,44 @@ export default function CreateCalendar({ onClose }) {
 
         {/* 색상 선택 */}
         <div>
-          <div className="mb-[0.5rem] text-[1rem] font-bold text-eventoPurple">
+          <div className="mb-[0.3rem] text-[1rem] font-bold text-eventoPurple">
             색상
           </div>
-          <div className="flex h-[3rem] w-[11rem] flex-wrap items-center rounded-[0.2rem] p-[0.5rem]">
-            <button
-              onClick={() => setCalColor("calendarYellow")}
-              className={
-                calColor === "calendarYellow"
-                  ? "mb-[0.25rem] mr-[0.3rem] h-[1rem] w-[1rem] border-[0.1rem] border-darkGray bg-calendarYellow"
-                  : "mb-[0.25rem] mr-[0.3rem] h-[1rem] w-[1rem] bg-calendarYellow"
-              }
-            ></button>
-            <button
-              onClick={() => setCalColor("calendarRed")}
-              className={
-                calColor === "calendarRed"
-                  ? "mb-[0.25rem] mr-[0.3rem] h-[1rem] w-[1rem] border-[0.1rem] border-darkGray bg-calendarRed"
-                  : "mb-[0.25rem] mr-[0.3rem] h-[1rem] w-[1rem] bg-calendarRed"
-              }
-            ></button>
-            <button
-              onClick={() => setCalColor("calendarGreen")}
-              className={
-                calColor === "calendarGreen"
-                  ? "mb-[0.25rem] mr-[0.3rem] h-[1rem] w-[1rem] border-[0.1rem] border-darkGray bg-calendarGreen"
-                  : "mb-[0.25rem] mr-[0.3rem] h-[1rem] w-[1rem] bg-calendarGreen"
-              }
-            ></button>
-            <button
-              onClick={() => setCalColor("calendarLightBlue")}
-              className={
-                calColor === "calendarLightBlue"
-                  ? "mb-[0.25rem] mr-[0.3rem] h-[1rem] w-[1rem] border-[0.1rem] border-darkGray bg-calendarLightBlue"
-                  : "mb-[0.25rem] mr-[0.3rem] h-[1rem] w-[1rem] bg-calendarLightBlue"
-              }
-            ></button>
-            <button
-              onClick={() => setCalColor("calendarDarkPurple")}
-              className={
-                calColor === "calendarDarkPurple"
-                  ? "mb-[0.25rem] mr-[0.3rem] h-[1rem] w-[1rem] border-[0.1rem] border-darkGray bg-calendarDarkPurple"
-                  : "mb-[0.25rem] mr-[0.3rem] h-[1rem] w-[1rem] bg-calendarDarkPurple"
-              }
-            ></button>
-            <button
-              onClick={() => setCalColor("calendarBlue")}
-              className={
-                calColor === "calendarBlue"
-                  ? "mb-[0.25rem] mr-[0.3rem] h-[1rem] w-[1rem] border-[0.1rem] border-darkGray bg-calendarBlue"
-                  : "mb-[0.25rem] mr-[0.3rem] h-[1rem] w-[1rem] bg-calendarBlue"
-              }
-            ></button>
-            <button
-              onClick={() => setCalColor("calendarPurple")}
-              className={
-                calColor === "calendarPurple"
-                  ? "mb-[0.25rem] mr-[0.3rem] h-[1rem] w-[1rem] border-[0.1rem] border-darkGray bg-calendarPurple"
-                  : "mb-[0.25rem] mr-[0.3rem] h-[1rem] w-[1rem] bg-calendarPurple"
-              }
-            ></button>
+          <div className="flex h-[3rem] w-[11rem] flex-wrap items-center rounded-[0.2rem] p-[0.2rem]">
+            {[
+              { color: "#E05C5C", label: "calendarRed" },
+              { color: "#FFC960", label: "calendarYellow" },
+              { color: "#7DBE7E", label: "calendarGreen" },
+              { color: "#9CC9FF", label: "calendarLightBlue" },
+              { color: "#6D87D5", label: "calendarBlue" },
+              { color: "#8867DF", label: "calendarDarkPurple" },
+              { color: "#B469D3", label: "calendarPurple" },
+            ].map(({ color, label }) => (
+              <button
+                key={label}
+                onClick={() => setCalColor(color)}
+                className={`relative mb-[0.25rem] mr-[0.3rem] flex h-[1rem] w-[1rem] items-center justify-center`}
+                style={{ backgroundColor: color }}
+              >
+                {calColor === color && (
+                  <FaCheck className="absolute text-[0.6rem] text-eventoWhite" />
+                )}
+              </button>
+            ))}
           </div>
         </div>
 
+        {/* 에러 메시지 출력 */}
+        {errorMessage && (
+          <div className="mt-4 text-darkRed">{errorMessage}</div>
+        )}
+
         {/* 하단 버튼 */}
         <div className="flex justify-end">
-          <button className="flex h-[3rem] w-[5.5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple/80 text-center text-[1.2rem] text-eventoWhite hover:bg-eventoPurple/80 active:bg-eventoPurple/60">
+          <button
+            className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple text-center text-[1.1rem] text-eventoWhite hover:bg-eventoPurple/80 active:bg-eventoPurple/60"
+            onClick={handleCreateCalendar}
+          >
             <span>생성</span>
           </button>
         </div>

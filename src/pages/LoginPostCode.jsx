@@ -38,7 +38,7 @@ export default function LoginPostCode() {
         setUserInfo({ ...response.userInfo, token: response.token });
 
         // 홈 화면으로 이동
-        navigate("/");
+        navigate("/calendar");
       } catch (error) {
         setErrorMessage("인증에 실패했습니다. 다시 시도해 주세요.");
         console.error("Authentication error:", error);
