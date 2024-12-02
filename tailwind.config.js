@@ -19,7 +19,7 @@ module.exports = {
         eventoPurpleDark: "#4F378B",
 
         //캘린더 색상
-        calendarRed: "#FF5C5C",
+        calendarRed: "#E05C5C",
         calendarYellow: "##FFC960",
         calendarGreen: "#7DBE7E",
         calendarLightBlue: "#9CC9FF",

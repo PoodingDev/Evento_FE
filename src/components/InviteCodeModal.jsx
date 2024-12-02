@@ -1,8 +1,10 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
+import axios from "axios";
 import { FaXmark } from "react-icons/fa6";
 
-export default function InviteCodeModal({ onClose }) {
+export default function InviteCodeModal({ onClose, calendarId }) {
   const inputRefs = useRef([]);
+  const [inviteCode, setInviteCode] = useState("");
 
   const handleInputChange = (e, index) => {
     let value = e.target.value;
@@ -12,6 +14,10 @@ export default function InviteCodeModal({ onClose }) {
       // 입력값을 대문자로 변환
       value = value.toUpperCase();
       e.target.value = value;
+
+      // 초대 코드를 조합하여 업데이트
+      const newCode = inputRefs.current.map((input) => input.value).join("");
+      setInviteCode(newCode);
 
       // 입력 후 다음 칸으로 포커스 이동
       if (index < inputRefs.current.length - 1) {
@@ -32,12 +38,29 @@ export default function InviteCodeModal({ onClose }) {
     }
   };
 
-  const handleSubmit = () => {
-    // 초대 코드를 조합하여 출력
-    const inviteCode = inputRefs.current.map((input) => input.value).join("");
+  const handleInviteAdmin = async () => {
     if (inviteCode.length === 6) {
-      console.log("Invite Code:", inviteCode);
-      // 초대 코드 처리 로직 추가
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.post(
+          `/api/calendars/${calendarId}/admins`, // calendarId는 초대받은 캘린더의 ID로 설정 필요
+          { invitation_code: inviteCode },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        if (response.status === 201) {
+          alert("관리자로 성공적으로 초대되었습니다.");
+          onClose();
+        }
+      } catch (error) {
+        console.error("관리자 초대 실패:", error);
+        alert("유효하지 않은 초대 코드입니다. 다시 시도해 주세요.");
+      }
     } else {
       alert("모든 칸을 채워주세요!");
     }
@@ -72,12 +95,15 @@ export default function InviteCodeModal({ onClose }) {
         </div>
         <div className="mt-[4.2rem] flex translate-x-[1rem] justify-end space-x-[0.5rem]">
           <button
-           className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple/80 text-center text-[1.1rem] text-eventoPurple/80 hover:bg-eventoPurpleLight/70 active:bg-eventoPurpleLight" 
+            className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple/80 text-center text-[1.1rem] text-eventoPurple/80 hover:bg-eventoPurpleLight/70 active:bg-eventoPurpleLight"
             onClick={onClose}
           >
             <span>취소</span>
           </button>
-          <button className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple/90 text-center text-[1.1rem] text-eventoWhite hover:bg-eventoPurple/70 active:bg-eventoPurple/50">
+          <button
+            onClick={handleInviteAdmin}
+            className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple/90 text-center text-[1.1rem] text-eventoWhite hover:bg-eventoPurple/70 active:bg-eventoPurple/50"
+          >
             <span>참가</span>
           </button>
         </div>

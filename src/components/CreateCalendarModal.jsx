@@ -19,7 +19,7 @@ export default function CreateCalendar({ onClose }) {
   };
 
   // 색상
-  const [calColor, setCalColor] = useState("#FF5C5C"); // 초기 값은 빨간색
+  const [calColor, setCalColor] = useState("#E05C5C"); // 초기 값
 
   // 에러 메시지 상태 추가
   const [errorMessage, setErrorMessage] = useState("");
@@ -125,7 +125,7 @@ export default function CreateCalendar({ onClose }) {
           </div>
           <div className="flex h-[3rem] w-[11rem] flex-wrap items-center rounded-[0.2rem] p-[0.2rem]">
             {[
-              { color: "#FF5C5C", label: "calendarRed" },
+              { color: "#E05C5C", label: "calendarRed" },
               { color: "#FFC960", label: "calendarYellow" },
               { color: "#7DBE7E", label: "calendarGreen" },
               { color: "#9CC9FF", label: "calendarLightBlue" },
