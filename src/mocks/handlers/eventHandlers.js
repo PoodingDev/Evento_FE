@@ -127,7 +127,45 @@ export const eventHandlers = [
       };
 
       // 200 OK 응답 반환
-      return res(ctx.status(200), ctx.json(mockEventData[eventIndex]));
+      return res(ctx.status(200), ctx.json(eventIndex[eventIndex]));
     },
-  ),
+  ), // 캘린더 삭제 핸들러
+  rest.delete("/api/events/:eventId", async (req, res, ctx) => {
+    const token = req.headers.get("Authorization");
+    const { eventId } = req.params;
+
+    if (!token || token !== "Bearer fake_token") {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          error: "인증 실패",
+          message: "로그인이 필요합니다. 다시 로그인해 주세요.",
+        }),
+      );
+    }
+
+    // 가짜 데이터에서 해당 이벤트를 찾음
+    const eventIndex = mockEventData.findIndex(
+      (event) => event.event_id === parseInt(eventId),
+    );
+
+    if (eventIndex === -1) {
+      return res(
+        ctx.status(404),
+        ctx.json({
+          error: "not_found",
+          message: "해당 이밴트를 찾을 수 없습니다.",
+        }),
+      );
+    }
+
+    // 캘린더 삭제
+    mockEventData.splice(eventIndex, 1);
+
+    // 200 OK 응답 반환
+    return res(
+      ctx.status(200),
+      ctx.json({ message: "이벤트가 성공적으로 삭제되었습니다." }),
+    );
+  }),
 ];

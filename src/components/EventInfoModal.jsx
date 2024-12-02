@@ -22,7 +22,7 @@ import {
 } from "react-icons/fa";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 
-export default function EventInfo({ event, onClose }) {
+export default function EventInfo({ onClose }) {
   //초기 값 세팅
   const [eventInfo, setEventInfo] = useState({
     eventId: "",
@@ -203,6 +203,28 @@ export default function EventInfo({ event, onClose }) {
       newEventPublic: eventInfo.isEventPublic,
     });
     toggleIsEdit();
+  };
+
+  // 삭제
+  const handleDelete = async () => {
+    try {
+      const token = localStorage.getItem("token"); // 토큰 가져오기
+      const response = await axios.delete(`/api/events/${eventInfo.eventId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        // 삭제가 성공적으로 완료되었을 때
+        alert("이벤트가 성공적으로 삭제되었습니다.");
+        onClose(); // 삭제 후 모달 닫기
+      }
+    } catch (error) {
+      console.error("이벤트 삭제 실패:", error);
+      alert("이벤트 삭제에 실패했습니다. 다시 시도해 주세요.");
+    }
   };
 
   return (
@@ -477,7 +499,10 @@ export default function EventInfo({ event, onClose }) {
           </div>
           <div className="absolute bottom-[3rem] right-[3rem] flex space-x-[0.5rem] text-[1.5rem] text-darkGray">
             <FaPen onClick={toggleIsEdit} />
-            <FaRegTrashAlt />
+            <FaRegTrashAlt
+              className="cursor-pointer text-[1.5rem] text-darkGray"
+              onClick={handleDelete}
+            />
           </div>
         </>
       )}
