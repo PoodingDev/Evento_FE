@@ -201,7 +201,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
         {isEdit ? (
           <>
             <div className="flex space-x-[6.5rem]">
-              <div className="flex items-center space-x-[1rem] text-center">
+              <div className="flex space-x-[1rem] text-center">
                 <div className="flex h-[1rem] items-center text-[1.1rem] font-semibold text-darkGray">
                   비공개 캘린더로 설정하기
                 </div>

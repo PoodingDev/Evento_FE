@@ -3,8 +3,8 @@ import { rest } from "msw";
 let mockCalendars = [
   {
     calendar_id: 1,
-    calendar_name: "내가 만든 캘린더",
-    calendar_description: "삭제 권한 있음",
+    calendar_name: "내가 만든 캘린더 test",
+    calendar_description: "삭제 권한 있어야 함",
     calendar_color: "#FFC960",
     is_public: false,
     creator_id: 1,
@@ -12,8 +12,8 @@ let mockCalendars = [
   },
   {
     calendar_id: 2,
-    calendar_name: "관리자로 있는 캘린더",
-    calendar_description: "삭제 권한 없음",
+    calendar_name: "관리자로 있는 캘린더 test",
+    calendar_description: "삭제 권한 없어야 함",
     calendar_color: "#6D87D5",
     is_public: true,
     creator_id: 2,
