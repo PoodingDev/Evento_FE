@@ -16,6 +16,7 @@ import {
 export default function SideBarLeft() {
   const [isCalendarInfoOpen, setCalendarInfoOpen] = useState(false);
   const [selectedCalendar, setSelectedCalendar] = useState(null);
+  const [subscribedCalendars, setSubscribedCalendars] = useState([]);
   const [myCalendars, setMyCalendars] = useState([]);
   const [myUserId, setMyUserId] = useState(null); // 사용자 ID를 저장할 상태 추가
   const navigate = useNavigate();
@@ -42,6 +43,26 @@ export default function SideBarLeft() {
       }
     }
 
+    async function fetchSubscribedCalendars() {
+      try {
+        const token = localStorage.getItem("token"); // 토큰 가져오기
+        const response = await axios.get(
+          `/api/users/${myUserId}/subscriptions`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        if (response.status === 200) {
+          setSubscribedCalendars(response.data);
+        }
+      } catch (error) {
+        console.error("구독 캘린더 정보를 가져오는 중 오류 발생:", error);
+      }
+    }
+
     async function fetchUser() {
       try {
         const token = localStorage.getItem("token"); // 토큰 가져오기
@@ -61,6 +82,7 @@ export default function SideBarLeft() {
 
     // 사용자 정보와 캘린더 정보 모두 가져오기
     fetchCalendars();
+    fetchSubscribedCalendars();
     fetchUser();
   }, [isCalendarInfoOpen, isCreateCalendarOpen]);
 
@@ -168,26 +190,26 @@ export default function SideBarLeft() {
             <ul className="m-[1rem] mt-[1.5rem] space-y-[0.5rem]">
               {subscribedCalendars.map((calendar) => (
                 <li
-                  key={calendar.id}
+                  key={calendar.calendar_id}
                   className="flex items-center space-x-[0.5rem]"
                 >
                   <div
                     className="cursor-pointer"
                     onClick={() => handleToggle(calendar.id)}
                   >
-                    {checked[calendar.id] ? (
+                    {checked[calendar.calendar_id] ? (
                       <FaCheckSquare className="text-[0.9rem] text-eventoPurpleBase" />
                     ) : (
                       <FaRegSquare className="text-[0.9rem] text-eventoPurpleBase" />
                     )}
                   </div>
                   <label
-                    htmlFor={calendar.id}
+                    htmlFor={calendar.calendar_id}
                     className="flex items-center text-[0.9rem] font-medium text-eventoPurpleBase"
                   >
-                    {calendar.label}
+                    {calendar.calendar_name}
                     <span className="ml-2 text-[0.7rem] font-light text-darkGray">
-                      {calendar.description}
+                      {calendar.calendar_description}
                     </span>
                   </label>
                 </li>
@@ -236,7 +258,7 @@ export default function SideBarLeft() {
   );
 }
 
-// 기존 더미 데이터 사용 - 구독한 캘린더
+// // 기존 더미 데이터 사용 - 구독한 캘린더
 const subscribedCalendars = [
   { id: "5", label: "therock", description: "Dwayne Johnson" },
   { id: "6", label: "bts.bighitofficial", description: "BTS" },
