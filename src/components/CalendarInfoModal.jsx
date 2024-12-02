@@ -10,14 +10,21 @@ export default function CalendarInfo({ onClose }) {
 
   //공개
   const [isPublic, setIsPublic] = useState(false);
-  const toggleIsPublic = () => setIsPublic(!isPublic);
+  const [newPublic, setNewPublic] = useState(isPublic);
+  const toggleIsPublic = () => setNewPublic(!newPublic);
+
+  //제목
+  const [title, setTitle] = useState("Pooding팀");
+  const [newTitle, setNewTitle] = useState(title);
 
   //상세
   const [detailMemo, setDetailMemo] = useState("푸우가 코딩한다");
+  const [newDetail, setNewDetail] = useState(detailMemo);
 
   // 색상
   const [calColor, setCalColor] = useState("calendarRed");
-  const [title, setTitle] = useState("Pooding팀");
+  const [newColor, setNewColor] = useState(calColor);
+
   const [textColor, setTextColor] = useState("");
   useEffect(() => {
     if (calColor === "calendarYellow") {
@@ -40,6 +47,24 @@ export default function CalendarInfo({ onClose }) {
   //초대코드
   const [visitCode, setVisitCode] = useState("GW5F4");
 
+  //저장
+  const save = () => {
+    setTitle(newTitle);
+    setIsPublic(newPublic);
+    setDetailMemo(newDetail);
+    setCalColor(newColor);
+    toggleIsEdit();
+  };
+
+  //취소
+  const cancle = () => {
+    setNewTitle(title);
+    setNewPublic(isPublic);
+    setNewDetail(detailMemo);
+    setNewColor(calColor);
+    toggleIsEdit();
+  };
+
   return (
     <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
       <FaXmark
@@ -47,16 +72,16 @@ export default function CalendarInfo({ onClose }) {
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex flex-col w-full">
+      <div className="flex w-full flex-col">
         <div className="mb-[2.8rem] flex items-center justify-between">
           {/* 제목 */}
           {isEdit ? (
             <input
               type="text"
-              value={title}
-              className="w-full rounded-md bg-eventoGray text-[3em] font-bold text-darkGray focus:outline-none"
+              value={newTitle}
+              className="w-full rounded-md bg-lightGray/20 text-[3em] font-bold text-darkGray focus:outline-none"
               onChange={(e) => {
-                setTitle(e.target.value);
+                setNewTitle(e.target.value);
               }}
             />
           ) : (
@@ -94,65 +119,65 @@ export default function CalendarInfo({ onClose }) {
           <div className="flex">
             <input
               type="text"
-              placeholder={`${detailMemo}`}
-              className="mb-[3rem] mr-[2rem] h-[1.3rem] w-[18rem] rounded-md bg-lightGray/30 text-[1.1rem] font-bold text-darkGray"
+              value={newDetail}
+              className="mb-[3rem] mr-[2rem] h-[1.3rem] w-[18rem] rounded-md bg-lightGray/20 text-[1.1rem] font-bold text-darkGray"
               onChange={(e) => {
-                setDetailMemo(e.target.value);
+                setNewDetail(e.target.value);
               }}
             />
             <div className="flex h-[2rem] w-[10rem] items-center">
               <button
-                onClick={() => setCalColor("calendarYellow")}
+                onClick={() => setNewColor("calendarYellow")}
                 className={
-                  calColor === "calendarYellow"
+                  newColor === "calendarYellow"
                     ? "mr-[0.3rem] h-[1rem] w-[1rem] border-[0.1rem] border-darkGray bg-calendarYellow"
                     : "mr-[0.3rem] h-[1rem] w-[1rem] bg-calendarYellow"
                 }
               ></button>
               <button
-                onClick={() => setCalColor("calendarRed")}
+                onClick={() => setNewColor("calendarRed")}
                 className={
-                  calColor === "calendarRed"
+                  newColor === "calendarRed"
                     ? "mr-[0.3rem] h-[1rem] w-[1rem] border-[0.1rem] border-darkGray bg-calendarRed"
                     : "mr-[0.3rem] h-[1rem] w-[1rem] bg-calendarRed"
                 }
               ></button>
               <button
-                onClick={() => setCalColor("calendarGreen")}
+                onClick={() => setNewColor("calendarGreen")}
                 className={
-                  calColor === "calendarGreen"
+                  newColor === "calendarGreen"
                     ? "mr-[0.3rem] h-[1rem] w-[1rem] border-[0.1rem] border-darkGray bg-calendarGreen"
                     : "mr-[0.3rem] h-[1rem] w-[1rem] bg-calendarGreen"
                 }
               ></button>
               <button
-                onClick={() => setCalColor("calendarLightBlue")}
+                onClick={() => setNewColor("calendarLightBlue")}
                 className={
-                  calColor === "calendarLightBlue"
+                  newColor === "calendarLightBlue"
                     ? "mr-[0.3rem] h-[1rem] w-[1rem] border-[0.1rem] border-darkGray bg-calendarLightBlue"
                     : "mr-[0.3rem] h-[1rem] w-[1rem] bg-calendarLightBlue"
                 }
               ></button>
               <button
-                onClick={() => setCalColor("calendarDarkPurple")}
+                onClick={() => setNewColor("calendarDarkPurple")}
                 className={
-                  calColor === "calendarDarkPurple"
+                  newColor === "calendarDarkPurple"
                     ? "mr-[0.3rem] h-[1rem] w-[1rem] border-[0.1rem] border-darkGray bg-calendarDarkPurple"
                     : "mr-[0.3rem] h-[1rem] w-[1rem] bg-calendarDarkPurple"
                 }
               ></button>
               <button
-                onClick={() => setCalColor("calendarBlue")}
+                onClick={() => setNewColor("calendarBlue")}
                 className={
-                  calColor === "calendarBlue"
+                  newColor === "calendarBlue"
                     ? "mr-[0.3rem] h-[1rem] w-[1rem] border-[0.1rem] border-darkGray bg-calendarBlue"
                     : "mr-[0.3rem] h-[1rem] w-[1rem] bg-calendarBlue"
                 }
               ></button>
               <button
-                onClick={() => setCalColor("calendarPurple")}
+                onClick={() => setNewColor("calendarPurple")}
                 className={
-                  calColor === "calendarPurple"
+                  newColor === "calendarPurple"
                     ? "mr-[0.3rem] h-[1rem] w-[1rem] border-[0.1rem] border-darkGray bg-calendarPurple"
                     : "mr-[0.3rem] h-[1rem] w-[1rem] bg-calendarPurple"
                 }
@@ -163,7 +188,7 @@ export default function CalendarInfo({ onClose }) {
           <div className="flex">
             <input
               type="text"
-              placeholder={`${detailMemo}`}
+              value={detailMemo}
               className="mb-[3rem] h-[1.3rem] w-[20rem] bg-transparent text-[1.1rem] font-bold text-darkGray"
               onChange={(e) => {
                 setDetailMemo(e.target.value);
@@ -190,7 +215,7 @@ export default function CalendarInfo({ onClose }) {
                 <div className="text-[1.1rem] font-bold text-darkGray">
                   비공개 캘린더로 설정하기
                 </div>
-                {isPublic ? (
+                {newPublic ? (
                   <FaToggleOff
                     size={25}
                     className="cursor-pointer text-eventoPurple"
@@ -230,11 +255,14 @@ export default function CalendarInfo({ onClose }) {
       </div>
       {isEdit ? (
         <div className="absolute bottom-[2rem] right-[2rem] flex space-x-[0.5rem]">
-          <button className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple/80 text-center text-[1.1rem] text-eventoPurple/80 hover:bg-eventoPurpleLight/70 active:bg-eventoPurpleLight">
+          <button
+            className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple/80 text-center text-[1.1rem] text-eventoPurple/80 hover:bg-eventoPurpleLight/70 active:bg-eventoPurpleLight"
+            onClick={cancle}
+          >
             <span>취소</span>
           </button>
           <button
-            onClick={toggleIsEdit}
+            onClick={save}
             className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple/90 text-center text-[1.1rem] text-eventoWhite hover:bg-eventoPurple/70 active:bg-eventoPurple/50"
           >
             <span>저장</span>

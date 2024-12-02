@@ -5,9 +5,17 @@ import { FaXmark } from "react-icons/fa6";
 export default function CreateCalendar({ onClose }) {
   const inputRefs = useRef([]);
 
+  //캘린더 제목
+  const [title, setTitle] = useState("");
+
+  //캘린더 상세
+  const [detailMemo, setDetailMemo] = useState("");
+
   //공개 여부
   const [isPublic, setIsPublic] = useState(false);
-  const toggleIsPublic = () => setIsPublic(!isPublic);
+  const toggleIsPublic = () => {
+    setIsPublic(!isPublic);
+  };
 
   //색상
   const [calColor, setCalColor] = useState("calendarRed");
@@ -25,6 +33,9 @@ export default function CreateCalendar({ onClose }) {
             type="text"
             placeholder="캘린더 이름을 입력하세요"
             className="w-full bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
           />
         </div>
 
@@ -37,6 +48,9 @@ export default function CreateCalendar({ onClose }) {
             type="text"
             placeholder="어떤 캘린더인가요?"
             className="border- w-[15rem] border-b-[0.1rem] border-solid border-eventoPurple bg-transparent pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
+            onChange={(e) => {
+              setDetailMemo(e.target.value);
+            }}
           />
         </div>
 

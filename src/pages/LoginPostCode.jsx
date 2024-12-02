@@ -1,41 +1,52 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { requestSocialLogin } from "../api/auth";
+import { useAuth } from "../context/AuthContext";
 
-export default function LoginPostCode({ setLogedIn, setUserInfo }) {
+export default function LoginPostCode() {
   const [searchParams] = useSearchParams();
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+  const { setLoggedIn, setUserInfo } = useAuth(); // useAuth 사용하여 상태 함수 가져오기
 
   useEffect(() => {
     const authCode = searchParams.get("code");
     const platform = searchParams.get("state");
 
     async function authenticate() {
+      if (!authCode || !platform) {
+        setErrorMessage("잘못된 인증 요청입니다.");
+        return;
+      }
+
       try {
-        if (!authCode || !platform) throw new Error("잘못된 인증 요청입니다.");
+        console.log(
+          "Authenticating for platform:",
+          platform,
+          "code:",
+          authCode,
+        );
 
-        // 백엔드와 연결 실패해도 로그인 상태되도록 구현함 - 채영
-        setLogedIn(true);
-        setUserInfo({ platform, authCode }); // 플랫폼 인가 코드
+        const response = await requestSocialLogin(platform, authCode);
+        console.log("Authentication success:", response);
 
-        // 토큰 요청
-        const platformEndpoints = {
-          kakao: import.meta.env.VITE_BACKEND_KAKAO_URL,
-          naver: import.meta.env.VITE_BACKEND_NAVER_URL,
-          google: import.meta.env.VITE_BACKEND_GOOGLE_URL,
-        };
-        await axios.post(platformEndpoints[platform], { code: authCode });
+        // 로컬 스토리지에 토큰 저장
+        localStorage.setItem("token", response.token);
 
-        // 성공
+        // 사용자 정보 상태 설정
+        setLoggedIn(true);
+        setUserInfo({ ...response.userInfo, token: response.token });
+
+        // 홈 화면으로 이동
         navigate("/");
       } catch (error) {
-        setErrorMessage("로그인 실패");
+        setErrorMessage("인증에 실패했습니다. 다시 시도해 주세요.");
+        console.error("Authentication error:", error);
       }
     }
 
     authenticate();
-  }, [searchParams, setLogedIn, setUserInfo, navigate]);
+  }, [searchParams, setLoggedIn, setUserInfo, navigate]);
 
   return (
     <div className="flex h-[100vh] items-center justify-center bg-eventoWhite">
