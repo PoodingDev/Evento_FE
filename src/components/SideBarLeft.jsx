@@ -16,11 +16,12 @@ import {
 export default function SideBarLeft() {
   const [isCalendarInfoOpen, setCalendarInfoOpen] = useState(false);
   const [selectedCalendar, setSelectedCalendar] = useState(null);
+  const [myCalendars, setMyCalendars] = useState([]);
+  const [myUserId, setMyUserId] = useState(null); // 사용자 ID를 저장할 상태 추가
   const navigate = useNavigate();
   const [checked, setChecked] = useState({});
   const [isInviteOpen, setIsInviteOpen] = useState(false);
   const [isCreateCalendarOpen, setIsCreateCalendarOpen] = useState(false);
-  const [myCalendars, setMyCalendars] = useState([]);
 
   // 내 캘린더 데이터 가져오기
   useEffect(() => {
@@ -41,10 +42,26 @@ export default function SideBarLeft() {
       }
     }
 
-    // 수정 및 생성 모달이 닫힐 때 캘린더 목록 새로고침
-    if (!isCalendarInfoOpen && !isCreateCalendarOpen) {
-      fetchCalendars();
+    async function fetchUser() {
+      try {
+        const token = localStorage.getItem("token"); // 토큰 가져오기
+        const response = await axios.get("/api/users/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.status === 200) {
+          setMyUserId(response.data.user_id); // 사용자 ID 설정
+        }
+      } catch (error) {
+        console.error("사용자 정보를 가져오는 중 오류 발생:", error);
+      }
     }
+
+    // 사용자 정보와 캘린더 정보 모두 가져오기
+    fetchCalendars();
+    fetchUser();
   }, [isCalendarInfoOpen, isCreateCalendarOpen]);
 
   const handleToggle = (id) => {
@@ -212,6 +229,7 @@ export default function SideBarLeft() {
             calendar={selectedCalendar}
             onClose={() => setCalendarInfoOpen(false)}
             onSave={handleSaveCalendar}
+            userId={myUserId} // 현재 로그인한 사용자 ID 전달
           />
         </div>
       )}

@@ -1,11 +1,10 @@
 import { rest } from "msw";
 
-// 기존의 캘린더 데이터 (가짜 데이터)
 let mockCalendars = [
   {
     calendar_id: 1,
-    calendar_name: "PoodingDev",
-    calendar_description: "개발 프로젝트 캘린더",
+    calendar_name: "내가 만든 캘린더",
+    calendar_description: "삭제 권한 있음",
     calendar_color: "#FFC960",
     is_public: false,
     creator_id: 1,
@@ -13,8 +12,8 @@ let mockCalendars = [
   },
   {
     calendar_id: 2,
-    calendar_name: "헬린이의 삶",
-    calendar_description: "하체 뿌셔",
+    calendar_name: "관리자로 있는 캘린더",
+    calendar_description: "삭제 권한 없음",
     calendar_color: "#6D87D5",
     is_public: true,
     creator_id: 2,
@@ -65,7 +64,7 @@ export const calendarHandlers = [
       calendar_color: calendar_color, // 클라이언트에서 전달된 색상 값 사용
       is_public: is_public || false,
       creator_id: 1,
-      invitation_code: "ABC123", // 생성된 초대 코드 (고정된 가짜 코드)
+      invitation_code: "ABC123", // 생성된 초대 코드
     };
 
     // 가짜 데이터 목록에 새 캘린더 추가
@@ -125,5 +124,45 @@ export const calendarHandlers = [
 
     // 200 OK 응답 반환
     return res(ctx.status(200), ctx.json(mockCalendars[calendarIndex]));
+  }),
+
+  // 캘린더 삭제 핸들러 추가
+  rest.delete("/api/calendars/:calendarId", async (req, res, ctx) => {
+    const token = req.headers.get("Authorization");
+    const { calendarId } = req.params;
+
+    if (!token || token !== "Bearer fake_token") {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          error: "인증 실패",
+          message: "로그인이 필요합니다. 다시 로그인해 주세요.",
+        }),
+      );
+    }
+
+    // 가짜 데이터에서 해당 캘린더를 찾음
+    const calendarIndex = mockCalendars.findIndex(
+      (cal) => cal.calendar_id === parseInt(calendarId),
+    );
+
+    if (calendarIndex === -1) {
+      return res(
+        ctx.status(404),
+        ctx.json({
+          error: "not_found",
+          message: "해당 캘린더를 찾을 수 없습니다.",
+        }),
+      );
+    }
+
+    // 캘린더 삭제
+    mockCalendars.splice(calendarIndex, 1);
+
+    // 200 OK 응답 반환
+    return res(
+      ctx.status(200),
+      ctx.json({ message: "캘린더가 성공적으로 삭제되었습니다." }),
+    );
   }),
 ];
