@@ -74,4 +74,56 @@ export const calendarHandlers = [
     // 201 Created 응답 반환
     return res(ctx.status(201), ctx.json(newCalendar));
   }),
+
+  // 캘린더 수정 핸들러
+  rest.patch("/api/calendars/:calendarId", async (req, res, ctx) => {
+    const token = req.headers.get("Authorization");
+    const { calendarId } = req.params;
+    const { calendar_name, calendar_description, calendar_color, is_public } =
+      await req.json();
+
+    if (!token || token !== "Bearer fake_token") {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          error: "인증 실패",
+          message: "로그인이 필요한 서비스입니다. 다시 로그인해 주세요.",
+        }),
+      );
+    }
+
+    // 가짜 데이터에서 해당 캘린더를 찾음
+    const calendarIndex = mockCalendars.findIndex(
+      (cal) => cal.calendar_id === parseInt(calendarId),
+    );
+
+    if (calendarIndex === -1) {
+      return res(
+        ctx.status(404),
+        ctx.json({
+          error: "not_found",
+          message: "해당 캘린더를 찾을 수 없습니다.",
+        }),
+      );
+    }
+
+    // 캘린더 데이터 업데이트
+    mockCalendars[calendarIndex] = {
+      ...mockCalendars[calendarIndex],
+      calendar_name:
+        calendar_name || mockCalendars[calendarIndex].calendar_name,
+      calendar_description:
+        calendar_description ||
+        mockCalendars[calendarIndex].calendar_description,
+      calendar_color:
+        calendar_color || mockCalendars[calendarIndex].calendar_color,
+      is_public:
+        typeof is_public === "boolean"
+          ? is_public
+          : mockCalendars[calendarIndex].is_public,
+    };
+
+    // 200 OK 응답 반환
+    return res(ctx.status(200), ctx.json(mockCalendars[calendarIndex]));
+  }),
 ];

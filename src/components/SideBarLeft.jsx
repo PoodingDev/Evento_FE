@@ -16,10 +16,6 @@ import {
 export default function SideBarLeft() {
   const [isCalendarInfoOpen, setCalendarInfoOpen] = useState(false);
   const [selectedCalendar, setSelectedCalendar] = useState(null);
-  const toggleCalendarInfo = (calendar) => {
-    setSelectedCalendar(calendar);
-    setCalendarInfoOpen((prev) => !prev);
-  };
   const navigate = useNavigate();
   const [checked, setChecked] = useState({});
   const [isInviteOpen, setIsInviteOpen] = useState(false);
@@ -45,8 +41,11 @@ export default function SideBarLeft() {
       }
     }
 
-    fetchCalendars();
-  }, [isCreateCalendarOpen]); // 캘린더 생성 모달 닫힌 후 새로고침
+    // 수정 및 생성 모달이 닫힐 때 캘린더 목록 새로고침
+    if (!isCalendarInfoOpen && !isCreateCalendarOpen) {
+      fetchCalendars();
+    }
+  }, [isCalendarInfoOpen, isCreateCalendarOpen]);
 
   const handleToggle = (id) => {
     setChecked((prev) => ({
@@ -60,6 +59,25 @@ export default function SideBarLeft() {
   };
   const toggleCreateCalendar = () => {
     setIsCreateCalendarOpen((prev) => !prev);
+  };
+
+  // 캘린더 정보 보기 및 수정 저장 핸들러
+  const handleViewCalendar = (calendar) => {
+    setSelectedCalendar(calendar);
+    setCalendarInfoOpen(true);
+  };
+
+  const handleSaveCalendar = (updatedCalendar) => {
+    // 수정된 내용을 사이드바에도 즉시 반영
+    setMyCalendars((prevCalendars) =>
+      prevCalendars.map((calendar) =>
+        calendar.calendar_id === updatedCalendar.calendar_id
+          ? updatedCalendar
+          : calendar,
+      ),
+    );
+    // 모달을 닫음
+    setCalendarInfoOpen(false);
   };
 
   return (
@@ -109,7 +127,7 @@ export default function SideBarLeft() {
                     htmlFor={calendar.calendar_id}
                     className="cursor-pointer text-[0.9rem]"
                     style={{ color: calendar.calendar_color }}
-                    onClick={() => toggleCalendarInfo(calendar)}
+                    onClick={() => handleViewCalendar(calendar)}
                   >
                     {calendar.calendar_name}
                   </label>
@@ -192,7 +210,8 @@ export default function SideBarLeft() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
           <CalendarInfo
             calendar={selectedCalendar}
-            onClose={toggleCalendarInfo}
+            onClose={() => setCalendarInfoOpen(false)}
+            onSave={handleSaveCalendar}
           />
         </div>
       )}

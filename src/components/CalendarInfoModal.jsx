@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { FaCopy, FaPen, FaToggleOff, FaToggleOn } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
+
+import {
+  FaCheck,
+  FaCopy,
+  FaPen,
+  FaRegCopy,
+  FaToggleOff,
+  FaToggleOn,
+} from "react-icons/fa";
 
 export default function CalendarInfo({ calendar, onClose }) {
   // 초기 값 설정
@@ -23,12 +32,38 @@ export default function CalendarInfo({ calendar, onClose }) {
   const toggleIsPublic = () => setNewPublic(!newPublic);
 
   // 저장
-  const save = () => {
-    setTitle(newTitle);
-    setDetailMemo(newDetail);
-    setIsPublic(newPublic);
-    setCalColor(newColor);
-    toggleIsEdit();
+  const save = async () => {
+    try {
+      const token = localStorage.getItem("token"); // 토큰 가져오기
+      const response = await axios.patch(
+        `/api/calendars/${calendar.calendar_id}`,
+        {
+          calendar_name: newTitle,
+          calendar_description: newDetail,
+          is_public: newPublic,
+          calendar_color: newColor,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      if (response.status === 200) {
+        // 서버 응답 성공 시 상태 업데이트
+        setTitle(newTitle);
+        setDetailMemo(newDetail);
+        setIsPublic(newPublic);
+        setCalColor(newColor); // 색상 업데이트
+        toggleIsEdit();
+        onClose(); // 저장 후 모달 닫기
+      }
+    } catch (error) {
+      console.error("캘린더 수정 실패:", error);
+      alert("캘린더 수정에 실패했습니다. 다시 시도해 주세요.");
+    }
   };
 
   // 취소
@@ -91,22 +126,24 @@ export default function CalendarInfo({ calendar, onClose }) {
             />
             <div className="flex h-[2rem] w-[10rem] items-center">
               {[
-                "#FF5C5C",
-                "#FFC960",
-                "#7DBE7E",
-                "#9CC9FF",
-                "#6D87D5",
-                "#8867DF",
-                "#B469D3",
-              ].map((color, index) => (
+                { color: "#FF5C5C", label: "calendarRed" },
+                { color: "#FFC960", label: "calendarYellow" },
+                { color: "#7DBE7E", label: "calendarGreen" },
+                { color: "#9CC9FF", label: "calendarLightBlue" },
+                { color: "#6D87D5", label: "calendarBlue" },
+                { color: "#8867DF", label: "calendarDarkPurple" },
+                { color: "#B469D3", label: "calendarPurple" },
+              ].map(({ color, label }) => (
                 <button
-                  key={index}
+                  key={label}
                   onClick={() => setNewColor(color)}
-                  className={`mr-[0.3rem] h-[1rem] w-[1rem] ${
-                    newColor === color ? "border-[0.1rem] border-darkGray" : ""
-                  }`}
+                  className={`relative mb-[0.25rem] mr-[0.3rem] flex h-[1rem] w-[1rem] items-center justify-center`}
                   style={{ backgroundColor: color }}
-                />
+                >
+                  {newColor === color && (
+                    <FaCheck className="absolute text-[0.6rem] text-eventoWhite" />
+                  )}
+                </button>
               ))}
             </div>
           </div>
@@ -165,10 +202,10 @@ export default function CalendarInfo({ calendar, onClose }) {
                 {visitCode}
               </div>
               <CopyToClipboard
-                className="cursor-pointer text-eventoblack active:text-darkGray"
+                className="cursor-pointer text-eventoPurple active:text-lightGray"
                 text={visitCode}
               >
-                <FaCopy />
+                <FaRegCopy />
               </CopyToClipboard>
             </div>
           </>
