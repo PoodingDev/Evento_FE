@@ -6,19 +6,19 @@ let mockCalendars = [
     calendar_id: 1,
     calendar_name: "PoodingDev",
     calendar_description: "개발 프로젝트 캘린더",
-    calendar_color: "#4685FF", // 색상 코드
+    calendar_color: "#FFC960",
     is_public: false,
     creator_id: 1,
-    invitation_code: "ABC123",
+    invitation_code: "GW3HR4",
   },
   {
     calendar_id: 2,
-    calendar_name: "캘린이의 삶",
-    calendar_description: "학습 및 생활 관리 캘린더",
-    calendar_color: "#F69292", // 색상 코드
+    calendar_name: "헬린이의 삶",
+    calendar_description: "하체 뿌셔",
+    calendar_color: "#6D87D5",
     is_public: true,
     creator_id: 2,
-    invitation_code: "XYZ789",
+    invitation_code: "G3G7H3",
   },
 ];
 

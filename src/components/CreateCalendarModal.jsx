@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import axios from "axios";
-import { FaToggleOff, FaToggleOn } from "react-icons/fa";
+import { FaCheck, FaToggleOff, FaToggleOn } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 
 export default function CreateCalendar({ onClose }) {
@@ -124,7 +124,6 @@ export default function CreateCalendar({ onClose }) {
             색상
           </div>
           <div className="flex h-[3rem] w-[11rem] flex-wrap items-center rounded-[0.2rem] p-[0.5rem]">
-            {/* 색상 버튼들 */}
             {[
               { color: "#FF5C5C", label: "calendarRed" },
               { color: "#FFC960", label: "calendarYellow" },
@@ -137,18 +136,20 @@ export default function CreateCalendar({ onClose }) {
               <button
                 key={label}
                 onClick={() => setCalColor(color)}
-                className={`mb-[0.25rem] mr-[0.3rem] h-[1rem] w-[1rem] ${
-                  calColor === color ? "border-[0.1rem] border-darkGray" : ""
-                }`}
+                className={`relative mb-[0.25rem] mr-[0.3rem] flex h-[1rem] w-[1rem] items-center justify-center`}
                 style={{ backgroundColor: color }}
-              />
+              >
+                {calColor === color && (
+                  <FaCheck className="absolute text-[0.6rem] text-eventoWhite" />
+                )}
+              </button>
             ))}
           </div>
         </div>
 
         {/* 에러 메시지 출력 */}
         {errorMessage && (
-          <div className="mt-4 text-red-600">{errorMessage}</div>
+          <div className="mt-4 text-darkRed">{errorMessage}</div>
         )}
 
         {/* 하단 버튼 */}

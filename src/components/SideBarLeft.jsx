@@ -15,7 +15,9 @@ import {
 
 export default function SideBarLeft() {
   const [isCalendarInfoOpen, setCalendarInfoOpen] = useState(false);
-  const toggleCalendarInfo = () => {
+  const [selectedCalendar, setSelectedCalendar] = useState(null);
+  const toggleCalendarInfo = (calendar) => {
+    setSelectedCalendar(calendar);
     setCalendarInfoOpen((prev) => !prev);
   };
   const navigate = useNavigate();
@@ -24,11 +26,11 @@ export default function SideBarLeft() {
   const [isCreateCalendarOpen, setIsCreateCalendarOpen] = useState(false);
   const [myCalendars, setMyCalendars] = useState([]);
 
-  // 내 캘린더 데이터
+  // 내 캘린더 데이터 가져오기
   useEffect(() => {
     async function fetchCalendars() {
       try {
-        const token = localStorage.getItem("token"); // 토큰
+        const token = localStorage.getItem("token"); // 토큰 가져오기
         const response = await axios.get("/api/calendars", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -44,7 +46,7 @@ export default function SideBarLeft() {
     }
 
     fetchCalendars();
-  }, [isCreateCalendarOpen]); // 생성 후 새로고침
+  }, [isCreateCalendarOpen]); // 캘린더 생성 모달 닫힌 후 새로고침
 
   const handleToggle = (id) => {
     setChecked((prev) => ({
@@ -105,9 +107,9 @@ export default function SideBarLeft() {
                   </div>
                   <label
                     htmlFor={calendar.calendar_id}
-                    className="text-[0.9rem]"
+                    className="cursor-pointer text-[0.9rem]"
                     style={{ color: calendar.calendar_color }}
-                    onClick={toggleCalendarInfo}
+                    onClick={() => toggleCalendarInfo(calendar)}
                   >
                     {calendar.calendar_name}
                   </label>
@@ -186,9 +188,12 @@ export default function SideBarLeft() {
           <CreateCalendar onClose={toggleCreateCalendar} />
         </div>
       )}
-      {isCalendarInfoOpen && (
+      {isCalendarInfoOpen && selectedCalendar && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-          <CalendarInfo onClose={toggleCalendarInfo} />
+          <CalendarInfo
+            calendar={selectedCalendar}
+            onClose={toggleCalendarInfo}
+          />
         </div>
       )}
     </div>
