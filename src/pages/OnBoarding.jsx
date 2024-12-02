@@ -55,7 +55,7 @@ export default function OnBoarding() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-eventoPurple/60 px-5 py-5">
+    <div className="flex min-h-screen items-center justify-center bg-eventoWhite px-5 py-5">
       {/* <div className="relative mx-auto w-[40%] overflow-hidden rounded-3xl bg-white px-10 pb-10 pt-16 text-gray-800 shadow-lg">
        */}
       <div className="relative mx-auto w-[40%] overflow-hidden rounded-3xl px-10 pb-10 pt-16 text-gray-800">
@@ -83,7 +83,7 @@ export default function OnBoarding() {
               <h2 className="mb-3 text-2xl font-bold text-eventoPurpleDark">
                 {slide.title}
               </h2>
-              <p className="h-16 text-[1.2rem] font-semibold leading-tight text-eventoWhite">
+              <p className="h-16 text-[1.2rem] font-semibold leading-tight text-eventoPurple/80">
                 {slide.body}
               </p>
               {index === slides.length - 1 && (
@@ -115,7 +115,7 @@ export default function OnBoarding() {
         <div className="absolute left-2 top-1/2 -translate-y-1/2 transform">
           <button
             onClick={() => handleSwipe("prev")}
-            className="h-10 w-10 rounded-full bg-eventoPurpleLight/30 text-eventoWhite hover:bg-gray-300"
+            className="h-10 w-10 rounded-full bg-eventoPurpleLight/30 text-eventoPurple hover:bg-gray-300"
           >
             {"<"}
           </button>
@@ -123,7 +123,7 @@ export default function OnBoarding() {
         <div className="absolute right-2 top-1/2 -translate-y-1/2 transform">
           <button
             onClick={() => handleSwipe("next")}
-            className="h-10 w-10 rounded-full bg-eventoPurpleLight/30 text-eventoWhite hover:bg-gray-300"
+            className="h-10 w-10 rounded-full bg-eventoPurpleLight/30 text-eventoPurple hover:bg-gray-300"
           >
             {">"}
           </button>
