@@ -6,15 +6,15 @@ let mockEventData = [
     event_title: "저녁 약속",
     cal_title: "Pooding팀",
     start_time: "2024-12-01",
-    end_time: "2024-12-02",
+    end_time: "2024-12-05",
     event_description: "고기 먹자",
     is_public: false,
   },
 ];
 
 export const eventHandlers = [
-  // 캘린더 리스트 가져오기 핸들러
-  rest.get("/api/events", (req, res, ctx) => {
+  // 이벤트 리스트 가져오기 핸들러
+  rest.get("/api/calendars/:calendar_id/events", (req, res, ctx) => {
     const token = req.headers.get("Authorization");
 
     if (!token || token !== "Bearer fake_token") {
@@ -30,8 +30,8 @@ export const eventHandlers = [
     return res(ctx.status(200), ctx.json(mockEventData));
   }),
 
-  // 캘린더 생성 핸들러
-  rest.post("/api/events", async (req, res, ctx) => {
+  // 이벤트 생성 핸들러
+  rest.post("/api/calendars/:calendar_id/events", async (req, res, ctx) => {
     const token = req.headers.get("Authorization");
     const {
       event_title,
@@ -52,7 +52,7 @@ export const eventHandlers = [
       );
     }
 
-    // 새 캘린더 생성
+    // 새 이벤트 생성
     const event_id = mockEventData.length + 1;
     const newEvent = {
       event_id,
@@ -71,23 +71,63 @@ export const eventHandlers = [
     return res(ctx.status(201), ctx.json(newEvent));
   }),
 
-  rest.patch("/api/events/:eventId", async (req, res, ctx) => {
-    // 캘린더 데이터 업데이트
-    mockEventData[eventIndex] = {
-      ...mockEventData[eventIndex],
-      event_title: event_title || mockEventData[eventIndex].event_title,
-      cal_title: cal_title || mockEventData[eventIndex].cal_title,
-      start_time: start_time || mockEventData[eventIndex].start_time,
-      end_time: end_time || mockEventData[eventIndex].end_time,
-      event_description:
-        event_description || mockEventData[eventIndex].event_description,
-      is_public:
-        typeof is_public === "boolean"
-          ? is_public
-          : mockEventData[eventIndex].is_public,
-    };
+  //이벤트 수정 핸들러
+  rest.patch(
+    "/api/calendars/:calendar_id/events/:eventId",
+    async (req, res, ctx) => {
+      const token = req.headers.get("Authorization");
+      const { eventId } = req.params;
+      const {
+        event_title,
+        cal_title,
+        start_time,
+        end_time,
+        event_description,
+        is_public,
+      } = await req.json();
 
-    // 200 OK 응답 반환
-    return res(ctx.status(200), ctx.json(mockEventData[eventIndex]));
-  }),
+      if (!token || token !== "Bearer fake_token") {
+        return res(
+          ctx.status(401),
+          ctx.json({
+            error: "인증 실패",
+            message: "로그인이 필요한 서비스입니다. 다시 로그인해 주세요.",
+          }),
+        );
+      }
+
+      // 가짜 데이터에서 해당 이벤트 찾음
+      const eventIndex = mockEventData.findIndex(
+        (event) => event.event_id === parseInt(eventId),
+      );
+
+      if (eventIndex === -1) {
+        return res(
+          ctx.status(404),
+          ctx.json({
+            error: "not_found",
+            message: "해당 캘린더를 찾을 수 없습니다.",
+          }),
+        );
+      }
+
+      // 이벤트 데이터 업데이트
+      mockEventData[eventIndex] = {
+        ...mockEventData[eventIndex],
+        event_title: event_title || mockEventData[eventIndex].event_title,
+        cal_title: cal_title || mockEventData[eventIndex].cal_title,
+        start_time: start_time || mockEventData[eventIndex].start_time,
+        end_time: end_time || mockEventData[eventIndex].end_time,
+        event_description:
+          event_description || mockEventData[eventIndex].event_description,
+        is_public:
+          typeof is_public === "boolean"
+            ? is_public
+            : mockEventData[eventIndex].is_public,
+      };
+
+      // 200 OK 응답 반환
+      return res(ctx.status(200), ctx.json(mockEventData[eventIndex]));
+    },
+  ),
 ];
