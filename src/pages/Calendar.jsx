@@ -15,15 +15,15 @@ export default function Calendar() {
     <>
       <div className="flex h-[100vh] bg-eventoWhite text-center text-2xl">
         {/* 부모 div의 높이를 calc()로 설정하여 100vh에서 다른 요소들의 높이를 제외 */}
-        {/* <div className="ml-[21rem] mt-[4rem] h-[calc(100vh-9rem)] w-[calc(100vw-24rem)] items-center justify-center rounded-sm bg-eventoWhite">
+        <div className="ml-[21rem] mt-[4rem] h-[calc(100vh-9rem)] w-[calc(100vw-24rem)] items-center justify-center rounded-sm bg-eventoWhite">
           <MainCalendar className="h-[calc(100vh-9rem)]" />
-        </div> */}
-        {/* <div
+        </div>
+        <div
           onClick={toggleCreateEvent}
           className="absolute bottom-[6rem] right-[6rem] flex h-[6rem] w-[6rem] cursor-pointer items-center justify-center rounded-full bg-eventoPurple/70 text-center text-[4rem] text-eventoWhite"
         >
           +
-        </div> */}
+        </div>
       </div>
       {isCreateEventOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
