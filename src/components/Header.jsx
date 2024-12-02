@@ -34,7 +34,7 @@ export default function Header() {
         className="h-[2.5rem]"
         src="/assets/evento_logo.png"
         alt="Evento"
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/calendar")}
       />
       {!isLoggedIn ? (
         <button
@@ -51,7 +51,7 @@ export default function Header() {
         />
       )}
       {isView && isLoggedIn && (
-        <div className="bg-event absolute right-[1rem] top-[4rem] flex h-[13em] w-[10rem] flex-col items-center justify-center rounded-[1rem] border-solid border-eventoPurpleLight bg-zinc-100 text-eventoblack">
+        <div className="bg-event absolute right-[1rem] top-[4rem] z-10 flex h-[13em] w-[10rem] flex-col items-center justify-center rounded-[1rem] border-solid border-eventoPurpleLight bg-zinc-100 text-eventoblack">
           <FontAwesomeIcon
             icon={faUser}
             className="mb-[1rem] mt-[0.5rem] text-[1.5rem] text-[#4F378B]"
