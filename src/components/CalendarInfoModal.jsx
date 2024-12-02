@@ -158,7 +158,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
             />
             <div className="ml-[0.2rem] flex h-[2rem] w-[10rem]">
               {[
-                { color: "#FF5C5C", label: "calendarRed" },
+                { color: "#E05C5C", label: "calendarRed" },
                 { color: "#FFC960", label: "calendarYellow" },
                 { color: "#7DBE7E", label: "calendarGreen" },
                 { color: "#9CC9FF", label: "calendarLightBlue" },

@@ -118,11 +118,11 @@ export default function SideBarLeft() {
               </div>
             </div>
             {/* 캘린더 리스트 */}
-            <ul className="m-[1rem] mt-[1.5rem] space-y-[0.5rem] font-semibold">
+            <ul className="m-[1rem] mt-[1.5rem] space-y-[0.5rem]">
               {myCalendars.map((calendar) => (
                 <li
                   key={calendar.calendar_id}
-                  className="flex items-center space-x-[0.75rem]"
+                  className="flex items-center space-x-[0.5rem]"
                 >
                   <div
                     className="cursor-pointer"
@@ -142,7 +142,7 @@ export default function SideBarLeft() {
                   </div>
                   <label
                     htmlFor={calendar.calendar_id}
-                    className="cursor-pointer text-[0.9rem]"
+                    className="cursor-pointer text-[0.9rem] font-medium"
                     style={{ color: calendar.calendar_color }}
                     onClick={() => handleViewCalendar(calendar)}
                   >
@@ -160,17 +160,16 @@ export default function SideBarLeft() {
             <div className="mr-[0.3rem] flex items-center justify-between">
               <span className="text-[0.9rem] text-darkGray">구독한 캘린더</span>
               <FaPen
-                className="cursor-pointer text-[0.9rem] text-darkGray"
+                className="cursor-pointer text-[0.75rem] text-darkGray"
                 onClick={() => navigate("/subscription")}
               />
             </div>
             {/* 캘린더 리스트 */}
             <ul className="m-[1rem] mt-[1.5rem] space-y-[0.5rem]">
-              {/* 더미 구독한 캘린더 데이터 그대로 사용 */}
               {subscribedCalendars.map((calendar) => (
                 <li
                   key={calendar.id}
-                  className="flex items-center space-x-[0.75rem]"
+                  className="flex items-center space-x-[0.5rem]"
                 >
                   <div
                     className="cursor-pointer"
@@ -184,7 +183,7 @@ export default function SideBarLeft() {
                   </div>
                   <label
                     htmlFor={calendar.id}
-                    className="flex items-center text-[0.9rem] text-eventoPurpleBase"
+                    className="flex items-center text-[0.9rem] font-medium text-eventoPurpleBase"
                   >
                     {calendar.label}
                     <span className="ml-2 text-[0.7rem] font-light text-darkGray">
@@ -204,7 +203,7 @@ export default function SideBarLeft() {
                 <span className="w-[3rem] text-left font-bold text-eventoPurpleBase">
                   {item.day}
                 </span>
-                <span className="flex-1 pl-2 text-left text-[0.9rem] text-[#646464]">
+                <span className="flex-1 pl-2 text-left text-[0.93rem] text-[#646464]">
                   {item.description}
                 </span>
               </li>
