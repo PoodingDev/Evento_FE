@@ -28,7 +28,7 @@ export default function SideBarLeft() {
     async function fetchCalendars() {
       try {
         const token = localStorage.getItem("token"); // 토큰 가져오기
-        const response = await axios.get("/api/calendars", {
+        const response = await axios.get("/api/calendars/admins", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

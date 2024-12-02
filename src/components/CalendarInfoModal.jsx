@@ -137,7 +137,9 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
             멤버
           </div>
           <div className="w-[40rem] text-[1.1rem] font-semibold text-darkGray">
-            호도니, 뚜디니, 때용이 + 10
+            {calendar?.members?.length > 0
+              ? calendar.members.map((member) => member.nickname).join(", ")
+              : "나만의 캘린더"}
           </div>
         </div>
         <div className="flex space-x-[15.5rem]">
