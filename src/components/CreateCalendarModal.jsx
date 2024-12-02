@@ -120,10 +120,10 @@ export default function CreateCalendar({ onClose }) {
 
         {/* 색상 선택 */}
         <div>
-          <div className="mb-[0.5rem] text-[1rem] font-bold text-eventoPurple">
+          <div className="mb-[0.3rem] text-[1rem] font-bold text-eventoPurple">
             색상
           </div>
-          <div className="flex h-[3rem] w-[11rem] flex-wrap items-center rounded-[0.2rem] p-[0.5rem]">
+          <div className="flex h-[3rem] w-[11rem] flex-wrap items-center rounded-[0.2rem] p-[0.2rem]">
             {[
               { color: "#FF5C5C", label: "calendarRed" },
               { color: "#FFC960", label: "calendarYellow" },
@@ -155,7 +155,7 @@ export default function CreateCalendar({ onClose }) {
         {/* 하단 버튼 */}
         <div className="flex justify-end">
           <button
-            className="flex h-[3rem] w-[5.5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple/80 text-center text-[1.2rem] text-eventoWhite hover:bg-eventoPurple/80 active:bg-eventoPurple/60"
+            className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple text-center text-[1.1rem] text-eventoWhite hover:bg-eventoPurple/80 active:bg-eventoPurple/60"
             onClick={handleCreateCalendar}
           >
             <span>생성</span>
