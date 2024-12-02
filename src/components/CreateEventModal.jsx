@@ -7,7 +7,7 @@ import axios from "axios";
 
 export default function CreateEvent({ onClose, setEvents }) {
   //캘린더 더미데이터
-  const data = [
+  const calData = [
     { id: 1, calName: "PoodingDev" },
     { id: 2, calName: "캘린이의 삶" },
     { id: 3, calName: "학교 시험" },
@@ -130,7 +130,7 @@ export default function CreateEvent({ onClose, setEvents }) {
           </div>
           {showCalList && (
             <div className="absolute left-[1.3rem] top-[1.55rem] flex h-[6rem] w-[8rem] flex-col overflow-auto">
-              {data.map((cal) => {
+              {calData.map((cal) => {
                 return (
                   <button
                     key={cal.id}
