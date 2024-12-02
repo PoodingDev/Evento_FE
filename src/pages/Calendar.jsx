@@ -20,7 +20,7 @@ export default function Calendar() {
         </div>
         <div
           onClick={toggleCreateEvent}
-          className="absolute bottom-[6rem] right-[6rem] flex h-[6rem] w-[6rem] cursor-pointer items-center justify-center rounded-full bg-eventoPurple/70 text-center text-[4rem] text-eventoWhite"
+          className="absolute bottom-[6rem] right-[6rem] z-10 flex h-[6rem] w-[6rem] cursor-pointer items-center justify-center rounded-full bg-eventoPurple/70 text-center text-[4rem] text-eventoWhite"
         >
           +
         </div>
