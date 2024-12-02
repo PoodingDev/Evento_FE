@@ -90,4 +90,29 @@ export const userHandlers = [
       }),
     );
   }),
+
+  //회원탈퇴
+  rest.delete("/api/users/delete", (req, res, ctx) => {
+    const token = req.headers.get("Authorization");
+
+    if (!token || token !== "Bearer fake_token") {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          error: "인증 실패",
+          message: "로그인이 필요합니다. 다시 로그인해 주세요.",
+        }),
+      );
+    }
+
+    // 사용자 데이터 초기화
+    mockUserData = null;
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        message: "회원탈퇴가 완료되었습니다.",
+      }),
+    );
+  }),
 ];

@@ -9,7 +9,10 @@ let mockCalendars = [
     is_public: false,
     creator_id: 1,
     invitation_code: "ABC123",
-    admins: [1], // 초대된 관리자 목록 추가
+    members: [
+      { id: 11, nickname: "Manager1" },
+      { id: 12, nickname: "Manager2" },
+    ],
   },
   {
     calendar_id: 2,
@@ -19,33 +22,42 @@ let mockCalendars = [
     is_public: true,
     creator_id: 2,
     invitation_code: "G3G7H3",
-    admins: [2],
+    members: [
+      { id: 11, nickname: "Manager1" },
+      { id: 12, nickname: "Manager2" },
+    ],
   },
   {
     calendar_id: 3,
-    calendar_name: "비공개 캘린더",
+    calendar_name: "FE 캘린더",
     calendar_description: "삭제 권한 있어야 함",
     calendar_color: "#E05C5C",
     is_public: false,
-    creator_id: 2,
+    creator_id: 1,
     invitation_code: "ABC123",
-    admins: [1],
+    members: [
+      { id: 11, nickname: "Manager1" },
+      { id: 12, nickname: "Manager2" },
+    ],
   },
   {
     calendar_id: 4,
-    calendar_name: "공개 캘린더",
+    calendar_name: "BE캘린더",
     calendar_description: "삭제 권한 있어야 함",
     calendar_color: "#7DBE7E",
     is_public: true,
-    creator_id: 2,
+    creator_id: 1,
     invitation_code: "A1B2C3",
-    admins: [1],
+    members: [
+      { id: 11, nickname: "Manager1" },
+      { id: 12, nickname: "Manager2" },
+    ],
   },
 ];
 
 export const calendarHandlers = [
   // 캘린더 리스트 가져오기 핸들러
-  rest.get("/api/calendars", (req, res, ctx) => {
+  rest.get("/api/calendars/admins", (req, res, ctx) => {
     const token = req.headers.get("Authorization");
 
     if (!token || token !== "Bearer fake_token") {

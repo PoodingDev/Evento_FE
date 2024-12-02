@@ -6,14 +6,8 @@ import { FaXmark } from "react-icons/fa6";
 import axios from "axios";
 import { fromJSON } from "postcss";
 
-export default function CreateEvent({ onClose, setEvents }) {
-  //캘린더 더미데이터
-  const data = [
-    { id: 1, calName: "PoodingDev" },
-    { id: 2, calName: "캘린이의 삶" },
-    { id: 3, calName: "학교 시험" },
-    { id: 4, calName: "운동Day" },
-  ];
+
+export default function CreateEvent({ onClose }) {
 
   //캘린더 리스트
   const [showCalList, setShowCalList] = useState(false);
@@ -105,7 +99,7 @@ export default function CreateEvent({ onClose, setEvents }) {
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex w-full flex-col">
+      <div className="flex flex-col w-full">
         <div className="mb-[1rem] flex items-center justify-between">
           {/* 이벤트 제목 */}
           <input
