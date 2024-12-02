@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 import React, { useEffect, useState } from "react";
 import { FaCaretDown, FaToggleOff, FaToggleOn } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
+import axios from "axios";
 
 export default function CreateEvent({ onClose }) {
   //캘린더 더미데이터
@@ -34,6 +35,48 @@ export default function CreateEvent({ onClose }) {
   const [isEventPublic, setIsEventPublic] = useState(true);
   const toggleIsPublic = () => setIsEventPublic(!isEventPublic);
 
+  // 에러 메시지 상태 추가
+  const [errorMessage, setErrorMessage] = useState("");
+
+  //이벤트 생성 요청 핸들러
+  const handleCreateEvent = async () => {
+    try {
+      const token = localStorage.getItem("token"); // 토큰 가져오기
+      if (!eventTitle) {
+        throw new Error("일정 이름을 입력해주세요.");
+      }
+
+      const response = await axios.post(
+        "/api/events",
+        {
+          event_title: eventTitle,
+          cal_title: title,
+          start_time: startDate,
+          end_time: endDate,
+          event_description: detailEventMemo,
+          is_public: isEventPublic,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      if (response.status === 201) {
+        alert("이벤트가 성공적으로 생성되었습니다!");
+        onClose(); // 모달 닫기
+      }
+    } catch (error) {
+      console.error("이벤트 생성 실패:", error);
+      setErrorMessage(
+        error.response?.data?.message ||
+          "이벤트를 생성하지 못했습니다. 다시 시도해 주세요.",
+      );
+    }
+  };
+
   return (
     <div className="flex h-[29rem] w-[37rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
       <FaXmark
@@ -43,7 +86,7 @@ export default function CreateEvent({ onClose }) {
       />
       <div className="flex w-full flex-col">
         <div className="mb-[1rem] flex items-center justify-between">
-          {/* 제목 */}
+          {/* 이벤트 제목 */}
           <input
             type="text"
             placeholder="일정 이름을 입력하세요"
@@ -53,6 +96,8 @@ export default function CreateEvent({ onClose }) {
             }}
           />
         </div>
+
+        {/* 캘린더 선택 */}
         <div className="relative z-20 mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoYellow text-center text-[1rem] font-bold">
           <div className="flex h-[1.55rem] -translate-x-[0.3rem] items-center justify-between">
             <FaCaretDown
@@ -117,6 +162,7 @@ export default function CreateEvent({ onClose }) {
           />
         </div>
 
+        {/* 공개 여부 */}
         <div className="mb-[2rem]">
           <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
             이벤트 공개 여부
@@ -138,6 +184,13 @@ export default function CreateEvent({ onClose }) {
             )}
           </div>
         </div>
+
+        {/* 에러 메시지 출력 */}
+        {errorMessage && (
+          <div className="mt-4 text-darkRed">{errorMessage}</div>
+        )}
+
+        {/* 하단 버튼 */}
         <div className="absolute bottom-[2rem] right-[3rem] mt-[5rem] flex translate-x-[1rem] justify-end space-x-[0.5rem]">
           <button
             className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple/80 text-center text-[1.1rem] text-eventoPurple/80 hover:bg-eventoPurpleLight/70 active:bg-eventoPurpleLight"
@@ -145,7 +198,10 @@ export default function CreateEvent({ onClose }) {
           >
             <span>취소</span>
           </button>
-          <button className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple/90 text-center text-[1.1rem] text-eventoWhite hover:bg-eventoPurple/70 active:bg-eventoPurple/50">
+          <button
+            className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple/90 text-center text-[1.1rem] text-eventoWhite hover:bg-eventoPurple/70 active:bg-eventoPurple/50"
+            onClick={handleCreateEvent}
+          >
             <span>저장</span>
           </button>
         </div>
