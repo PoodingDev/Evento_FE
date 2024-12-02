@@ -9,30 +9,26 @@ import "../styles/calendar.css";
 // Calendar 컴포넌트
 export default function Calendar() {
   const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
+  const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜 상태
+
   const toggleCreateEvent = () => {
     setIsCreateEventOpen((prev) => !prev);
   };
   const [events, setEvents] = useState([]);
 
-  // 데이터 불러오기 (예시: API 호출)
-  useEffect(() => {
-    setTimeout(() => {
-      setEvents([
-        { title: 'Event 1', start: '2024-12-01' },
-        { title: 'Event 2', start: '2024-12-07', end: '2024-12-10', },
-        {
-          title: 'D-day: Event 1',
-          start: '2024-12-01',
-          allDay: true, // 하루 종일 이벤트로 설정
-          description: 'This is a D-day event.',
-          backgroundColor: '#FF5733', // D-day 강조를 위한 배경색
-          textColor: 'white', // 텍스트 색상
-          borderColor: '#C70039' // 테두리 색상
-        }
-      ]);
-    }, 1000);
-  }, []);
+  // 날짜 클릭 핸들러
+  const handleDateClick = (info) => {
+    //   alert(`You clicked on date: ${info.dateStr}`); // 클릭된 날짜를 표시
+    //   console.log('Clicked date:', info.dateStr);
+    setSelectedDate(info.dateStr); // 클릭된 날짜 저장
+    setIsModalOpen(true); // 모달 열기
+  };
 
+  const closeModal = () => {
+    setIsModalOpen(false); // 모달 닫기
+    setSelectedDate(null); // 선택된 날짜 초기화
+  };
   return (
     <>
       <div className="mainCalendar">
@@ -47,12 +43,18 @@ export default function Calendar() {
 
           events={events} // 상태에서 가져온 이벤트
           aspectRatio={2.1}
+          dateClick={handleDateClick} // 날짜 클릭 핸들러 등록
         />
       </div>
-
+      {isModalOpen && (
+        <EventInfoModal
+          date={selectedDate}
+          onClose={closeModal}
+        />
+      )}
       <div
         onClick={toggleCreateEvent}
-        className="absolute bottom-[6rem] right-[6rem] flex h-[8rem] w-[8rem] cursor-pointer items-center justify-center rounded-full bg-eventoPurple/70 text-center text-[4rem] text-eventoWhite"
+        className="absolute bottom-[6rem] right-[6rem] flex h-[8rem] w-[8rem] cursor-pointer items-center justify-center rounded-full bg-eventoPurple/70 text-center text-[4rem] text-eventoWhite  z-[100]"
       >
         +
       </div>
