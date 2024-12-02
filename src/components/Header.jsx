@@ -34,7 +34,7 @@ export default function Header() {
         className="h-[2.5rem]"
         src="/assets/evento_logo.png"
         alt="Evento"
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/calendar")}
       />
       {!isLoggedIn ? (
         <button

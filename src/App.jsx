@@ -4,6 +4,7 @@ import EventInfoModal from "/src/components/EventInfoModal";
 import Header from "components/Header";
 import LogIn from "/src/pages/LogIn";
 import LoginPostCode from "/src/pages/LoginPostCode";
+import OnBoarding from "/src/pages/OnBoarding";
 import Profile from "/src/pages/Profile";
 import ProfileEdit from "/src/pages/ProfileEdit";
 import React from "react";
@@ -17,6 +18,7 @@ function Layout({ children }) {
     <div>
       <Routes>
         <Route path="/login" element={null} />
+        <Route path="/" element={null} />
         <Route
           path="*"
           element={
@@ -40,7 +42,8 @@ export default function App() {
           <Routes>
             <Route path="/login" element={<LogIn />} />
             <Route path="/auth/*" element={<LoginPostCode />} />
-            <Route path="/" element={<Calendar />} />
+            <Route path="/" element={<OnBoarding />} />
+            <Route path="/calendar" element={<Calendar />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/edit" element={<ProfileEdit />} />
             <Route path="/event" element={<EventInfoModal />} />
