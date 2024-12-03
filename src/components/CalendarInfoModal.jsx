@@ -12,25 +12,37 @@ import {
   FaToggleOn,
   FaTrash,
 } from "react-icons/fa";
-
 export default function CalendarInfo({ calendar, onClose, userId }) {
-  // 초기 값 설정
-  const [title, setTitle] = useState(calendar.calendar_name);
-  const [detailMemo, setDetailMemo] = useState(calendar.calendar_description);
-  const [isPublic, setIsPublic] = useState(calendar.is_public);
-  const [calColor, setCalColor] = useState(calendar.calendar_color);
-  const [visitCode, setVisitCode] = useState(calendar.invitation_code);
+  // 통합 상태 관리
+  const [calendarState, setCalendarState] = useState({
+    title: calendar.calendar_name,
+    detailMemo: calendar.calendar_description,
+    isPublic: calendar.is_public,
+    calColor: calendar.calendar_color,
+    visitCode: calendar.invitation_code,
+  });
 
-  // 상태 관리
-  const [newTitle, setNewTitle] = useState(title);
-  const [newDetail, setNewDetail] = useState(detailMemo);
-  const [newPublic, setNewPublic] = useState(isPublic);
-  const [newColor, setNewColor] = useState(calColor);
-
-  // 수정 및 편집
   const [isEdit, setIsEdit] = useState(false);
-  const toggleIsEdit = () => setIsEdit(!isEdit);
-  const toggleIsPublic = () => setNewPublic(!newPublic);
+
+  // 상태 변경 핸들러
+  const updateState = (key, value) => {
+    setCalendarState((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  // 상태 초기화 함수
+  const resetState = () => {
+    setCalendarState({
+      title: calendar.calendar_name,
+      detailMemo: calendar.calendar_description,
+      isPublic: calendar.is_public,
+      calColor: calendar.calendar_color,
+      visitCode: calendar.invitation_code,
+    });
+    setIsEdit(false);
+  };
 
   // 컴포넌트가 마운트될 때 creator_id와 userId 확인
   useEffect(() => {
@@ -45,10 +57,10 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
       const response = await axios.patch(
         `/api/calendars/${calendar.calendar_id}`,
         {
-          calendar_name: newTitle,
-          calendar_description: newDetail,
-          is_public: newPublic,
-          calendar_color: newColor,
+          calendar_name: calendarState.title,
+          calendar_description: calendarState.detailMemo,
+          is_public: calendarState.isPublic,
+          calendar_color: calendarState.calColor,
         },
         {
           headers: {
@@ -59,13 +71,9 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
       );
 
       if (response.status === 200) {
-        // 서버 응답 성공 시 상태 업데이트
-        setTitle(newTitle);
-        setDetailMemo(newDetail);
-        setIsPublic(newPublic);
-        setCalColor(newColor); // 색상 업데이트
-        toggleIsEdit();
-        onClose(); // 저장 후 모달 닫기
+        // 상태 업데이트 및 편집 종료
+        resetState();
+        onClose();
       }
     } catch (error) {
       console.error("캘린더 수정 실패:", error);
@@ -73,19 +81,10 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
     }
   };
 
-  // 취소
-  const cancel = () => {
-    setNewTitle(title);
-    setNewDetail(detailMemo);
-    setNewPublic(isPublic);
-    setNewColor(calColor);
-    toggleIsEdit();
-  };
-
   // 삭제
   const handleDelete = async () => {
     try {
-      const token = localStorage.getItem("token"); // 토큰 가져오기
+      const token = localStorage.getItem("token");
       const response = await axios.delete(
         `/api/calendars/${calendar.calendar_id}`,
         {
@@ -97,9 +96,8 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
       );
 
       if (response.status === 200) {
-        // 삭제가 성공적으로 완료되었을 때
         alert("캘린더가 성공적으로 삭제되었습니다.");
-        onClose(); // 삭제 후 모달 닫기
+        onClose();
       }
     } catch (error) {
       console.error("캘린더 삭제 실패:", error);
@@ -119,19 +117,20 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
           {isEdit ? (
             <input
               type="text"
-              value={newTitle}
+              value={calendarState.title}
               className="h-[3.8rem] w-[35rem] rounded-md bg-lightGray/20 text-[3em] font-bold text-darkGray focus:outline-none"
-              onChange={(e) => setNewTitle(e.target.value)}
+              onChange={(e) => updateState("title", e.target.value)}
             />
           ) : (
             <div
               className="flex h-[3.8rem] w-[35rem] items-center rounded-md text-[3em] font-bold focus:outline-none"
-              style={{ color: calColor }}
+              style={{ color: calendarState.calColor }}
             >
-              {title}
+              {calendarState.title}
             </div>
           )}
         </div>
+        {/* 캘린더 멤버 */}
         <div className="mb-[2rem]">
           <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
             멤버
@@ -142,6 +141,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
               : "나만의 캘린더"}
           </div>
         </div>
+        {/* 상세 및 색상 */}
         <div className="flex space-x-[15.5rem]">
           <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
             캘린더 상세
@@ -154,9 +154,9 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
           <div className="flex">
             <input
               type="text"
-              value={newDetail}
+              value={calendarState.detailMemo}
               className="mb-[3rem] mr-[2rem] flex h-[1.5rem] w-[18rem] items-center rounded-md bg-lightGray/20 text-[1.1rem] font-semibold text-darkGray"
-              onChange={(e) => setNewDetail(e.target.value)}
+              onChange={(e) => updateState("detailMemo", e.target.value)}
             />
             <div className="ml-[0.2rem] flex h-[2rem] w-[10rem]">
               {[
@@ -170,11 +170,11 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
               ].map(({ color, label }) => (
                 <button
                   key={label}
-                  onClick={() => setNewColor(color)}
-                  className={`relative mr-[0.3rem] flex h-[1rem] w-[1rem] items-center justify-center`}
+                  onClick={() => updateState("calColor", color)}
+                  className="relative mr-[0.3rem] flex h-[1rem] w-[1rem] items-center justify-center"
                   style={{ backgroundColor: color }}
                 >
-                  {newColor === color && (
+                  {calendarState.calColor === color && (
                     <FaCheck className="absolute text-[0.6rem] text-eventoWhite" />
                   )}
                 </button>
@@ -184,14 +184,15 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
         ) : (
           <div className="flex">
             <div className="mb-[3rem] flex h-[1.5rem] w-[20rem] items-center text-[1.1rem] font-semibold text-darkGray">
-              {detailMemo}
+              {calendarState.detailMemo}
             </div>
             <div
               className="ml-[0.2rem] h-[1rem] w-[1rem] items-center"
-              style={{ backgroundColor: calColor }}
+              style={{ backgroundColor: calendarState.calColor }}
             />
           </div>
         )}
+        {/* 공개 여부 및 초대 코드 */}
         <div className="flex">
           <div className="mb-[0.7rem] w-[20rem] text-[1rem] font-bold text-eventoPurple">
             캘린더 공개 여부
@@ -201,55 +202,51 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
           </div>
         </div>
         {isEdit ? (
-          <>
-            <div className="flex space-x-[6.5rem]">
-              <div className="flex space-x-[1rem] text-center">
-                <div className="flex h-[1rem] items-center text-[1.1rem] font-semibold text-darkGray">
-                  비공개 캘린더로 설정하기
-                </div>
-                {newPublic ? (
-                  <FaToggleOff
-                    size={25}
-                    className="cursor-pointer text-eventoPurple"
-                    onClick={toggleIsPublic}
-                  />
-                ) : (
-                  <FaToggleOn
-                    size={25}
-                    className="cursor-pointer text-eventoPurple"
-                    onClick={toggleIsPublic}
-                  />
-                )}
+          <div className="flex space-x-[6.5rem]">
+            <div className="flex space-x-[1rem] text-center">
+              <div className="flex h-[1rem] items-center text-[1.1rem] font-semibold text-darkGray">
+                비공개 캘린더로 설정하기
               </div>
-              <div className="pr-[0.5rem] text-[1.1rem] font-semibold text-darkGray">
-                {visitCode}
-              </div>
+              {calendarState.isPublic ? (
+                <FaToggleOff
+                  size={25}
+                  className="cursor-pointer text-eventoPurple"
+                  onClick={() => updateState("isPublic", false)}
+                />
+              ) : (
+                <FaToggleOn
+                  size={25}
+                  className="cursor-pointer text-eventoPurple"
+                  onClick={() => updateState("isPublic", true)}
+                />
+              )}
             </div>
-          </>
+            <div className="pr-[0.5rem] text-[1.1rem] font-semibold text-darkGray">
+              {calendarState.visitCode}
+            </div>
+          </div>
         ) : (
-          <>
-            <div className="flex">
-              <div className="flex h-[1rem] w-[20rem] items-center text-[1.1rem] font-semibold text-darkGray">
-                {isPublic ? "공개" : "비공개"}
-              </div>
-              <div className="pr-[0.5rem] text-[1.1rem] font-semibold text-darkGray">
-                {visitCode}
-              </div>
-              <CopyToClipboard
-                className="cursor-pointer text-eventoPurple active:text-lightGray"
-                text={visitCode}
-              >
-                <FaRegCopy />
-              </CopyToClipboard>
+          <div className="flex">
+            <div className="flex h-[1rem] w-[20rem] items-center text-[1.1rem] font-semibold text-darkGray">
+              {calendarState.isPublic ? "공개" : "비공개"}
             </div>
-          </>
+            <div className="pr-[0.5rem] text-[1.1rem] font-semibold text-darkGray">
+              {calendarState.visitCode}
+            </div>
+            <CopyToClipboard
+              className="cursor-pointer text-eventoPurple active:text-lightGray"
+              text={calendarState.visitCode}
+            >
+              <FaRegCopy />
+            </CopyToClipboard>
+          </div>
         )}
       </div>
       {isEdit ? (
         <div className="absolute bottom-[2rem] right-[2rem] flex space-x-[0.5rem]">
           <button
             className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple/80 text-center text-[1.1rem] text-eventoPurple/80 hover:bg-eventoPurpleLight/70 active:bg-eventoPurpleLight"
-            onClick={cancel}
+            onClick={resetState}
           >
             <span>취소</span>
           </button>
@@ -264,7 +261,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
         <div className="absolute bottom-[3rem] right-[3rem] flex space-x-[0.5rem]">
           <FaPen
             className="cursor-pointer text-[1.5rem] text-darkGray"
-            onClick={toggleIsEdit}
+            onClick={() => setIsEdit(true)}
           />
           {calendar.creator_id === userId && (
             <FaTrashCan
