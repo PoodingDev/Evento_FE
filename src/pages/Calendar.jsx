@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid"; // 월 뷰 플러그인
-import interactionPlugin from "@fullcalendar/interaction"; // 상호작용 플러그인 (이벤트 클릭 등)
+import "../styles/calendar.css";
 import CreateEvent from "components/CreateEventModal";
 import EventInfoModal from "/src/components/EventInfoModal";
-import "../styles/calendar.css";
+import FullCalendar from "@fullcalendar/react";
+import React, { useEffect, useState } from "react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import { FaPlus } from "react-icons/fa6";
 
 export default function Calendar() {
   const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
@@ -53,18 +54,21 @@ export default function Calendar() {
 
   return (
     <>
-      <div className="mainCalendar">
+      <div className="mainCalendar bg-eventoWhite">
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]} // 플러그인 추가
-          initialView="dayGridMonth" // 기본 뷰 설정 (월 뷰)
+          initialView="dayGridMonth" // 기본 뷰 설정
           headerToolbar={{
             left: "", // 왼쪽 버튼 제거
             center: "title", // 가운데에 제목 배치
             right: "prev,today,next", // 오른쪽에 이전/다음 버튼 배치
           }}
-          events={events} // 상태에서 가져온 이벤트
+          buttonText={{
+            today: "TODAY", // 'today' 버튼 텍스트를 대문자로
+          }}
+          events={events} // 이벤트 추가
           aspectRatio={2.1}
-          eventClick={handleEventClick} // 클릭한 이벤트 처리
+          eventClick={handleEventClick} // 이벤트 클릭 핸들러
         />
       </div>
 
@@ -80,9 +84,9 @@ export default function Calendar() {
 
       <div
         onClick={toggleCreateEvent}
-        className="absolute bottom-[6rem] right-[6rem] z-[100] flex h-[8rem] w-[8rem] cursor-pointer items-center justify-center rounded-full bg-eventoPurple/70 text-center text-[4rem] text-eventoWhite"
+        className="absolute bottom-[5rem] right-[5rem] z-[100] flex h-[6rem] w-[6rem] cursor-pointer items-center justify-center rounded-full bg-eventoPurple/60 text-center text-[4rem] text-eventoWhite hover:bg-eventoPurple"
       >
-        +
+        <FaPlus className="text-[3rem]" />
       </div>
 
       {isCreateEventOpen && (
