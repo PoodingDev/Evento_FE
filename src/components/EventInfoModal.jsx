@@ -36,13 +36,14 @@ export default function EventInfo({ onClose, eventDetails, events }) {
 
   //상태 관리
   const [newEventInfo, setNewEventInfo] = useState({
-    newEventTitle: eventDetails.title,
-    newStartDate: eventDetails.start,
-    newEndDate: eventDetails.end,
-    newEventDetail: eventDetails.description,
+    newEventTitle: "",
+    newStartDate: new Date(),
+    newEndDate: new Date(),
+    newEventDetail: "",
     newEventPublic: false,
   });
 
+  //캘린더 색상
   const [calColor, setCalColor] = useState(`${eventDetails.color}`);
 
   useEffect(() => {
@@ -67,12 +68,20 @@ export default function EventInfo({ onClose, eventDetails, events }) {
 
         setEventInfo({
           eventId: event_id,
-          eventTitle: event_title,
-          title: cal_title,
-          startDate: start_time,
-          endDate: end_time,
-          detailEventMemo: event_description,
+          eventTitle: eventDetails.title,
+          title: eventDetails.cal_title,
+          startDate: eventDetails.start,
+          endDate: eventDetails.end,
+          detailEventMemo: eventDetails.description,
           isEventPublic: is_public,
+        });
+
+        setNewEventInfo({
+          newEventTitle: eventDetails.title,
+          newStartDate: eventDetails.start,
+          newEndDate: eventDetails.end,
+          newEventDetail: eventDetails.description,
+          newEventPublic: false,
         });
       } catch (error) {
         console.error("이벤트 정보를 가져오는 중 오류 발생:", error);
@@ -94,7 +103,7 @@ export default function EventInfo({ onClose, eventDetails, events }) {
   //북마크
   const [isLike, setIsLike] = useState(false);
   const toggleIsLike = () => setIsLike(!isLike);
-  console.log(eventDetails);
+  console.log("dkdkdk", newEventInfo.endDate);
 
   //댓글
   const data = [
@@ -177,11 +186,12 @@ export default function EventInfo({ onClose, eventDetails, events }) {
           eventTitle: newEventInfo.newEventTitle,
           title: eventInfo.title,
           startDate: newEventInfo.newStartDate,
-          endDate: newEventInfo.newStartDate,
+          endDate: newEventInfo.newEndDate,
           detailEventMemo: newEventInfo.newEventDetail,
           isEventPublic: newEventInfo.newEventPublic,
         });
         toggleIsEdit();
+        console.log(newEventInfo.newEndDate);
       }
     } catch (error) {
       console.error("캘린더 수정 실패:", error);
@@ -222,6 +232,12 @@ export default function EventInfo({ onClose, eventDetails, events }) {
       alert("이벤트 삭제에 실패했습니다. 다시 시도해 주세요.");
     }
   };
+
+  useEffect(() => {
+    // calData가 업데이트된 후 출력
+    console.log("dk", eventInfo);
+  }, [eventInfo]);
+
   return (
     <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
       <FaXmark
@@ -264,7 +280,7 @@ export default function EventInfo({ onClose, eventDetails, events }) {
               </div>
               <input
                 type="text"
-                value={eventDetails.title}
+                value={eventInfo.eventTitle}
                 className="ml-[1rem] h-[2.5rem] w-full bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
                 onChange={(e) => {
                   setEventInfo({
@@ -336,7 +352,7 @@ export default function EventInfo({ onClose, eventDetails, events }) {
             </div>
             <div className="mb-[2rem] flex w-[25rem] -translate-x-[0.3rem] items-center text-[2rem] font-bold text-darkGray">
               <DatePicker
-                selected={eventDetails.start}
+                selected={eventInfo.startDate}
                 onChange={(date) =>
                   setEventInfo({
                     startDate: date,
@@ -348,10 +364,10 @@ export default function EventInfo({ onClose, eventDetails, events }) {
               />
               <span className="w-[2rem] text-center">-</span>
               <DatePicker
-                selected={eventDetails.end || eventDetails.start}
+                selected={eventInfo.endDate || eventInfo.startDate}
                 onChange={(date) =>
                   setEventInfo({
-                    startDate: date,
+                    endDate: date,
                   })
                 }
                 dateFormat="yyyy-MM-dd"
@@ -419,7 +435,7 @@ export default function EventInfo({ onClose, eventDetails, events }) {
               </div>
               <input
                 type="text"
-                value={eventDetails.description}
+                value={eventInfo.detailEventMemo}
                 onChange={(e) => {
                   setEventInfo({ detailEventMemo: e.target.value });
                 }}
