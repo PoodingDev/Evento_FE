@@ -151,3 +151,39 @@ body {
   min-height: 100vh;
   font-family: "Pretendard", sans-serif;
 }
+
+.react-datepicker {
+  background-color: #f9f5ff !important;
+  border: none !important;
+  outline: none !important;
+  text-align: right !important;
+}
+
+.react-datepicker__header {
+  background-color: #EADDFF !important;
+  color: #4F378B !important;
+  border-bottom: none !important;
+}
+
+.react-datepicker__day--selected {
+  background-color: #8867DF !important;
+  color: white !important;
+}
+
+.react-datepicker__day--today {
+  border: 1px solid #6d87d5 !important;
+}
+
+.react-datepicker__input-container input {
+  outline: none !important;
+  border: none !important;
+  text-align: right !important;
+}
+
+.react-datepicker__day {
+  outline: none !important;
+}
+
+.react-datepicker__day:hover {
+  background-color: #EADDFF !important;
+}
