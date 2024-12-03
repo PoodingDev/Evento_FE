@@ -12,33 +12,69 @@ import {
 export default function Subscription() {
   const { loggedIn, userInfo } = useAuth();
   const [subscribedCalendars, setSubscribedCalendars] = useState([]);
+  const [filteredSearch, setFilteredSearch] = useState([]); // 상태 추가
 
   const toggleSubscription = async (id) => {
-    const calendar = subscribedCalendars.find(
+    const calendarInSearch = filteredSearch.find(
       (calendar) => calendar.calendar_id === id,
     );
 
-    if (calendar.isSubscribed) {
-      // 구독 취소
-      try {
+    const calendarInSubscribed = subscribedCalendars.find(
+      (calendar) => calendar.calendar_id === id,
+    );
+
+    try {
+      if (
+        calendarInSearch?.isSubscribed ||
+        calendarInSubscribed?.isSubscribed
+      ) {
+        // 구독 취소
         const token = localStorage.getItem("token");
         await axios.delete(`/api/subscriptions/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
         // 상태 업데이트
-        setSubscribedCalendars((prevCalendars) =>
-          prevCalendars.map((calendar) =>
+        setFilteredSearch((prevSearch) =>
+          prevSearch.map((calendar) =>
             calendar.calendar_id === id
               ? { ...calendar, isSubscribed: false }
               : calendar,
           ),
         );
-      } catch (error) {
-        console.error("구독 취소 중 오류 발생:", error);
+
+        setSubscribedCalendars((prevCalendars) =>
+          prevCalendars.filter((calendar) => calendar.calendar_id !== id),
+        );
+      } else {
+        // 구독 추가
+        const token = localStorage.getItem("token");
+        const response = await axios.post(
+          `/api/subscriptions`,
+          { calendar_id: id },
+          { headers: { Authorization: `Bearer ${token}` } },
+        );
+
+        if (response.status === 201) {
+          const newSubscription = response.data;
+
+          // 검색 목록 및 구독 목록 상태 업데이트
+          setFilteredSearch((prevSearch) =>
+            prevSearch.map((calendar) =>
+              calendar.calendar_id === id
+                ? { ...calendar, isSubscribed: true }
+                : calendar,
+            ),
+          );
+
+          setSubscribedCalendars((prevCalendars) => [
+            ...prevCalendars,
+            newSubscription,
+          ]);
+        }
       }
-    } else {
-      console.log("구독 추가 기능은 아직 구현되지 않았습니다.");
+    } catch (error) {
+      console.error("구독 상태 변경 중 오류 발생:", error);
     }
   };
 
@@ -54,7 +90,6 @@ export default function Subscription() {
         );
 
         if (subscribedCalendarsResponse.status === 200) {
-          // 상태 초기화
           const initializedCalendars = subscribedCalendarsResponse.data.map(
             (calendar) => ({
               ...calendar,
@@ -180,9 +215,9 @@ function SubscriptionCalender({ openCalendars, toggleSubscription }) {
   return (
     <>
       <div className="relative after:absolute after:bottom-0 after:left-0 after:top-0 after:w-[2px] after:bg-gray-200 after:content-['']"></div>
-      <section className="flex flex-col items-center w-1/3">
+      <section className="flex w-1/3 flex-col items-center">
         <h1>구독한 캘린더</h1>
-        <ul className="flex flex-col w-auto">
+        <ul className="flex w-auto flex-col">
           {openCalendars.map((calendar) => (
             <li
               key={calendar.calendar_id}
