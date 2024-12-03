@@ -59,22 +59,22 @@ let mockCalendars = [
 //구독한 캘린더
 let mockSubscriptions = [
   {
-    calendar_id: 1,
+    calendar_id: 5,
     calendar_name: "IU",
     calendar_description: "dlwlrma",
   },
   {
-    calendar_id: 2,
+    calendar_id: 6,
     calendar_name: "BTS",
     calendar_description: "bts_official",
   },
   {
-    calendar_id: 3,
+    calendar_id: 7,
     calendar_name: "PoodingDev",
     calendar_description: "eventoteam",
   },
   {
-    calendar_id: 4,
+    calendar_id: 8,
     calendar_name: "유재석",
     calendar_description: "MC Yoo",
   },
@@ -82,7 +82,7 @@ let mockSubscriptions = [
 
 let mockSearchCalendars = [
   {
-    calendar_id: 1,
+    calendar_id: 5,
     name: "IU",
     description: "IU의 캘린더입니다.",
     is_public: true,
@@ -90,20 +90,12 @@ let mockSearchCalendars = [
     creator: { nickname: "dlwlrma" },
   },
   {
-    calendar_id: 2,
+    calendar_id: 6,
     name: "BTS",
     description: "BTS의 캘린더입니다.",
     is_public: true,
     color: "#33FF57",
     creator: { nickname: "bts_official" },
-  },
-  {
-    calendar_id: 3,
-    name: "Travel",
-    description: "여행 캘린더입니다.",
-    is_public: true,
-    color: "#3357FF",
-    creator: { nickname: "traveler" },
   },
 ];
 
