@@ -58,7 +58,7 @@ export default function OnBoarding() {
     <div className="flex min-h-screen items-center justify-center bg-eventoWhite px-5 py-5">
       {/* <div className="relative mx-auto w-[40%] overflow-hidden rounded-3xl bg-white px-10 pb-10 pt-16 text-gray-800 shadow-lg">
        */}
-      <div className="relative mx-auto w-[40%] overflow-hidden rounded-3xl px-10 pb-10 pt-16 text-gray-800">
+      <div className="relative w-[40%] overflow-hidden rounded-3xl mx-10 pb-10 pt-16 text-gray-800">
         {/* 슬라이드 컨테이너 */}
         <div
           className="flex transition-transform duration-500 ease-in-out"
@@ -104,9 +104,8 @@ export default function OnBoarding() {
             <span
               key={index}
               onClick={() => handleDotClick(index)}
-              className={`mx-1 h-3 w-3 cursor-pointer rounded-full ${
-                index === currentIndex ? "bg-eventoPurple" : "bg-gray-300"
-              }`}
+              className={`mx-1 h-3 w-3 cursor-pointer rounded-full ${index === currentIndex ? "bg-eventoPurple" : "bg-gray-300"
+                }`}
             ></span>
           ))}
         </div>
