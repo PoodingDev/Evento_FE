@@ -12,29 +12,60 @@ import {
 export default function Subscription() {
   const { loggedIn, userInfo } = useAuth();
   const [subscribedCalendars, setSubscribedCalendars] = useState([]);
-  // 클릭 시 구독 상태 반전
-  const toggleSubscription = (id) => {
-    setSubscribedCalendars((prevCalendars) =>
-      prevCalendars.map((calendar) =>
-        calendar.calendar_id === id
-          ? { ...calendar, isSubscribed: !calendar.isSubscribed } // 구독 상태 반전
-          : calendar,
-      ),
+
+  // 구독 상태를 토글하는 함수
+  const toggleSubscription = async (id) => {
+    const calendar = subscribedCalendars.find(
+      (calendar) => calendar.calendar_id === id,
     );
+
+    if (calendar.isSubscribed) {
+      // 구독 취소 요청
+      try {
+        const token = localStorage.getItem("token");
+        await axios.delete(`/api/unsubscribe`, {
+          headers: { Authorization: `Bearer ${token}` },
+          data: { calendar_id: id }, // DELETE 요청 본문에 데이터 포함
+        });
+
+        // 상태 업데이트
+        setSubscribedCalendars((prevCalendars) =>
+          prevCalendars.map((calendar) =>
+            calendar.calendar_id === id
+              ? { ...calendar, isSubscribed: false }
+              : calendar,
+          ),
+        );
+      } catch (error) {
+        console.error("구독 취소 중 오류 발생:", error);
+      }
+    } else {
+      console.log("구독 추가 기능은 아직 구현되지 않았습니다.");
+    }
   };
 
+  // 초기 데이터 로드
   useEffect(() => {
     async function fetchData() {
       try {
         const token = localStorage.getItem("token");
-        const [subscribedCalendarsResponse] = await Promise.all([
-          axios.get(`/api/users/${userInfo.user_id}/subscriptions`, {
+        const subscribedCalendarsResponse = await axios.get(
+          `/api/users/${userInfo.user_id}/subscriptions`,
+          {
             headers: { Authorization: `Bearer ${token}` },
-          }),
-        ]);
+          },
+        );
 
         if (subscribedCalendarsResponse.status === 200) {
-          setSubscribedCalendars(subscribedCalendarsResponse.data);
+          // 상태 초기화: isSubscribed: true 추가
+          const initializedCalendars = subscribedCalendarsResponse.data.map(
+            (calendar) => ({
+              ...calendar,
+              isSubscribed: true, // 기본 상태 설정
+            }),
+          );
+
+          setSubscribedCalendars(initializedCalendars);
         }
       } catch (error) {
         console.error("캘린더 데이터를 가져오는 중 오류 발생:", error);
@@ -44,7 +75,7 @@ export default function Subscription() {
     if (userInfo?.user_id) {
       fetchData();
     }
-  }, [userInfo]);
+  }, [userInfo, subscribedCalendars]);
 
   return (
     <div className="h-[100vh] flex-col pl-[18rem] pt-[5rem]">
@@ -56,10 +87,10 @@ export default function Subscription() {
       </div>
       <div className="flex w-full">
         <CaleanderSearch
-          // openCalendars={openCalendars}
+          openCalendars={subscribedCalendars}
           toggleSubscription={toggleSubscription}
         />
-        <SubsciptionCaleander
+        <SubscriptionCalender
           openCalendars={subscribedCalendars}
           toggleSubscription={toggleSubscription}
         />
@@ -69,13 +100,12 @@ export default function Subscription() {
 }
 
 function CaleanderSearch({ openCalendars, toggleSubscription }) {
-  //  input 검색창 상태 관리
+  // 검색창 상태 관리
   const [inputValue, setInputValue] = useState("");
-  console.log(inputValue);
   const [debouncedInput, setDebouncedInput] = useState("");
   const [filteredSearch, setFilteredSearch] = useState([]);
 
-  // Debounce 로직
+  // 디바운스 로직
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedInput(inputValue); // 디바운스된 검색어 업데이트
@@ -102,48 +132,46 @@ function CaleanderSearch({ openCalendars, toggleSubscription }) {
   }, [debouncedInput, openCalendars]);
 
   return (
-    <>
-      <section className="flex w-2/3 flex-col items-center justify-center py-[3rem] align-middle">
-        <div className="flex items-center gap-2">
-          <input
-            type="text"
-            value={inputValue}
-            placeholder="닉네임을 검색하세요"
-            onChange={(event) => setInputValue(event.target.value)}
-            className="focus: rounded-2xl bg-gray-200 p-[2px] px-3 py-2 text-center focus:border-[1px] focus:border-eventoPurple/80 focus:bg-eventoPurpleLight/80 focus:outline-none"
-          />
-          <IoSearch className="text-[2rem]" />
-        </div>
-        <ul className="my-[2rem] flex w-auto flex-col">
-          {filteredSearch.map((calendar) => (
-            <li
-              key={calendar.calendar_id}
-              className="my-2 flex w-[20rem] items-center gap-[1rem]"
+    <section className="flex w-2/3 flex-col items-center justify-center py-[3rem] align-middle">
+      <div className="flex items-center gap-2">
+        <input
+          type="text"
+          value={inputValue}
+          placeholder="닉네임을 검색하세요"
+          onChange={(event) => setInputValue(event.target.value)}
+          className="focus: rounded-2xl bg-gray-200 p-[2px] px-3 py-2 text-center focus:border-[1px] focus:border-eventoPurple/80 focus:bg-eventoPurpleLight/80 focus:outline-none"
+        />
+        <IoSearch className="text-[2rem]" />
+      </div>
+      <ul className="my-[2rem] flex w-auto flex-col">
+        {filteredSearch.map((calendar) => (
+          <li
+            key={calendar.calendar_id}
+            className="my-2 flex w-[20rem] items-center gap-[1rem]"
+          >
+            <IoPersonCircleOutline className="h-[3.5rem] w-[3.5rem] object-cover" />
+            <div>
+              <h3 className="text-eventoPurpleDark">{calendar.calendarName}</h3>
+              <p className="text-darkGray">{calendar.userNickNam}</p>
+            </div>
+            <button
+              className={`ml-auto h-[2rem] w-[5rem] rounded-[0.625rem] border-2 p-1 align-middle ${
+                calendar.isSubscribed
+                  ? "border-darkRed bg-white text-darkRed"
+                  : "border-darkRed bg-darkRed text-white"
+              }`}
+              onClick={() => toggleSubscription(calendar.calendar_id)}
             >
-              <IoPersonCircleOutline className="h-[3.5rem] w-[3.5rem] object-cover" />
-              <div>
-                <h3 className="text-[#493282]">{calendar.calendarName}</h3>
-                <p className="text-[#646464]">{calendar.userNickNam}</p>
-              </div>
-              <button
-                className={`ml-auto h-[2rem] w-[5rem] rounded-[0.625rem] border-2 p-1 align-middle ${
-                  calendar.isSubscribed
-                    ? "border-[#E13228] bg-white text-[#E13228]"
-                    : "border-[#E13228] bg-[#E13228] text-white"
-                }`}
-                onClick={() => toggleSubscription(calendar.calendar_id)}
-              >
-                {calendar.isSubscribed ? "구독취소" : "구독"}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </section>
-    </>
+              {calendar.isSubscribed ? "구독취소" : "구독"}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
-function SubsciptionCaleander({ openCalendars, toggleSubscription }) {
+function SubscriptionCalender({ openCalendars, toggleSubscription }) {
   return (
     <>
       <div className="relative after:absolute after:bottom-0 after:left-0 after:top-0 after:w-[2px] after:bg-gray-200 after:content-['']"></div>
@@ -155,22 +183,24 @@ function SubsciptionCaleander({ openCalendars, toggleSubscription }) {
               key={calendar.calendar_id}
               className="my-2 flex items-center gap-[1rem]"
             >
-              <IoPersonCircleOutline className="h-[3.5rem] w-[3.5rem] object-cover" />
+              <IoPersonCircleOutline className="h-[3.5rem] w-[3.7rem] object-cover text-eventoPurpleDark/70" />
               <div>
-                <h3 className="text-[#493282]">{calendar.calendar_name}</h3>
-                <p className="text-[#646464]">
+                <h3 className="text-[1rem] font-medium text-eventoPurpleDark/80">
+                  {calendar.calendar_name}
+                </h3>
+                <p className="text-[0.9rem] text-darkGray/80">
                   {calendar.calendar_description}
                 </p>
               </div>
               <button
-                className={`ml-auto h-[2rem] w-[5rem] rounded-[0.625rem] border-2 p-1 align-middle ${
+                className={`ml-auto h-[1.8rem] w-[4.5rem] rounded-[0.625rem] border-2 p-1 align-middle text-[0.9rem] ${
                   calendar.isSubscribed
-                    ? "border-[#E13228] bg-white text-[#E13228]"
-                    : "border-[#E13228] bg-[#E13228] text-white"
+                    ? "border-darkRed/85 bg-white text-darkRed/85"
+                    : "border-darkRed/50 bg-darkRed/85 text-white"
                 }`}
                 onClick={() => toggleSubscription(calendar.calendar_id)}
               >
-                {calendar.isSubscribed ? "구독취소" : "구독"}
+                {calendar.isSubscribed ? "구독 취소" : "구독"}
               </button>
             </li>
           ))}

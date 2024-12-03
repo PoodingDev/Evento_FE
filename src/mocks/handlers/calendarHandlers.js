@@ -68,6 +68,16 @@ let mockSubscriptions = [
     calendar_name: "bts_official",
     calendar_description: "BTS",
   },
+  {
+    calendar_id: 3,
+    calendar_name: "Pooding_official",
+    calendar_description: "poodingdev",
+  },
+  {
+    calendar_id: 4,
+    calendar_name: "MC Yoo",
+    calendar_description: "유재석",
+  },
 ];
 let mockOpenCalendars = [
   {
@@ -316,5 +326,43 @@ export const calendarHandlers = [
       );
     }
     return res(ctx.status(200), ctx.json(mockOpenCalendars));
+  }),
+
+  rest.delete("/api/unsubscribe", async (req, res, ctx) => {
+    const token = req.headers.get("Authorization");
+    const { calendar_id } = await req.json(); // 비동기로 요청 본문 읽기
+
+    if (!token || token !== "Bearer fake_token") {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          error: "인증 실패",
+          message: "로그인이 필요합니다. 다시 로그인해 주세요.",
+        }),
+      );
+    }
+
+    const calendarIndex = mockSubscriptions.findIndex(
+      (calendar) => calendar.calendar_id === parseInt(calendar_id, 10),
+    );
+
+    if (calendarIndex === -1) {
+      return res(
+        ctx.status(404),
+        ctx.json({
+          error: "캘린더 없음",
+          message: "구독 중인 캘린더를 찾을 수 없습니다.",
+        }),
+      );
+    }
+
+    mockSubscriptions.splice(calendarIndex, 1); // 삭제
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        message: "구독이 성공적으로 취소되었습니다.",
+      }),
+    );
   }),
 ];
