@@ -43,12 +43,16 @@ export default function Calendar() {
           dateClick={handleDateClick} // 날짜 클릭 핸들러 등록
         />
       </div>
+
       {isModalOpen && (
-        <EventInfoModal
-          date={selectedDate}
-          onClose={closeModal}
-        />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <EventInfoModal
+            date={selectedDate}
+            onClose={closeModal}
+          />
+        </div>
       )}
+
       <div
         onClick={toggleCreateEvent}
         className="absolute bottom-[6rem] right-[6rem] flex h-[8rem] w-[8rem] cursor-pointer items-center justify-center rounded-full bg-eventoPurple/70 text-center text-[4rem] text-eventoWhite z-[100]"
