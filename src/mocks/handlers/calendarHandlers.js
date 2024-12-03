@@ -328,10 +328,11 @@ export const calendarHandlers = [
     return res(ctx.status(200), ctx.json(mockOpenCalendars));
   }),
 
-  rest.delete("/api/unsubscribe", async (req, res, ctx) => {
+  rest.delete("/api/subscriptions/:calendar_id", async (req, res, ctx) => {
     const token = req.headers.get("Authorization");
-    const { calendar_id } = await req.json(); // 비동기로 요청 본문 읽기
+    const { calendar_id } = req.params;
 
+    // 인증 토큰 확인
     if (!token || token !== "Bearer fake_token") {
       return res(
         ctx.status(401),
@@ -342,6 +343,7 @@ export const calendarHandlers = [
       );
     }
 
+    // 해당 캘린더 인덱스 확인
     const calendarIndex = mockSubscriptions.findIndex(
       (calendar) => calendar.calendar_id === parseInt(calendar_id, 10),
     );
@@ -356,13 +358,9 @@ export const calendarHandlers = [
       );
     }
 
-    mockSubscriptions.splice(calendarIndex, 1); // 삭제
 
-    return res(
-      ctx.status(200),
-      ctx.json({
-        message: "구독이 성공적으로 취소되었습니다.",
-      }),
-    );
+    mockSubscriptions.splice(calendarIndex, 1);
+
+    return res(ctx.status(204)); 
   }),
 ];

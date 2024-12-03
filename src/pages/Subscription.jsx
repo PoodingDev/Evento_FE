@@ -13,19 +13,17 @@ export default function Subscription() {
   const { loggedIn, userInfo } = useAuth();
   const [subscribedCalendars, setSubscribedCalendars] = useState([]);
 
-  // 구독 상태를 토글하는 함수
   const toggleSubscription = async (id) => {
     const calendar = subscribedCalendars.find(
       (calendar) => calendar.calendar_id === id,
     );
 
     if (calendar.isSubscribed) {
-      // 구독 취소 요청
+      // 구독 취소
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`/api/unsubscribe`, {
+        await axios.delete(`/api/subscriptions/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
-          data: { calendar_id: id }, // DELETE 요청 본문에 데이터 포함
         });
 
         // 상태 업데이트
@@ -44,7 +42,6 @@ export default function Subscription() {
     }
   };
 
-  // 초기 데이터 로드
   useEffect(() => {
     async function fetchData() {
       try {
@@ -57,11 +54,11 @@ export default function Subscription() {
         );
 
         if (subscribedCalendarsResponse.status === 200) {
-          // 상태 초기화: isSubscribed: true 추가
+          // 상태 초기화
           const initializedCalendars = subscribedCalendarsResponse.data.map(
             (calendar) => ({
               ...calendar,
-              isSubscribed: true, // 기본 상태 설정
+              isSubscribed: true,
             }),
           );
 
