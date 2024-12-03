@@ -9,22 +9,31 @@ import "../styles/calendar.css";
 export default function Calendar() {
   const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
-  const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜 상태
   const [events, setEvents] = useState([]); // 이벤트 상태s
+  const [selectedEvent, setSelectedEvent] = useState(null);  // 클릭된 이벤트 상태 관리
 
   const toggleCreateEvent = () => {
     setIsCreateEventOpen((prev) => !prev);
   };
 
-  // 날짜 클릭 핸들러
-  const handleDateClick = (info) => {
-    setSelectedDate(info.dateStr); // 클릭된 날짜 저장
-    setIsModalOpen(true); // 모달 열기
+  // 클릭된 이벤트를 처리하는 함수
+  const handleEventClick = (info) => {
+    const clickedEvent = info.event;
+    const eventDetails = {
+      title: clickedEvent.title,
+      start: clickedEvent.start,
+      end: clickedEvent.end,
+      description: clickedEvent.extendedProps.memo,
+      groupId: clickedEvent.groupId,
+    };
+
+    setSelectedEvent(eventDetails);  // 클릭된 이벤트 정보 상태로 저장
+    setIsModalOpen(true);  // 모달 열기
   };
 
   const closeModal = () => {
     setIsModalOpen(false); // 모달 닫기
-    setSelectedDate(null); // 선택된 날짜 초기화
+    setSelectedEvent(null); // 선택된 날짜 초기화
   };
 
   return (
@@ -40,14 +49,14 @@ export default function Calendar() {
           }}
           events={events} // 상태에서 가져온 이벤트
           aspectRatio={2.1}
-          dateClick={handleDateClick} // 날짜 클릭 핸들러 등록
+          eventClick={handleEventClick}  // 클릭한 이벤트 처리
         />
       </div>
 
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
           <EventInfoModal
-            date={selectedDate}
+            eventDetails={selectedEvent}
             onClose={closeModal}
           />
         </div>
