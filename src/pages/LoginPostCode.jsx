@@ -29,12 +29,12 @@ export default function LoginPostCode() {
 
         // 사용자 정보 가져오기
         const userInfo = await fetchUserInfo(token);
-        console.log("User Info:", userInfo);
+        // console.log("User Info:", userInfo);
 
         // 전역 상태 업데이트
         setLoggedIn(true);
         setUserInfo(userInfo);
-
+        console.log(`-----User ${userInfo.user_id} 로그인-----`);
         // 캘린더 화면으로 이동
         navigate("/calendar");
       } catch (error) {

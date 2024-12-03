@@ -23,7 +23,7 @@ let mockCalendars = [
     creator_id: 2,
     invitation_code: "G3G7H3",
     members: [
-      { id: 11, nickname: "Manager1" },
+      { id: 1, nickname: "김벤토" },
       { id: 12, nickname: "Manager2" },
     ],
   },
@@ -52,6 +52,19 @@ let mockCalendars = [
       { id: 11, nickname: "Manager1" },
       { id: 12, nickname: "Manager2" },
     ],
+  },
+];
+
+let mockSubscriptions = [
+  {
+    calendar_id: 1,
+    calendar_name: "dlwlrma",
+    calendar_description: "IU",
+  },
+  {
+    calendar_id: 2,
+    calendar_name: "bts_official",
+    calendar_description: "BTS",
   },
 ];
 
@@ -257,5 +270,23 @@ export const calendarHandlers = [
       ctx.status(200),
       ctx.json({ message: "캘린더가 성공적으로 삭제되었습니다." }),
     );
+  }),
+
+  rest.get("/api/users/:user_id/subscriptions", (req, res, ctx) => {
+    const token = req.headers.get("Authorization");
+
+    // 토큰 검증
+    if (!token || token !== "Bearer fake_token") {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          error: "인증 실패",
+          message: "로그인이 필요합니다. 다시 로그인해 주세요.",
+        }),
+      );
+    }
+
+    // 구독한 캘린더 반환
+    return res(ctx.status(200), ctx.json(mockSubscriptions));
   }),
 ];

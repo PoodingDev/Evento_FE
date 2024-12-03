@@ -6,7 +6,7 @@ import { useAuth } from "../context/AuthContext";
 
 export default function Header() {
   const navigate = useNavigate();
-  const { loggedIn, setLoggedIn, userInfo } = useAuth(); // loggedIn으로 수정
+  const { loggedIn, setLoggedIn, userInfo } = useAuth();
   const [isView, setIsView] = useState(false);
 
   const setView = () => {
@@ -26,8 +26,10 @@ export default function Header() {
       setLoggedIn(true);
     } else {
       setLoggedIn(false);
+      navigate("/login");
     }
-  }, [setLoggedIn]);
+    console.log(`User logged in: ${loggedIn}`);
+  }, []);
 
   return (
     <div className="evento-header absolute flex h-[5rem] w-full cursor-pointer items-center justify-between py-[1.25rem] pl-[2rem] pr-[2rem]">
