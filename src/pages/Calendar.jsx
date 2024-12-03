@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid"; // 월 뷰 플러그인
 import interactionPlugin from "@fullcalendar/interaction"; // 상호작용 플러그인 (이벤트 클릭 등)
@@ -10,25 +10,40 @@ export default function Calendar() {
   const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const [events, setEvents] = useState([]); // 이벤트 상태s
-  const [selectedEvent, setSelectedEvent] = useState(null);  // 클릭된 이벤트 상태 관리
+  const [selectedEvent, setSelectedEvent] = useState(null); // 클릭된 이벤트 상태 관리
 
   const toggleCreateEvent = () => {
     setIsCreateEventOpen((prev) => !prev);
   };
+  const [calTitle, setCalTitle] = useState("");
+  const [calColor, setcalColor] = useState("");
 
   // 클릭된 이벤트를 처리하는 함수
   const handleEventClick = (info) => {
     const clickedEvent = info.event;
+
+    const findEvent = () => {
+      const event = events.find((event) => event.title === clickedEvent.title);
+      if (event) {
+        setCalTitle(event.calTitle);
+        setcalColor(event.color);
+      } else {
+      }
+    };
+
     const eventDetails = {
       title: clickedEvent.title,
       start: clickedEvent.start,
       end: clickedEvent.end,
       description: clickedEvent.extendedProps.memo,
       groupId: clickedEvent.groupId,
+      cal_title: calTitle,
+      color: calColor,
     };
+    findEvent();
 
-    setSelectedEvent(eventDetails);  // 클릭된 이벤트 정보 상태로 저장
-    setIsModalOpen(true);  // 모달 열기
+    setSelectedEvent(eventDetails); // 클릭된 이벤트 정보 상태로 저장
+    setIsModalOpen(true); // 모달 열기
   };
 
   const closeModal = () => {
@@ -49,7 +64,7 @@ export default function Calendar() {
           }}
           events={events} // 상태에서 가져온 이벤트
           aspectRatio={2.1}
-          eventClick={handleEventClick}  // 클릭한 이벤트 처리
+          eventClick={handleEventClick} // 클릭한 이벤트 처리
         />
       </div>
 
@@ -57,6 +72,7 @@ export default function Calendar() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
           <EventInfoModal
             eventDetails={selectedEvent}
+            event={events}
             onClose={closeModal}
           />
         </div>
@@ -64,7 +80,7 @@ export default function Calendar() {
 
       <div
         onClick={toggleCreateEvent}
-        className="absolute bottom-[6rem] right-[6rem] flex h-[8rem] w-[8rem] cursor-pointer items-center justify-center rounded-full bg-eventoPurple/70 text-center text-[4rem] text-eventoWhite z-[100]"
+        className="absolute bottom-[6rem] right-[6rem] z-[100] flex h-[8rem] w-[8rem] cursor-pointer items-center justify-center rounded-full bg-eventoPurple/70 text-center text-[4rem] text-eventoWhite"
       >
         +
       </div>

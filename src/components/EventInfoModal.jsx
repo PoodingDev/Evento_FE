@@ -22,7 +22,7 @@ import {
 } from "react-icons/fa";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 
-export default function EventInfo({ onClose }) {
+export default function EventInfo({ onClose, eventDetails, events }) {
   //초기 값 세팅
   const [eventInfo, setEventInfo] = useState({
     eventId: "",
@@ -36,12 +36,14 @@ export default function EventInfo({ onClose }) {
 
   //상태 관리
   const [newEventInfo, setNewEventInfo] = useState({
-    newEventTitle: "",
-    newStartDate: "",
-    newEndDate: "",
-    newEventDetail: "",
+    newEventTitle: eventDetails.title,
+    newStartDate: eventDetails.start,
+    newEndDate: eventDetails.end,
+    newEventDetail: eventDetails.description,
     newEventPublic: false,
   });
+
+  const [calColor, setCalColor] = useState(`${eventDetails.color}`);
 
   useEffect(() => {
     async function fetchEventInfo() {
@@ -72,13 +74,6 @@ export default function EventInfo({ onClose }) {
           detailEventMemo: event_description,
           isEventPublic: is_public,
         });
-        setNewEventInfo({
-          newEventTitle: event_title,
-          newStartDate: start_time,
-          newEndDate: end_time,
-          newEventDetail: event_description,
-          newEventPublic: is_public,
-        });
       } catch (error) {
         console.error("이벤트 정보를 가져오는 중 오류 발생:", error);
       }
@@ -99,6 +94,7 @@ export default function EventInfo({ onClose }) {
   //북마크
   const [isLike, setIsLike] = useState(false);
   const toggleIsLike = () => setIsLike(!isLike);
+  console.log(eventDetails);
 
   //댓글
   const data = [
@@ -196,10 +192,10 @@ export default function EventInfo({ onClose }) {
   //취소
   const cancle = () => {
     setNewEventInfo({
-      newEventTitle: eventInfo.eventTitle,
-      newStartDate: eventInfo.startDate,
-      newEndDate: eventInfo.endDate,
-      newEventDetail: eventInfo.detailEventMemo,
+      newEventTitle: eventDetails.title,
+      newStartDate: eventDetails.start,
+      newEndDate: eventDetails.end,
+      newEventDetail: eventDetails.description,
       newEventPublic: eventInfo.isEventPublic,
     });
     toggleIsEdit();
@@ -226,7 +222,6 @@ export default function EventInfo({ onClose }) {
       alert("이벤트 삭제에 실패했습니다. 다시 시도해 주세요.");
     }
   };
-
   return (
     <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
       <FaXmark
@@ -269,7 +264,7 @@ export default function EventInfo({ onClose }) {
               </div>
               <input
                 type="text"
-                value={eventInfo.eventTitle}
+                value={eventDetails.title}
                 className="ml-[1rem] h-[2.5rem] w-full bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
                 onChange={(e) => {
                   setEventInfo({
@@ -287,9 +282,12 @@ export default function EventInfo({ onClose }) {
           ""
         ) : (
           <div className="flex">
-            <div className="mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoYellow text-center text-[1rem] font-bold">
+            <div
+              className="mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] text-center text-[1rem] font-bold"
+              style={{ backgroundColor: calColor }}
+            >
               <div className="flex items-center">
-                <p>{`${eventInfo.title}`}</p>
+                <p>{`${eventDetails.cal_title}`}</p>
               </div>
             </div>
           </div>
@@ -319,7 +317,7 @@ export default function EventInfo({ onClose }) {
               />
               <span className="w-[2rem] text-center">-</span>
               <DatePicker
-                selected={newEventInfo.newEndDate}
+                selected={newEventInfo.newEndDate || newEventInfo.newStartDate}
                 onChange={(date) =>
                   setNewEventInfo({
                     ...newEventInfo,
@@ -338,7 +336,7 @@ export default function EventInfo({ onClose }) {
             </div>
             <div className="mb-[2rem] flex w-[25rem] -translate-x-[0.3rem] items-center text-[2rem] font-bold text-darkGray">
               <DatePicker
-                selected={eventInfo.startDate}
+                selected={eventDetails.start}
                 onChange={(date) =>
                   setEventInfo({
                     startDate: date,
@@ -350,7 +348,7 @@ export default function EventInfo({ onClose }) {
               />
               <span className="w-[2rem] text-center">-</span>
               <DatePicker
-                selected={eventInfo.endDate}
+                selected={eventDetails.end || eventDetails.start}
                 onChange={(date) =>
                   setEventInfo({
                     startDate: date,
@@ -421,7 +419,7 @@ export default function EventInfo({ onClose }) {
               </div>
               <input
                 type="text"
-                value={eventInfo.detailEventMemo}
+                value={eventDetails.description}
                 onChange={(e) => {
                   setEventInfo({ detailEventMemo: e.target.value });
                 }}

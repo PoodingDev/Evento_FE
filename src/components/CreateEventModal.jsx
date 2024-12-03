@@ -59,6 +59,7 @@ export default function CreateEvent({ onClose, setEvents }) {
         {
           event_title: eventTitle,
           cal_title: title,
+          cal_color: calColor,
           start_time: startDate,
           end_time: endDate,
           event_description: detailEventMemo,
@@ -87,6 +88,7 @@ export default function CreateEvent({ onClose, setEvents }) {
           extendedProps: {
             memo: response.data.event_description,
           },
+          calTitle: title,
           color: calColor,
           editable: true, // 이벤트 편집 가능
         };
@@ -94,6 +96,7 @@ export default function CreateEvent({ onClose, setEvents }) {
 
         console.log("Response Data:", JSON.stringify(response.data, null, 2));
         alert("이벤트가 성공적으로 생성되었습니다!");
+        console.log(newEvent);
         onClose(); // 모달 닫기
       }
     } catch (error) {
