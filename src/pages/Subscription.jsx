@@ -16,7 +16,7 @@ export default function Subscription() {
   const toggleSubscription = (id) => {
     setSubscribedCalendars((prevCalendars) =>
       prevCalendars.map((calendar) =>
-        calendar.id === id
+        calendar.calendar_id === id
           ? { ...calendar, isSubscribed: !calendar.isSubscribed } // 구독 상태 반전
           : calendar,
       ),
@@ -55,10 +55,10 @@ export default function Subscription() {
         <p className="text-[1.4rem]">&nbsp; 공개 캘린더</p>
       </div>
       <div className="flex w-full">
-        {/* <CaleanderSearch
+        <CaleanderSearch
           // openCalendars={openCalendars}
           toggleSubscription={toggleSubscription}
-        /> */}
+        />
         <SubsciptionCaleander
           openCalendars={subscribedCalendars}
           toggleSubscription={toggleSubscription}
@@ -117,7 +117,7 @@ function CaleanderSearch({ openCalendars, toggleSubscription }) {
         <ul className="my-[2rem] flex w-auto flex-col">
           {filteredSearch.map((calendar) => (
             <li
-              key={calendar.id}
+              key={calendar.calendar_id}
               className="my-2 flex w-[20rem] items-center gap-[1rem]"
             >
               <IoPersonCircleOutline className="h-[3.5rem] w-[3.5rem] object-cover" />
@@ -131,7 +131,7 @@ function CaleanderSearch({ openCalendars, toggleSubscription }) {
                     ? "border-[#E13228] bg-white text-[#E13228]"
                     : "border-[#E13228] bg-[#E13228] text-white"
                 }`}
-                onClick={() => toggleSubscription(calendar.id)}
+                onClick={() => toggleSubscription(calendar.calendar_id)}
               >
                 {calendar.isSubscribed ? "구독취소" : "구독"}
               </button>
@@ -151,7 +151,10 @@ function SubsciptionCaleander({ openCalendars, toggleSubscription }) {
         <h1>구독한 캘린더</h1>
         <ul className="flex w-auto flex-col">
           {openCalendars.map((calendar) => (
-            <li key={calendar.id} className="my-2 flex items-center gap-[1rem]">
+            <li
+              key={calendar.calendar_id}
+              className="my-2 flex items-center gap-[1rem]"
+            >
               <IoPersonCircleOutline className="h-[3.5rem] w-[3.5rem] object-cover" />
               <div>
                 <h3 className="text-[#493282]">{calendar.calendar_name}</h3>
@@ -165,7 +168,7 @@ function SubsciptionCaleander({ openCalendars, toggleSubscription }) {
                     ? "border-[#E13228] bg-white text-[#E13228]"
                     : "border-[#E13228] bg-[#E13228] text-white"
                 }`}
-                onClick={() => toggleSubscription(calendar.id)}
+                onClick={() => toggleSubscription(calendar.calendar_id)}
               >
                 {calendar.isSubscribed ? "구독취소" : "구독"}
               </button>
