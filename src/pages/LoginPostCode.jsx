@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { requestSocialLogin } from "../api/auth";
+import { fetchUserInfo, requestSocialLogin } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 
 export default function LoginPostCode() {
   const [searchParams] = useSearchParams();
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-  const { setLoggedIn, setUserInfo } = useAuth(); // useAuth 사용하여 상태 함수 가져오기
+  const { setLoggedIn, setUserInfo } = useAuth();
 
   useEffect(() => {
     const authCode = searchParams.get("code");
@@ -20,24 +20,21 @@ export default function LoginPostCode() {
       }
 
       try {
-        console.log(
-          "Authenticating for platform:",
-          platform,
-          "code:",
-          authCode,
-        );
-
+        // 로그인 요청
         const response = await requestSocialLogin(platform, authCode);
-        console.log("Authentication success:", response);
+        const { token } = response;
 
-        // 로컬 스토리지에 토큰 저장
-        localStorage.setItem("token", response.token);
+        // 토큰 저장
+        localStorage.setItem("token", token);
 
-        // 사용자 정보 상태 설정
+        // 사용자 정보 가져오기
+        const userInfo = await fetchUserInfo(token);
+        // console.log("User Info:", userInfo);
+
+        // 전역 상태 업데이트
         setLoggedIn(true);
-        setUserInfo({ ...response.userInfo, token: response.token });
+        setUserInfo(userInfo);
 
-        // 홈 화면으로 이동
         navigate("/calendar");
       } catch (error) {
         setErrorMessage("인증에 실패했습니다. 다시 시도해 주세요.");

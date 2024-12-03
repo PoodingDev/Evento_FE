@@ -5,12 +5,13 @@ const AuthContext = createContext();
 
 // Context Provider Component 생성
 export function AuthProvider({ children }) {
-  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
+  // const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, setLoggedIn, userInfo, setUserInfo }}
+      value={{ loggedIn, setLoggedIn, userInfo, setUserInfo }}
     >
       {children}
     </AuthContext.Provider>

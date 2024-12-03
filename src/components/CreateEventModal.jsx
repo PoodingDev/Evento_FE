@@ -1,9 +1,9 @@
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { FaCaretDown, FaToggleOff, FaToggleOn } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
-import axios from "axios";
 
 export default function CreateEvent({ onClose, setEvents }) {
   //캘린더 리스트 데이터
