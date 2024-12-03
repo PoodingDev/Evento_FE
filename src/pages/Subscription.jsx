@@ -96,8 +96,7 @@ export default function Subscription() {
   );
 }
 
-function CaleanderSearch({ openCalendars, toggleSubscription }) {
-  // 검색창 상태 관리
+function CaleanderSearch({ toggleSubscription }) {
   const [inputValue, setInputValue] = useState("");
   const [debouncedInput, setDebouncedInput] = useState("");
   const [filteredSearch, setFilteredSearch] = useState([]);
@@ -105,28 +104,37 @@ function CaleanderSearch({ openCalendars, toggleSubscription }) {
   // 디바운스 로직
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedInput(inputValue); // 디바운스된 검색어 업데이트
+      setDebouncedInput(inputValue);
     }, 500);
-    return () => clearTimeout(timer); // 이전 타이머 클리어
+    return () => clearTimeout(timer);
   }, [inputValue]);
 
-  // 검색 결과 업데이트
+  // 닉네임 검색 API 호출
   useEffect(() => {
-    if (!debouncedInput.trim()) {
-      setFilteredSearch([]); // 검색어가 없으면 빈 배열 반환
-    } else {
-      const newFilteredSearch = openCalendars.filter(
-        (calendar) =>
-          calendar.userNickNam
-            .toLowerCase()
-            .includes(inputValue.toLowerCase()) ||
-          calendar.calendarName
-            .toLowerCase()
-            .includes(inputValue.toLowerCase()),
-      );
-      setFilteredSearch(newFilteredSearch); // 상태 업데이트
+    async function fetchCalendars() {
+      if (!debouncedInput.trim()) {
+        setFilteredSearch([]); // 검색어가 없으면 빈 배열 반환
+        return;
+      }
+
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("/api/users/calendars/search", {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { nickname: debouncedInput }, // 검색어를 쿼리 파라미터로 전달
+        });
+
+        if (response.status === 200) {
+          setFilteredSearch(response.data); // 검색 결과 업데이트
+        }
+      } catch (error) {
+        console.error("캘린더 검색 중 오류 발생:", error);
+        setFilteredSearch([]); // 오류 발생 시 빈 배열로 설정
+      }
     }
-  }, [debouncedInput, openCalendars]);
+
+    fetchCalendars();
+  }, [debouncedInput]);
 
   return (
     <section className="flex w-2/3 flex-col items-center justify-center py-[3rem] align-middle">
@@ -148,8 +156,8 @@ function CaleanderSearch({ openCalendars, toggleSubscription }) {
           >
             <IoPersonCircleOutline className="h-[3.5rem] w-[3.5rem] object-cover" />
             <div>
-              <h3 className="text-eventoPurpleDark">{calendar.calendarName}</h3>
-              <p className="text-darkGray">{calendar.userNickNam}</p>
+              <h3 className="text-eventoPurpleDark">{calendar.name}</h3>
+              <p className="text-darkGray">{calendar.creator.nickname}</p>
             </div>
             <button
               className={`ml-auto h-[2rem] w-[5rem] rounded-[0.625rem] border-2 p-1 align-middle ${
@@ -159,7 +167,7 @@ function CaleanderSearch({ openCalendars, toggleSubscription }) {
               }`}
               onClick={() => toggleSubscription(calendar.calendar_id)}
             >
-              {calendar.isSubscribed ? "구독취소" : "구독"}
+              {calendar.isSubscribed ? "구독 취소" : "구독"}
             </button>
           </li>
         ))}
