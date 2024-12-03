@@ -84,7 +84,7 @@ let mockSearchCalendars = [
   {
     calendar_id: 5,
     name: "IU",
-    description: "IU의 캘린더입니다.",
+    description: "dlwlrma",
     is_public: true,
     color: "#FF5733",
     creator: { nickname: "dlwlrma" },
@@ -92,7 +92,7 @@ let mockSearchCalendars = [
   {
     calendar_id: 6,
     name: "BTS",
-    description: "BTS의 캘린더입니다.",
+    description: "bts_official.",
     is_public: true,
     color: "#33FF57",
     creator: { nickname: "bts_official" },
@@ -401,5 +401,62 @@ export const calendarHandlers = [
         }),
       );
     }
+  }),
+
+  // 캘린더 구독
+  rest.post("/api/subscriptions", async (req, res, ctx) => {
+    const token = req.headers.get("Authorization");
+    const { calendar_id } = await req.json();
+
+    if (!token || token !== "Bearer fake_token") {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          error: "인증 실패",
+          message: "로그인이 필요한 서비스입니다. 다시 로그인해 주세요.",
+        }),
+      );
+    }
+
+    const isAlreadySubscribed = mockSubscriptions.some(
+      (sub) => sub.calendar_id === calendar_id,
+    );
+
+    if (isAlreadySubscribed) {
+      return res(
+        ctx.status(409),
+        ctx.json({
+          error: "중복 구독",
+          message: "이미 구독 중인 캘린더입니다.",
+        }),
+      );
+    }
+
+    // 새로운 구독 데이터를 mockSearchCalendars에서 가져옴
+    const calendarToSubscribe = mockSearchCalendars.find(
+      (calendar) => calendar.calendar_id === calendar_id,
+    );
+
+    if (!calendarToSubscribe) {
+      return res(
+        ctx.status(404),
+        ctx.json({
+          error: "not_found",
+          message: "해당 캘린더를 찾을 수 없습니다.",
+        }),
+      );
+    }
+
+    const newSubscription = {
+      subscription_id: mockSubscriptions.length + 1,
+      user_id: 1,
+      calendar_id: calendarToSubscribe.calendar_id,
+      calendar_name: calendarToSubscribe.name,
+      calendar_description: calendarToSubscribe.description,
+    };
+
+    mockSubscriptions.push(newSubscription);
+
+    return res(ctx.status(201), ctx.json(newSubscription));
   }),
 ];

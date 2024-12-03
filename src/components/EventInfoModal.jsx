@@ -1,9 +1,10 @@
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 import { AiOutlineLike, AiTwotoneLike } from "react-icons/ai";
 import { FaXmark } from "react-icons/fa6";
-import axios from "axios";
 
 import {
   FaLock,
@@ -20,7 +21,6 @@ import {
   FaComment,
   FaRegCommentDots,
 } from "react-icons/fa";
-import { faL } from "@fortawesome/free-solid-svg-icons";
 
 export default function EventInfo({ onClose, eventDetails, events }) {
   //초기 값 세팅
@@ -329,7 +329,12 @@ export default function EventInfo({ onClose, eventDetails, events }) {
                   })
                 }
                 dateFormat="yyyy-MM-dd"
-                className="w-[12rem] rounded-md bg-lightGray/20 text-center"
+                className="rounded-lg bg-eventoWhite p-1 text-right text-darkGray"
+                showYearDropdown
+                scrollableYearDropdown
+                yearDropdownItemNumber={100}
+                minDate={new Date(1900, 0, 1)}
+                maxDate={new Date(2050, 11, 31)}
               />
               <span className="w-[2rem] text-center">-</span>
               <DatePicker
@@ -341,7 +346,12 @@ export default function EventInfo({ onClose, eventDetails, events }) {
                   })
                 }
                 dateFormat="yyyy-MM-dd"
-                className="w-[12rem] rounded-md bg-lightGray/20 text-center"
+                className="rounded-lg bg-eventoWhite p-1 text-right text-darkGray"
+                showYearDropdown
+                scrollableYearDropdown
+                yearDropdownItemNumber={100}
+                minDate={new Date(1900, 0, 1)}
+                maxDate={new Date(2050, 11, 31)}
               />
             </div>
           </>

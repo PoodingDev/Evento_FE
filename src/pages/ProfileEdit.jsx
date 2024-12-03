@@ -7,11 +7,11 @@ import { useNavigate } from "react-router-dom";
 
 export default function ProfileEdit() {
   const navigate = useNavigate();
-  const [userId, setUserId] = useState(null); // 사용자 ID
+  const [userId, setUserId] = useState(null);
   const [userName, setUserName] = useState("");
   const [userNickname, setUserNickname] = useState("");
   const [userEmail, setUserEmail] = useState("");
-  const [userBirth, setUserBirth] = useState(null); // DatePicker에서 사용하는 Date 객체
+  const [userBirth, setUserBirth] = useState(null);
   const [isToggled, setIsToggled] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -163,7 +163,12 @@ export default function ProfileEdit() {
                   selected={userBirth}
                   onChange={(date) => setUserBirth(date)} // Date 객체 업데이트
                   dateFormat="yyyy-MM-dd"
-                  className="p-1 text-right rounded-lg bg-eventoWhite text-darkGray"
+                  className="rounded-lg bg-eventoWhite p-1 text-right text-darkGray"
+                  showYearDropdown
+                  scrollableYearDropdown
+                  yearDropdownItemNumber={100}
+                  minDate={new Date(1900, 0, 1)}
+                  maxDate={new Date(2050, 11, 31)}
                 />
               </li>
             </ul>
