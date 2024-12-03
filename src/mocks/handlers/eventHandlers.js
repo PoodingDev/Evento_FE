@@ -5,6 +5,7 @@ let mockEventData = [
     event_id: 1,
     event_title: "저녁 약속",
     cal_title: "Pooding팀",
+    cal_color: "#FFC960",
     start_time: "2024-12-01",
     end_time: "2024-12-05",
     event_description: "고기 먹자",
@@ -36,6 +37,7 @@ export const eventHandlers = [
     const {
       event_title,
       cal_title,
+      cal_color,
       start_time,
       end_time,
       event_description,
@@ -58,6 +60,7 @@ export const eventHandlers = [
       event_id,
       event_title,
       cal_title,
+      cal_color,
       start_time,
       end_time,
       event_description: event_description || "",
@@ -80,6 +83,7 @@ export const eventHandlers = [
       const {
         event_title,
         cal_title,
+        cal_color,
         start_time,
         end_time,
         event_description,
@@ -116,6 +120,7 @@ export const eventHandlers = [
         ...mockEventData[eventIndex],
         event_title: event_title || mockEventData[eventIndex].event_title,
         cal_title: cal_title || mockEventData[eventIndex].cal_title,
+        cal_color: cal_color || mockEventData[eventIndex].cal_color,
         start_time: start_time || mockEventData[eventIndex].start_time,
         end_time: end_time || mockEventData[eventIndex].end_time,
         event_description:

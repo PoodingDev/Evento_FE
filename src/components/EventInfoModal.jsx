@@ -22,7 +22,7 @@ import {
 } from "react-icons/fa";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 
-export default function EventInfo({ onClose }) {
+export default function EventInfo({ onClose, eventDetails, events }) {
   //초기 값 세팅
   const [eventInfo, setEventInfo] = useState({
     eventId: "",
@@ -37,11 +37,14 @@ export default function EventInfo({ onClose }) {
   //상태 관리
   const [newEventInfo, setNewEventInfo] = useState({
     newEventTitle: "",
-    newStartDate: "",
-    newEndDate: "",
+    newStartDate: new Date(),
+    newEndDate: new Date(),
     newEventDetail: "",
     newEventPublic: false,
   });
+
+  //캘린더 색상
+  const [calColor, setCalColor] = useState(`${eventDetails.color}`);
 
   useEffect(() => {
     async function fetchEventInfo() {
@@ -65,19 +68,20 @@ export default function EventInfo({ onClose }) {
 
         setEventInfo({
           eventId: event_id,
-          eventTitle: event_title,
-          title: cal_title,
-          startDate: start_time,
-          endDate: end_time,
-          detailEventMemo: event_description,
+          eventTitle: eventDetails.title,
+          title: eventDetails.cal_title,
+          startDate: eventDetails.start,
+          endDate: eventDetails.end,
+          detailEventMemo: eventDetails.description,
           isEventPublic: is_public,
         });
+
         setNewEventInfo({
-          newEventTitle: event_title,
-          newStartDate: start_time,
-          newEndDate: end_time,
-          newEventDetail: event_description,
-          newEventPublic: is_public,
+          newEventTitle: eventDetails.title,
+          newStartDate: eventDetails.start,
+          newEndDate: eventDetails.end,
+          newEventDetail: eventDetails.description,
+          newEventPublic: false,
         });
       } catch (error) {
         console.error("이벤트 정보를 가져오는 중 오류 발생:", error);
@@ -99,6 +103,7 @@ export default function EventInfo({ onClose }) {
   //북마크
   const [isLike, setIsLike] = useState(false);
   const toggleIsLike = () => setIsLike(!isLike);
+  console.log("dkdkdk", newEventInfo.endDate);
 
   //댓글
   const data = [
@@ -181,11 +186,12 @@ export default function EventInfo({ onClose }) {
           eventTitle: newEventInfo.newEventTitle,
           title: eventInfo.title,
           startDate: newEventInfo.newStartDate,
-          endDate: newEventInfo.newStartDate,
+          endDate: newEventInfo.newEndDate,
           detailEventMemo: newEventInfo.newEventDetail,
           isEventPublic: newEventInfo.newEventPublic,
         });
         toggleIsEdit();
+        console.log(newEventInfo.newEndDate);
       }
     } catch (error) {
       console.error("캘린더 수정 실패:", error);
@@ -196,10 +202,10 @@ export default function EventInfo({ onClose }) {
   //취소
   const cancle = () => {
     setNewEventInfo({
-      newEventTitle: eventInfo.eventTitle,
-      newStartDate: eventInfo.startDate,
-      newEndDate: eventInfo.endDate,
-      newEventDetail: eventInfo.detailEventMemo,
+      newEventTitle: eventDetails.title,
+      newStartDate: eventDetails.start,
+      newEndDate: eventDetails.end,
+      newEventDetail: eventDetails.description,
       newEventPublic: eventInfo.isEventPublic,
     });
     toggleIsEdit();
@@ -226,6 +232,11 @@ export default function EventInfo({ onClose }) {
       alert("이벤트 삭제에 실패했습니다. 다시 시도해 주세요.");
     }
   };
+
+  useEffect(() => {
+    // calData가 업데이트된 후 출력
+    console.log("dk", eventInfo);
+  }, [eventInfo]);
 
   return (
     <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
@@ -287,9 +298,12 @@ export default function EventInfo({ onClose }) {
           ""
         ) : (
           <div className="flex">
-            <div className="mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoYellow text-center text-[1rem] font-bold">
+            <div
+              className="mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] text-center text-[1rem] font-bold"
+              style={{ backgroundColor: calColor }}
+            >
               <div className="flex items-center">
-                <p>{`${eventInfo.title}`}</p>
+                <p>{`${eventDetails.cal_title}`}</p>
               </div>
             </div>
           </div>
@@ -319,7 +333,7 @@ export default function EventInfo({ onClose }) {
               />
               <span className="w-[2rem] text-center">-</span>
               <DatePicker
-                selected={newEventInfo.newEndDate}
+                selected={newEventInfo.newEndDate || newEventInfo.newStartDate}
                 onChange={(date) =>
                   setNewEventInfo({
                     ...newEventInfo,
@@ -350,10 +364,10 @@ export default function EventInfo({ onClose }) {
               />
               <span className="w-[2rem] text-center">-</span>
               <DatePicker
-                selected={eventInfo.endDate}
+                selected={eventInfo.endDate || eventInfo.startDate}
                 onChange={(date) =>
                   setEventInfo({
-                    startDate: date,
+                    endDate: date,
                   })
                 }
                 dateFormat="yyyy-MM-dd"

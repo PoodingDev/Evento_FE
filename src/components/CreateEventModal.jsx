@@ -6,23 +6,31 @@ import { FaXmark } from "react-icons/fa6";
 import axios from "axios";
 
 export default function CreateEvent({ onClose, setEvents }) {
-  //캘린더 더미데이터
-  const calData = [
-    { id: 1, calName: "PoodingDev" },
-    { id: 2, calName: "캘린이의 삶" },
-    { id: 3, calName: "학교 시험" },
-    { id: 4, calName: "운동Day" },
-  ];
+  //캘린더 리스트 데이터
+  const [calData, setCalData] = useState({
+    calId: [],
+    calendarName: [],
+    calendarColor: [],
+  });
+  const [calColor, setCalColor] = useState("");
 
-  //캘린더 리스트
+  //캘린더 리스트 보여주기
   const [showCalList, setShowCalList] = useState(false);
   const showList = () => setShowCalList(!showCalList);
+
+  //캘린더 정보
+  const [calInfo, setCalInfo] = useState({
+    calenderId: "",
+    calenderName: "",
+    calendarColor: "",
+    members: [],
+  });
 
   //이벤트 제목(일정 이름)
   const [eventTitle, setEventTitle] = useState("");
 
   //캘린더 이름
-  const [title, setTitle] = useState("Pooding팀");
+  const [title, setTitle] = useState(`캘린더 이름`);
 
   //시간
   const [startDate, setStartDate] = useState(new Date());
@@ -51,6 +59,7 @@ export default function CreateEvent({ onClose, setEvents }) {
         {
           event_title: eventTitle,
           cal_title: title,
+          cal_color: calColor,
           start_time: startDate,
           end_time: endDate,
           event_description: detailEventMemo,
@@ -79,13 +88,15 @@ export default function CreateEvent({ onClose, setEvents }) {
           extendedProps: {
             memo: response.data.event_description,
           },
-          color: "#ff5733",
+          calTitle: title,
+          color: calColor,
           editable: true, // 이벤트 편집 가능
         };
         setEvents((prevEvents) => [...prevEvents, newEvent]); // 새로운 이벤트 추가
 
         console.log("Response Data:", JSON.stringify(response.data, null, 2));
         alert("이벤트가 성공적으로 생성되었습니다!");
+        console.log(newEvent);
         onClose(); // 모달 닫기
       }
     } catch (error) {
@@ -96,6 +107,49 @@ export default function CreateEvent({ onClose, setEvents }) {
       );
     }
   };
+
+  //캘린더 정보
+  useEffect(() => {
+    async function fetchCalInfo() {
+      try {
+        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
+        const response = await axios.get("/api/calendars/admins", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const calendarIds = response.data.map((item) => item.calendar_id);
+        const calendarNames = response.data.map((item) => item.calendar_name);
+        const calendarColors = response.data.map((item) => item.calendar_color);
+
+        setCalData({
+          calId: calendarIds,
+          calendarName: calendarNames,
+          calendarColor: calendarColors,
+        });
+
+        const { calendar_id, calendar_name, calendar_color, members } =
+          response.data[0];
+
+        setCalInfo({
+          calenderId: calendar_id,
+          calenderName: calendar_name,
+          calendarColor: calendar_color,
+          members: members,
+        });
+      } catch (error) {
+        console.error("캘린더 정보를 가져오는 중 오류 발생:", error);
+      }
+    }
+    fetchCalInfo();
+  }, []);
+
+  useEffect(() => {
+    // calData가 업데이트된 후 출력
+    console.log(calData);
+    console.log(calColor);
+  }, [calData, calColor]);
 
   return (
     <div className="flex h-[29rem] w-[37rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
@@ -118,7 +172,8 @@ export default function CreateEvent({ onClose, setEvents }) {
         </div>
 
         {/* 캘린더 선택 */}
-        <div className="relative z-20 mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoYellow text-center text-[1rem] font-bold">
+
+        <div className="relative z-20 mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoPurpleLight text-center text-[1rem] font-bold">
           <div className="flex h-[1.55rem] -translate-x-[0.3rem] items-center justify-between">
             <FaCaretDown
               size={25}
@@ -130,16 +185,17 @@ export default function CreateEvent({ onClose, setEvents }) {
           </div>
           {showCalList && (
             <div className="absolute left-[1.3rem] top-[1.55rem] flex h-[6rem] w-[8rem] flex-col overflow-auto">
-              {calData.map((cal) => {
+              {calData.calId.map((cal) => {
                 return (
                   <button
-                    key={cal.id}
-                    className="h-[1.5rem] w-[6.7rem] border-[0.1rem] border-solid border-darkGray bg-lightGray leading-[1.5rem]"
+                    key={cal}
+                    className="h-[1.5rem] w-[6.7rem] border-[0.1rem] border-solid border-darkGray bg-eventoPurpleLight leading-[1.5rem]"
                     onClick={() => {
-                      setTitle(`${cal.calName}`);
+                      setTitle(calData.calendarName[cal - 1]);
+                      setCalColor(calData.calendarColor[cal - 1]);
                     }}
                   >
-                    {`${cal.calName}`}
+                    {calData.calendarName[cal - 1]}
                   </button>
                 );
               })}
