@@ -75,12 +75,12 @@ export default function Subscription() {
   }, [userInfo, subscribedCalendars]);
 
   return (
-    <div className="h-[100vh] flex-col pl-[18rem] pt-[5rem]">
+    <div className="h-[100vh] bg-eventoWhite pl-[18rem] pt-[4rem]">
       <div className="ml-[5rem] mt-[2rem] flex items-center text-center">
         <Link to="/">
-          <IoChevronBack className="text-[1.4rem]" />
+          <IoChevronBack className="text-[1.2rem]" />
         </Link>
-        <p className="text-[1.4rem]">&nbsp; 공개 캘린더</p>
+        <p className="text-[1.1rem]">&nbsp; 공개 캘린더</p>
       </div>
       <div className="flex w-full">
         <CaleanderSearch
@@ -180,9 +180,9 @@ function SubscriptionCalender({ openCalendars, toggleSubscription }) {
   return (
     <>
       <div className="relative after:absolute after:bottom-0 after:left-0 after:top-0 after:w-[2px] after:bg-gray-200 after:content-['']"></div>
-      <section className="flex w-1/3 flex-col items-center">
+      <section className="flex flex-col items-center w-1/3">
         <h1>구독한 캘린더</h1>
-        <ul className="flex w-auto flex-col">
+        <ul className="flex flex-col w-auto">
           {openCalendars.map((calendar) => (
             <li
               key={calendar.calendar_id}

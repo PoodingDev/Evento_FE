@@ -149,31 +149,27 @@ export default function ProfileEdit() {
                   value={userNickname}
                   onChange={handleNickName}
                   placeholder="닉네임 수정"
-                  className="w-[9rem] rounded-lg bg-gray-200 p-[2px] px-3 py-2 text-center focus:border-[1px] focus:border-none focus:bg-eventoPurpleLight/80 focus:outline-none"
+                  className="w-[9rem] rounded-lg bg-gray-200 p-[2px] px-3 py-2 text-center font-semibold text-darkGray focus:border-[1px] focus:border-none focus:bg-eventoPurpleLight/80 focus:outline-none"
                 />
               </div>
 
               <ul className="flex w-[20rem] flex-col space-y-[1.5rem] p-[2px]">
                 <li className="flex items-center justify-between">
-                  <span className="text-darkGray">이름</span>
-                  <span className="font-semibold text-darkGray">
-                    {userName}
-                  </span>
+                  <span className="font-semibold text-darkGray">이름</span>
+                  <span className="text-darkGray">{userName}</span>
                 </li>
                 <li className="flex items-center justify-between">
-                  <span className="text-darkGray">이메일</span>
-                  <span className="font-semibold text-darkGray">
-                    {userEmail}
-                  </span>
+                  <span className="font-semibold text-darkGray">이메일</span>
+                  <span className="text-darkGray">{userEmail}</span>
                 </li>
                 <li className="flex items-center justify-between">
-                  <span className="text-darkGray">내 생일</span>
+                  <span className="font-semibold text-darkGray">내 생일</span>
                   <div className="flex translate-x-[0.5rem] items-center">
                     <input
                       type="date"
                       value={userBirth}
                       onChange={handleBirthChange}
-                      className="rounded-lg bg-eventoWhite p-1 font-semibold text-darkGray"
+                      className="rounded-lg bg-eventoWhite p-1 text-darkGray"
                     />
                   </div>
                 </li>
