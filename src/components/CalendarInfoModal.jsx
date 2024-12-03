@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FaTrashCan, FaXmark } from "react-icons/fa6";
+import { useAuth } from "../context/AuthContext";
 
 import {
   FaCheck,
@@ -22,6 +23,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
     visitCode: calendar.invitation_code,
   });
 
+  const { loggedIn, userInfo, setLoggedIn } = useAuth();
   const [isEdit, setIsEdit] = useState(false);
 
   // 상태 변경 핸들러
@@ -47,7 +49,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
   // 컴포넌트가 마운트될 때 creator_id와 userId 확인
   useEffect(() => {
     console.log("Calendar Creator ID:", calendar.creator_id);
-    console.log("Current User ID:", userId);
+    console.log("Current User ID:", userInfo.user_id);
   }, [calendar.creator_id, userId]);
 
   // 저장
@@ -263,7 +265,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
             className="cursor-pointer text-[1.5rem] text-darkGray"
             onClick={() => setIsEdit(true)}
           />
-          {calendar.creator_id === userId && (
+          {calendar.creator_id === userInfo.user_id && (
             <FaTrashCan
               className="cursor-pointer text-[1.5rem] text-darkGray"
               onClick={handleDelete}

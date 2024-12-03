@@ -4,6 +4,7 @@ import InviteCodeModal from "./InviteCodeModal";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 import {
   FaRegSquare,
@@ -17,11 +18,12 @@ export default function SideBarLeft() {
   const [isCalendarInfoOpen, setCalendarInfoOpen] = useState(false);
   const [selectedCalendar, setSelectedCalendar] = useState(null);
   const [myCalendars, setMyCalendars] = useState([]);
-  const [myUserId, setMyUserId] = useState(null); // 사용자 ID를 저장할 상태 추가
   const navigate = useNavigate();
   const [checked, setChecked] = useState({});
   const [isInviteOpen, setIsInviteOpen] = useState(false);
   const [isCreateCalendarOpen, setIsCreateCalendarOpen] = useState(false);
+
+  const { loggedIn, userInfo, setLoggedIn } = useAuth();
 
   // 내 캘린더 데이터 가져오기
   useEffect(() => {
@@ -42,26 +44,26 @@ export default function SideBarLeft() {
       }
     }
 
-    async function fetchUser() {
-      try {
-        const token = localStorage.getItem("token"); // 토큰 가져오기
-        const response = await axios.get("/api/users/me", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+    // async function fetchUser() {
+    //   try {
+    //     const token = localStorage.getItem("token"); // 토큰 가져오기
+    //     const response = await axios.get("/api/users/me", {
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //     });
 
-        if (response.status === 200) {
-          setMyUserId(response.data.user_id); // 사용자 ID 설정
-        }
-      } catch (error) {
-        console.error("사용자 정보를 가져오는 중 오류 발생:", error);
-      }
-    }
+    //     if (response.status === 200) {
+    //       setMyUserId(response.data.user_id); // 사용자 ID 설정
+    //     }
+    //   } catch (error) {
+    //     console.error("사용자 정보를 가져오는 중 오류 발생:", error);
+    //   }
+    // }
 
     // 사용자 정보와 캘린더 정보 모두 가져오기
     fetchCalendars();
-    fetchUser();
+    // fetchUser();
   }, [isCalendarInfoOpen, isCreateCalendarOpen]);
 
   const handleToggle = (id) => {
@@ -93,7 +95,6 @@ export default function SideBarLeft() {
           : calendar,
       ),
     );
-    // 모달을 닫음
     setCalendarInfoOpen(false);
   };
 
@@ -228,7 +229,7 @@ export default function SideBarLeft() {
             calendar={selectedCalendar}
             onClose={() => setCalendarInfoOpen(false)}
             onSave={handleSaveCalendar}
-            userId={myUserId} // 현재 로그인한 사용자 ID 전달
+            userId={userInfo.user_id} // 현재 로그인한 사용자 ID 전달
           />
         </div>
       )}
