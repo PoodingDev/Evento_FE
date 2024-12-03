@@ -187,3 +187,58 @@ body {
 .react-datepicker__day:hover {
   background-color: #EADDFF !important;
 }
+
+/* 연도 드롭다운 배경 및 텍스트 색상 */
+.react-datepicker__year-dropdown {
+  background-color: #EADDFF !important;
+  color: #4F378B !important;
+  padding: 0.5rem 0 !important;
+  max-height: 200px !important;
+  overflow-y: auto !important;
+}
+
+/* 연도 선택 항목 스타일 */
+.react-datepicker__year-option {
+  padding: 0.5rem 1rem !important;
+  font-size: 0.9rem !important;
+  cursor: pointer !important;
+}
+
+/* 연도 항목 hover 시 배경색 */
+.react-datepicker__year-option:hover {
+  background-color: #f6f2ff77 !important;
+
+}
+
+/* 현재 선택된 연도의 스타일 */
+.react-datepicker__year-option.react-datepicker__year-option--selected {
+  background-color: #4F378B !important;
+  color: white !important;
+  font-weight: bold !important;
+}
+
+.react-datepicker__year-dropdown-container--scrollable {
+  max-height: 200px;
+  /* 스크롤이 생기는 최대 높이 */
+  overflow-y: auto;
+  /* 세로 스크롤 활성화 */
+}
+
+.react-datepicker__year-dropdown-container--scrollable::-webkit-scrollbar {
+  width: 2px;
+  /* 스크롤바 너비 */
+}
+
+.react-datepicker__year-dropdown-container--scrollable::-webkit-scrollbar-track {
+  background: #f9f5ff;
+  /* 스크롤바 트랙 배경색 */
+}
+
+.react-datepicker__year-dropdown-container--scrollable::-webkit-scrollbar-thumb {
+  background-color: #8867df;
+  /* 스크롤바 핸들 색상 */
+  border-radius: 10px;
+  /* 둥근 모서리 */
+  border: 2px solid #f9f5ff;
+  /* 핸들 테두리 색상 */
+}
