@@ -27,12 +27,14 @@ export default function LoginPostCode() {
         // 토큰 저장
         localStorage.setItem("token", token);
 
-        // 사용자 정보
+        // 사용자 정보 가져오기
         const userInfo = await fetchUserInfo(token);
-        console.log("User ID:", userInfo.user_id);
+        console.log("User Info:", userInfo);
+
         // 전역 상태 업데이트
         setLoggedIn(true);
         setUserInfo(userInfo);
+
         // 캘린더 화면으로 이동
         navigate("/calendar");
       } catch (error) {
