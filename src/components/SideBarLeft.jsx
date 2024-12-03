@@ -20,62 +20,42 @@ export default function SideBarLeft() {
   const [myCalendars, setMyCalendars] = useState([]);
   const [subscribedCalendars, setSubscribedCalendars] = useState([]);
   const navigate = useNavigate();
+
   const [checked, setChecked] = useState({});
   const [isInviteOpen, setIsInviteOpen] = useState(false);
   const [isCreateCalendarOpen, setIsCreateCalendarOpen] = useState(false);
 
-  // 내 캘린더 데이터 가져오기
-
-  // 구독 캘린더 데이터 가져오기
   const { loggedIn, userInfo } = useAuth();
 
   useEffect(() => {
-    async function fetchSubscribedCalendars() {
+    async function fetchData() {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `/api/users/${userInfo.user_id}/subscriptions`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
+        const [myCalendarsResponse, subscribedCalendarsResponse] =
+          await Promise.all([
+            axios.get("/api/calendars/admins", {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+            axios.get(`/api/users/${userInfo.user_id}/subscriptions`, {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+          ]);
 
-        if (response.status === 200) {
-          setSubscribedCalendars(response.data);
+        if (myCalendarsResponse.status === 200) {
+          setMyCalendars(myCalendarsResponse.data);
+        }
+        if (subscribedCalendarsResponse.status === 200) {
+          setSubscribedCalendars(subscribedCalendarsResponse.data);
         }
       } catch (error) {
-        console.error("구독 캘린더 정보를 가져오는 중 오류 발생:", error);
+        console.error("캘린더 데이터를 가져오는 중 오류 발생:", error);
       }
     }
 
-    fetchSubscribedCalendars();
-  }, [userInfo]);
-
-  // 내 캘린더 데이터 가져오기 함수
-  useEffect(() => {
-    async function fetchCalendars() {
-      try {
-        const token = localStorage.getItem("token"); // 토큰 가져오기
-        const response = await axios.get("/api/calendars/admins", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (response.status === 200) {
-          setMyCalendars(response.data);
-        }
-      } catch (error) {
-        console.error("내 캘린더 정보를 가져오는 중 오류 발생:", error);
-      }
+    if (userInfo?.user_id) {
+      fetchData();
     }
-
-    fetchCalendars();
-  }, [isCalendarInfoOpen, isCreateCalendarOpen]);
-
-  // 구독한 캘린더 데이터 가져오기
+  }, [userInfo, isCalendarInfoOpen, isCreateCalendarOpen]);
 
   const handleToggle = (id) => {
     setChecked((prev) => ({
