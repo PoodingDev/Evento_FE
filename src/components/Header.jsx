@@ -57,11 +57,11 @@ export default function Header() {
             icon={faUser}
             className="mb-[1rem] mt-[0.5rem] text-[1.5rem] text-eventoPurpleDark"
           />
-          <p className="mb-[1.4rem] text-center text-[1.25rem] font-medium">
+          <p className="mb-[1.4rem] text-center text-[1.25rem] font-medium text-eventoblack">
             {userInfo?.user_name || "Guest"}
           </p>
           <button
-            className="mb-[0.3rem] h-[2rem] w-[7rem] cursor-pointer rounded-[0.5rem] text-[0.95rem] font-semibold hover:bg-eventoPurpleLight hover:text-eventoPurple"
+            className="mb-[0.3rem] h-[2rem] w-[7rem] cursor-pointer rounded-[0.5rem] text-[0.95rem] font-semibold text-darkGray hover:bg-eventoPurpleLight hover:text-eventoPurple"
             onClick={() => {
               setView();
               navigate("/profile");
@@ -70,7 +70,7 @@ export default function Header() {
             내 프로필
           </button>
           <button
-            className="h-[2rem] w-[7rem] cursor-pointer rounded-[0.5rem] text-[0.95rem] font-semibold hover:bg-lightRed hover:text-darkRed"
+            className="h-[2rem] w-[7rem] cursor-pointer rounded-[0.5rem] text-[0.95rem] font-semibold text-darkGray hover:bg-lightRed hover:text-darkRed"
             onClick={handleLogout}
           >
             로그아웃
