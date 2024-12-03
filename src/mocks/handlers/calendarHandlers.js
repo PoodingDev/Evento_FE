@@ -1,5 +1,6 @@
 import { rest } from "msw";
 
+//내 캘린더
 let mockCalendars = [
   {
     calendar_id: 1,
@@ -55,7 +56,20 @@ let mockCalendars = [
   },
 ];
 
+//구독한 캘린더
 let mockSubscriptions = [
+  {
+    calendar_id: 1,
+    calendar_name: "dlwlrma",
+    calendar_description: "IU",
+  },
+  {
+    calendar_id: 2,
+    calendar_name: "bts_official",
+    calendar_description: "BTS",
+  },
+];
+let mockOpenCalendars = [
   {
     calendar_id: 1,
     calendar_name: "dlwlrma",
@@ -69,7 +83,7 @@ let mockSubscriptions = [
 ];
 
 export const calendarHandlers = [
-  // 캘린더 리스트 가져오기 핸들러
+  // 내 캘린더
   rest.get("/api/calendars/admins", (req, res, ctx) => {
     const token = req.headers.get("Authorization");
 
@@ -103,7 +117,7 @@ export const calendarHandlers = [
       );
     }
 
-    // 캘린더를 찾기
+    // 캘린더 찾기
     const calendarIndex = mockCalendars.findIndex(
       (cal) => cal.calendar_id === parseInt(calendarId),
     );
@@ -288,5 +302,19 @@ export const calendarHandlers = [
 
     // 구독한 캘린더 반환
     return res(ctx.status(200), ctx.json(mockSubscriptions));
+  }),
+
+  rest.get("/api/users/calendars/search", (req, res, ctx) => {
+    const token = req.headers.get("Authorization");
+    if (!token || token !== "Bearer fake_token") {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          error: "인증 실패",
+          message: "로그인이 필요합니다. 다시 로그인해 주세요.",
+        }),
+      );
+    }
+    return res(ctx.status(200), ctx.json(mockOpenCalendars));
   }),
 ];
