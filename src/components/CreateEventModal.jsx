@@ -4,10 +4,15 @@ import React, { useEffect, useState } from "react";
 import { FaCaretDown, FaToggleOff, FaToggleOn } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import axios from "axios";
-import { fromJSON } from "postcss";
 
-
-export default function CreateEvent({ onClose }) {
+export default function CreateEvent({ onClose, setEvents }) {
+  //캘린더 더미데이터
+  const calData = [
+    { id: 1, calName: "PoodingDev" },
+    { id: 2, calName: "캘린이의 삶" },
+    { id: 3, calName: "학교 시험" },
+    { id: 4, calName: "운동Day" },
+  ];
 
   //캘린더 리스트
   const [showCalList, setShowCalList] = useState(false);
@@ -42,7 +47,7 @@ export default function CreateEvent({ onClose }) {
       }
 
       const response = await axios.post(
-        "/api/events",
+        "/api/calendars/:calendar_id/events",
         {
           event_title: eventTitle,
           cal_title: title,
@@ -63,8 +68,8 @@ export default function CreateEvent({ onClose }) {
         const start_date = new Date(response.data.start_time);
         const end_date = new Date(response.data.end_time);
 
-        const formattedStartDate = start_date.toLocaleDateString("en-CA");
-        const formattedEndDate = end_date.toLocaleDateString("en-CA");
+        const formattedStartDate = start_date.toLocaleDateString("ko");
+        const formattedEndDate = end_date.toLocaleDateString("ko");
 
         const newEvent = {
           allDay: true,
@@ -72,14 +77,14 @@ export default function CreateEvent({ onClose }) {
           start: start_date,
           end: end_date,
           extendedProps: {
-            memo: response.data.event_description
+            memo: response.data.event_description,
           },
           color: "#ff5733",
           editable: true, // 이벤트 편집 가능
         };
         setEvents((prevEvents) => [...prevEvents, newEvent]); // 새로운 이벤트 추가
 
-        console.log('Response Data:', JSON.stringify(response.data, null, 2));
+        console.log("Response Data:", JSON.stringify(response.data, null, 2));
         alert("이벤트가 성공적으로 생성되었습니다!");
         onClose(); // 모달 닫기
       }
@@ -87,7 +92,7 @@ export default function CreateEvent({ onClose }) {
       console.error("이벤트 생성 실패:", error);
       setErrorMessage(
         error.response?.data?.message ||
-        "이벤트를 생성하지 못했습니다. 다시 시도해 주세요.",
+          "이벤트를 생성하지 못했습니다. 다시 시도해 주세요.",
       );
     }
   };
@@ -99,7 +104,7 @@ export default function CreateEvent({ onClose }) {
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex flex-col w-full">
+      <div className="flex w-full flex-col">
         <div className="mb-[1rem] flex items-center justify-between">
           {/* 이벤트 제목 */}
           <input
@@ -125,7 +130,7 @@ export default function CreateEvent({ onClose }) {
           </div>
           {showCalList && (
             <div className="absolute left-[1.3rem] top-[1.55rem] flex h-[6rem] w-[8rem] flex-col overflow-auto">
-              {data.map((cal) => {
+              {calData.map((cal) => {
                 return (
                   <button
                     key={cal.id}
