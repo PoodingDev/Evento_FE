@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// 소셜 로그인 요청
+// 소셜 로그인
 export async function requestSocialLogin(platform, code) {
   const response = await axios.post("/api/auth/social-login", {
     provider: platform,

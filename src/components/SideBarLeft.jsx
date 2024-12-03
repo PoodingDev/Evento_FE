@@ -44,24 +44,6 @@ export default function SideBarLeft() {
       }
     }
 
-    // async function fetchUser() {
-    //   try {
-    //     const token = localStorage.getItem("token"); // 토큰 가져오기
-    //     const response = await axios.get("/api/users/me", {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //       },
-    //     });
-
-    //     if (response.status === 200) {
-    //       setMyUserId(response.data.user_id); // 사용자 ID 설정
-    //     }
-    //   } catch (error) {
-    //     console.error("사용자 정보를 가져오는 중 오류 발생:", error);
-    //   }
-    // }
-
-    // 사용자 정보와 캘린더 정보 모두 가져오기
     fetchCalendars();
     // fetchUser();
   }, [isCalendarInfoOpen, isCreateCalendarOpen]);
