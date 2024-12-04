@@ -5,8 +5,8 @@ export default function LogIn() {
     let clientId = "";
     let authUrl = "";
 
-    // const redirectUri = `https://evento.kro.kr/auth/${platform}`; //배포용
-    const redirectUri = `http://localhost:5173/auth/${platform}`;
+    const redirectUri = `https://evento.kro.kr/auth/${platform}`; //배포용
+    // const redirectUri = `http://localhost:5173/auth/${platform}`;
 
     switch (platform) {
       case "kakao":
