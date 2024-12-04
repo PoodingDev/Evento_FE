@@ -1,6 +1,8 @@
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 import { AiOutlineLike, AiTwotoneLike } from "react-icons/ai";
 import { FaXmark } from "react-icons/fa6";
 
@@ -20,10 +22,88 @@ import {
   FaRegCommentDots,
 } from "react-icons/fa";
 
-export default function EventInfo({ onClose }) {
+export default function EventInfo({ onClose, eventDetails, events }) {
+  //초기 값 세팅
+  const [eventInfo, setEventInfo] = useState({
+    eventId: "",
+    eventTitle: "",
+    title: "",
+    startDate: new Date(),
+    endDate: new Date(),
+    detailEventMemo: "",
+    isEventPublic: false,
+  });
+
+  //상태 관리
+  const [newEventInfo, setNewEventInfo] = useState({
+    newEventTitle: "",
+    newStartDate: new Date(),
+    newEndDate: new Date(),
+    newEventDetail: "",
+    newEventPublic: false,
+  });
+
+  //캘린더 색상
+  const [calColor, setCalColor] = useState(`${eventDetails.color}`);
+
+  useEffect(() => {
+    async function fetchEventInfo() {
+      try {
+        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
+        const response = await axios.get("/api/calendars/:calendar_id/events", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const {
+          event_id,
+          event_title,
+          cal_title,
+          start_time,
+          end_time,
+          event_description,
+          is_public,
+        } = response.data[0];
+
+        setEventInfo({
+          eventId: event_id,
+          eventTitle: eventDetails.title,
+          title: eventDetails.cal_title,
+          startDate: eventDetails.start,
+          endDate: eventDetails.end,
+          detailEventMemo: eventDetails.description,
+          isEventPublic: is_public,
+        });
+
+        setNewEventInfo({
+          newEventTitle: eventDetails.title,
+          newStartDate: eventDetails.start,
+          newEndDate: eventDetails.end,
+          newEventDetail: eventDetails.description,
+          newEventPublic: false,
+        });
+      } catch (error) {
+        console.error("이벤트 정보를 가져오는 중 오류 발생:", error);
+      }
+    }
+    fetchEventInfo();
+  }, []);
+
   //수정 및 편집
   const [isEdit, setIsEdit] = useState(false);
   const toggleIsEdit = () => setIsEdit(!isEdit);
+  const toggleIsPublic = () => {
+    setNewEventInfo((prevState) => ({
+      ...prevState,
+      newEventPublic: !newEventInfo.newEventPublic,
+    }));
+  };
+
+  //북마크
+  const [isLike, setIsLike] = useState(false);
+  const toggleIsLike = () => setIsLike(!isLike);
+  console.log("dkdkdk", newEventInfo.endDate);
 
   //댓글
   const data = [
@@ -65,29 +145,7 @@ export default function EventInfo({ onClose }) {
   const [IsCommentLike, setCommentLike] = useState(false);
   const toggleIsCommentLike = () => setCommentLike(!IsCommentLike);
 
-  //이벤트 제목(일정 이름)
-  const [eventTitle, setEventTitle] = useState("저녁 약속");
-  const [newEventTitle, setNewEventTitle] = useState(eventTitle);
-
-  //시간
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [newStartDate, setNewStartDate] = useState(startDate);
-  const [newEndDate, setNewEndDate] = useState(endDate);
-
-  //이벤트 상세
-  const [detailEventMemo, setDetailEventMemo] = useState("고기 먹자");
-  const [newEventDetail, setNewEventDetail] = useState(detailEventMemo);
-
-  //공개
-  const [isEventPublic, setIsEventPublic] = useState(false);
-  const [newEventPublic, setNewEventPublic] = useState(isEventPublic);
-  const toggleIsPublic = () => setNewEventPublic(!newEventPublic);
-
-  //북마크
-  const [isLike, setIsLike] = useState(false);
-  const toggleIsLike = () => setIsLike(!isLike);
-
+  //댓글 작성
   const handleSubmit = (e) => {
     e.preventDefault();
     if (input.trim() !== "") {
@@ -102,24 +160,83 @@ export default function EventInfo({ onClose }) {
   };
 
   //저장
-  const save = () => {
-    setEventTitle(newEventTitle);
-    setStartDate(newStartDate);
-    setEndDate(newEndDate);
-    setDetailEventMemo(newEventDetail);
-    setIsEventPublic(newEventPublic);
-    toggleIsEdit();
+  const save = async () => {
+    try {
+      const token = localStorage.getItem("token"); // 토큰 가져오기
+      const response = await axios.patch(
+        `/api/calendars/10/events/${eventInfo.eventId}`,
+        {
+          event_title: eventInfo.eventTitle,
+          cal_title: eventInfo.title,
+          start_time: eventInfo.startDate,
+          end_time: eventInfo.endDate,
+          event_description: eventInfo.detailEventMemo,
+          is_public: eventInfo.isEventPublic,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      if (response.status === 200) {
+        setEventInfo({
+          eventTitle: newEventInfo.newEventTitle,
+          title: eventInfo.title,
+          startDate: newEventInfo.newStartDate,
+          endDate: newEventInfo.newEndDate,
+          detailEventMemo: newEventInfo.newEventDetail,
+          isEventPublic: newEventInfo.newEventPublic,
+        });
+        toggleIsEdit();
+        console.log(newEventInfo.newEndDate);
+      }
+    } catch (error) {
+      console.error("캘린더 수정 실패:", error);
+      alert("캘린더 수정에 실패했습니다. 다시 시도해 주세요.");
+    }
   };
 
   //취소
   const cancle = () => {
-    setNewEventTitle(eventTitle);
-    setNewStartDate(startDate);
-    setNewEndDate(endDate);
-    setNewEventDetail(detailEventMemo);
-    setNewEventPublic(isEventPublic);
+    setNewEventInfo({
+      newEventTitle: eventDetails.title,
+      newStartDate: eventDetails.start,
+      newEndDate: eventDetails.end,
+      newEventDetail: eventDetails.description,
+      newEventPublic: eventInfo.isEventPublic,
+    });
     toggleIsEdit();
   };
+
+  // 삭제
+  const handleDelete = async () => {
+    try {
+      const token = localStorage.getItem("token"); // 토큰 가져오기
+      const response = await axios.delete(`/api/events/${eventInfo.eventId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        // 삭제가 성공적으로 완료되었을 때
+        alert("이벤트가 성공적으로 삭제되었습니다.");
+        onClose(); // 삭제 후 모달 닫기
+      }
+    } catch (error) {
+      console.error("이벤트 삭제 실패:", error);
+      alert("이벤트 삭제에 실패했습니다. 다시 시도해 주세요.");
+    }
+  };
+
+  useEffect(() => {
+    // calData가 업데이트된 후 출력
+    console.log("dk", eventInfo);
+  }, [eventInfo]);
 
   return (
     <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
@@ -134,28 +251,41 @@ export default function EventInfo({ onClose }) {
           {isEdit ? (
             <div className="flex items-center">
               <div className="text-darkGray">
-                {newEventPublic ? <FaLock size={20} /> : <FaUnlock size={20} />}
+                {newEventInfo.newEventPublic ? (
+                  <FaLock size={20} />
+                ) : (
+                  <FaUnlock size={20} />
+                )}
               </div>
               <input
                 type="text"
-                value={newEventTitle}
+                value={newEventInfo.newEventTitle}
                 className="ml-[1rem] h-[2.5rem] w-full rounded-md bg-eventoPurple bg-lightGray/20 text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
                 onChange={(e) => {
-                  setNewEventTitle(e.target.value);
+                  setNewEventInfo({
+                    ...newEventInfo,
+                    newEventTitle: e.target.value,
+                  });
                 }}
               />
             </div>
           ) : (
             <div className="flex items-center">
               <div className="text-darkGray">
-                {isEventPublic ? <FaLock size={20} /> : <FaUnlock size={20} />}
+                {eventInfo.isEventPublic ? (
+                  <FaLock size={20} />
+                ) : (
+                  <FaUnlock size={20} />
+                )}
               </div>
               <input
                 type="text"
-                value={eventTitle}
+                value={eventInfo.eventTitle}
                 className="ml-[1rem] h-[2.5rem] w-full bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
                 onChange={(e) => {
-                  setEventTitle(e.target.value);
+                  setEventInfo({
+                    eventTitle: e.target.value,
+                  });
                 }}
                 disabled
               />
@@ -168,9 +298,12 @@ export default function EventInfo({ onClose }) {
           ""
         ) : (
           <div className="flex">
-            <div className="mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoYellow text-center text-[1rem] font-bold">
+            <div
+              className="mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] text-center text-[1rem] font-bold"
+              style={{ backgroundColor: calColor }}
+            >
               <div className="flex items-center">
-                <p>Pooding팀</p>
+                <p>{`${eventDetails.cal_title}`}</p>
               </div>
             </div>
           </div>
@@ -188,17 +321,37 @@ export default function EventInfo({ onClose }) {
             </div>
             <div className="mb-[2rem] flex w-[25rem] -translate-x-[0.3rem] items-center text-[2rem] font-bold text-darkGray">
               <DatePicker
-                selected={newStartDate}
-                onChange={(date) => setNewStartDate(date)}
+                selected={newEventInfo.newStartDate}
+                onChange={(date) =>
+                  setNewEventInfo({
+                    ...newEventInfo,
+                    newStartDate: date,
+                  })
+                }
                 dateFormat="yyyy-MM-dd"
-                className="w-[12rem] rounded-md bg-lightGray/20 text-center"
+                className="rounded-lg bg-eventoWhite p-1 text-right text-darkGray"
+                showYearDropdown
+                scrollableYearDropdown
+                yearDropdownItemNumber={100}
+                minDate={new Date(1900, 0, 1)}
+                maxDate={new Date(2050, 11, 31)}
               />
               <span className="w-[2rem] text-center">-</span>
               <DatePicker
-                selected={newEndDate}
-                onChange={(date) => setNewEndDate(date)}
+                selected={newEventInfo.newEndDate || newEventInfo.newStartDate}
+                onChange={(date) =>
+                  setNewEventInfo({
+                    ...newEventInfo,
+                    newEndDate: date,
+                  })
+                }
                 dateFormat="yyyy-MM-dd"
-                className="w-[12rem] rounded-md bg-lightGray/20 text-center"
+                className="rounded-lg bg-eventoWhite p-1 text-right text-darkGray"
+                showYearDropdown
+                scrollableYearDropdown
+                yearDropdownItemNumber={100}
+                minDate={new Date(1900, 0, 1)}
+                maxDate={new Date(2050, 11, 31)}
               />
             </div>
           </>
@@ -209,16 +362,24 @@ export default function EventInfo({ onClose }) {
             </div>
             <div className="mb-[2rem] flex w-[25rem] -translate-x-[0.3rem] items-center text-[2rem] font-bold text-darkGray">
               <DatePicker
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
+                selected={eventInfo.startDate}
+                onChange={(date) =>
+                  setEventInfo({
+                    startDate: date,
+                  })
+                }
                 dateFormat="yyyy-MM-dd"
                 className="w-[12rem] bg-transparent text-center"
                 disabled
               />
               <span className="w-[2rem] text-center">-</span>
               <DatePicker
-                selected={endDate}
-                onChange={(date) => setendDate(date)}
+                selected={eventInfo.endDate || eventInfo.startDate}
+                onChange={(date) =>
+                  setEventInfo({
+                    endDate: date,
+                  })
+                }
                 dateFormat="yyyy-MM-dd"
                 className="w-[12rem] bg-transparent text-center"
                 disabled
@@ -265,9 +426,12 @@ export default function EventInfo({ onClose }) {
               </div>
               <input
                 type="text"
-                value={newEventDetail}
+                value={newEventInfo.newEventDetail}
                 onChange={(e) => {
-                  setNewEventDetail(e.target.value);
+                  setNewEventInfo({
+                    ...newEventInfo,
+                    newEventDetail: e.target.value,
+                  });
                 }}
                 className="w-[15rem] rounded-md border-b-[0.1rem] border-solid border-eventoPurple bg-lightGray/20 pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
               />
@@ -281,9 +445,9 @@ export default function EventInfo({ onClose }) {
               </div>
               <input
                 type="text"
-                value={detailEventMemo}
+                value={eventInfo.detailEventMemo}
                 onChange={(e) => {
-                  setDetailEventMemo(e.target.value);
+                  setEventInfo({ detailEventMemo: e.target.value });
                 }}
                 className="w-[15rem] bg-transparent pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
                 disabled
@@ -311,7 +475,7 @@ export default function EventInfo({ onClose }) {
             </div>
             <div className="flex items-center space-x-[0.5rem] text-[1rem] text-darkGray">
               <p>구독자들에게 공개하기</p>
-              {newEventPublic ? (
+              {newEventInfo.newEventPublic === true ? (
                 <FaToggleOff
                   size={25}
                   className="cursor-pointer text-eventoPurple"
@@ -359,7 +523,10 @@ export default function EventInfo({ onClose }) {
           </div>
           <div className="absolute bottom-[3rem] right-[3rem] flex space-x-[0.5rem] text-[1.5rem] text-darkGray">
             <FaPen onClick={toggleIsEdit} />
-            <FaRegTrashAlt />
+            <FaRegTrashAlt
+              className="cursor-pointer text-[1.5rem] text-darkGray"
+              onClick={handleDelete}
+            />
           </div>
         </>
       )}
