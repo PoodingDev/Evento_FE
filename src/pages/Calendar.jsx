@@ -22,9 +22,9 @@ export default function Calendar() {
   // 클릭된 이벤트를 처리하는 함수
   const handleEventClick = (info) => {
     const clickedEvent = info.event;
-
     const findEvent = () => {
       const event = events.find((event) => event.title === clickedEvent.title);
+
       if (event) {
         setCalTitle(event.calTitle);
         setcalColor(event.color);
@@ -33,6 +33,7 @@ export default function Calendar() {
     };
 
     const eventDetails = {
+      id: clickedEvent.id,
       title: clickedEvent.title,
       start: clickedEvent.start,
       end: clickedEvent.end,
@@ -76,8 +77,9 @@ export default function Calendar() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
           <EventInfoModal
             eventDetails={selectedEvent}
-            event={events}
+            events={events}
             onClose={closeModal}
+            setEvents={setEvents}
           />
         </div>
       )}

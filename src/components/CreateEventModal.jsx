@@ -82,6 +82,7 @@ export default function CreateEvent({ onClose, setEvents }) {
 
         const newEvent = {
           allDay: true,
+          id: response.data.event_id,
           title: response.data.event_title,
           start: start_date,
           end: end_date,
