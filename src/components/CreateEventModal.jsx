@@ -52,6 +52,8 @@ export default function CreateEvent({ onClose, setEvents }) {
       const token = localStorage.getItem("token"); // 토큰 가져오기
       if (!eventTitle) {
         throw new Error("일정 이름을 입력해주세요.");
+      } else if (title === "캘린더 이름") {
+        throw new Error("캘린더 이름을 선택해주세요.");
       }
 
       const response = await axios.post(
