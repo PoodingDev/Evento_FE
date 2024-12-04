@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { fetchUserInfo, requestSocialLogin } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
+
+import {
+  fetchUserInfo,
+  requestGoogleLogin,
+  requestKakaoLogin,
+  requestNaverLogin,
+} from "../api/auth";
 
 export default function LoginPostCode() {
   const [searchParams] = useSearchParams();
