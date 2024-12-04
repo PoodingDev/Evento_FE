@@ -1,4 +1,5 @@
 import axios from "axios";
+import instance from "./axios";
 
 // 소셜 로그인
 export async function requestKakaoLogin(code) {
