@@ -2,7 +2,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { faL } from "@fortawesome/free-solid-svg-icons";
 import { AiOutlineLike, AiTwotoneLike } from "react-icons/ai";
 import { FaXmark } from "react-icons/fa6";
 
@@ -22,7 +21,7 @@ import {
   FaRegCommentDots,
 } from "react-icons/fa";
 
-export default function EventInfo({ onClose, eventDetails, events }) {
+export default function EventInfo({ onClose, eventDetails, setEvents }) {
   //초기 값 세팅
   const [eventInfo, setEventInfo] = useState({
     eventId: "",
@@ -44,7 +43,11 @@ export default function EventInfo({ onClose, eventDetails, events }) {
   });
 
   //캘린더 색상
-  const [calColor, setCalColor] = useState(`${eventDetails.color}`);
+  const [calColor, setCalColor] = useState(eventDetails.color);
+  const [calTitle, setCalTitle] = useState(eventDetails.cal_title);
+  useEffect(() => {
+    setCalTitle(eventDetails.cal_title);
+  }, [eventDetails.cal_title]);
 
   useEffect(() => {
     async function fetchEventInfo() {
@@ -60,14 +63,18 @@ export default function EventInfo({ onClose, eventDetails, events }) {
           event_id,
           event_title,
           cal_title,
+          cal_color,
           start_time,
           end_time,
           event_description,
           is_public,
-        } = response.data[0];
+        } = response.data[1];
+
+        console.log(response.data);
+        console.log(eventDetails);
 
         setEventInfo({
-          eventId: event_id,
+          eventId: eventDetails.id,
           eventTitle: eventDetails.title,
           title: eventDetails.cal_title,
           startDate: eventDetails.start,
@@ -88,7 +95,7 @@ export default function EventInfo({ onClose, eventDetails, events }) {
       }
     }
     fetchEventInfo();
-  }, []);
+  }, [eventDetails]);
 
   //수정 및 편집
   const [isEdit, setIsEdit] = useState(false);
@@ -103,7 +110,6 @@ export default function EventInfo({ onClose, eventDetails, events }) {
   //북마크
   const [isLike, setIsLike] = useState(false);
   const toggleIsLike = () => setIsLike(!isLike);
-  console.log("dkdkdk", newEventInfo.endDate);
 
   //댓글
   const data = [
@@ -166,12 +172,18 @@ export default function EventInfo({ onClose, eventDetails, events }) {
       const response = await axios.patch(
         `/api/calendars/10/events/${eventInfo.eventId}`,
         {
-          event_title: eventInfo.eventTitle,
+          // event_title: eventInfo.eventTitle,
+          // cal_title: eventInfo.title,
+          // start_time: eventInfo.startDate,
+          // end_time: eventInfo.endDate,
+          // event_description: eventInfo.detailEventMemo,
+          // is_public: eventInfo.isEventPublic,
+          event_title: newEventInfo.newEventTitle,
           cal_title: eventInfo.title,
-          start_time: eventInfo.startDate,
-          end_time: eventInfo.endDate,
-          event_description: eventInfo.detailEventMemo,
-          is_public: eventInfo.isEventPublic,
+          start_time: newEventInfo.newStartDate,
+          end_time: newEventInfo.newEndDate,
+          event_description: newEventInfo.newEventDetail,
+          is_public: newEventInfo.newEventPublic,
         },
         {
           headers: {
@@ -190,8 +202,26 @@ export default function EventInfo({ onClose, eventDetails, events }) {
           detailEventMemo: newEventInfo.newEventDetail,
           isEventPublic: newEventInfo.newEventPublic,
         });
+
+        setEvents((prevEvents) => {
+          console.log(prevEvents);
+          return prevEvents.map((event) => {
+            if (event.id === Number(eventInfo.eventId)) {
+              // 수정된 이벤트를 반환하도록
+              return {
+                ...event,
+                title: newEventInfo.newEventTitle, // newEventInfo로 값 수정
+                start: new Date(newEventInfo.newStartDate), // 날짜 형식에 맞게 변환
+                end: new Date(newEventInfo.newEndDate),
+                extendedProps: {
+                  memo: newEventInfo.newEventDetail,
+                },
+              };
+            }
+            return event; // 수정되지 않은 이벤트는 그대로 반환
+          });
+        });
         toggleIsEdit();
-        console.log(newEventInfo.newEndDate);
       }
     } catch (error) {
       console.error("캘린더 수정 실패:", error);
@@ -224,6 +254,11 @@ export default function EventInfo({ onClose, eventDetails, events }) {
 
       if (response.status === 200) {
         // 삭제가 성공적으로 완료되었을 때
+        setEvents((prevEvents) => {
+          return prevEvents.filter(
+            (event) => event.id !== Number(eventInfo.eventId),
+          ); // 해당 이벤트를 제외한 나머지 반환
+        });
         alert("이벤트가 성공적으로 삭제되었습니다.");
         onClose(); // 삭제 후 모달 닫기
       }
@@ -235,7 +270,7 @@ export default function EventInfo({ onClose, eventDetails, events }) {
 
   useEffect(() => {
     // calData가 업데이트된 후 출력
-    console.log("dk", eventInfo);
+    console.log(eventInfo);
   }, [eventInfo]);
 
   return (
@@ -303,7 +338,7 @@ export default function EventInfo({ onClose, eventDetails, events }) {
               style={{ backgroundColor: calColor }}
             >
               <div className="flex items-center">
-                <p>{`${eventDetails.cal_title}`}</p>
+                <p>{eventInfo.title}</p>
               </div>
             </div>
           </div>
@@ -329,7 +364,7 @@ export default function EventInfo({ onClose, eventDetails, events }) {
                   })
                 }
                 dateFormat="yyyy-MM-dd"
-                className="rounded-lg bg-eventoWhite p-1 text-right text-darkGray"
+                className="w-[12rem] rounded-lg bg-lightGray/20 p-1 pr-[1rem] text-center text-darkGray"
                 showYearDropdown
                 scrollableYearDropdown
                 yearDropdownItemNumber={100}
@@ -346,7 +381,7 @@ export default function EventInfo({ onClose, eventDetails, events }) {
                   })
                 }
                 dateFormat="yyyy-MM-dd"
-                className="rounded-lg bg-eventoWhite p-1 text-right text-darkGray"
+                className="w-[12rem] rounded-lg bg-lightGray/20 p-1 pr-[1rem] text-center text-darkGray"
                 showYearDropdown
                 scrollableYearDropdown
                 yearDropdownItemNumber={100}
@@ -369,10 +404,10 @@ export default function EventInfo({ onClose, eventDetails, events }) {
                   })
                 }
                 dateFormat="yyyy-MM-dd"
-                className="w-[12rem] bg-transparent text-center"
+                className="w-[12rem] bg-transparent p-1 pr-[1rem] text-center"
                 disabled
               />
-              <span className="w-[2rem] text-center">-</span>
+              <span className="mx-[0.1rem] w-[2rem] text-center">-</span>
               <DatePicker
                 selected={eventInfo.endDate || eventInfo.startDate}
                 onChange={(date) =>
@@ -381,7 +416,7 @@ export default function EventInfo({ onClose, eventDetails, events }) {
                   })
                 }
                 dateFormat="yyyy-MM-dd"
-                className="w-[12rem] bg-transparent text-center"
+                className="mr-[0.5rem] w-[12rem] bg-transparent p-1 pr-[1rem] text-center"
                 disabled
               />
             </div>
