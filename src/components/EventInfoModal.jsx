@@ -43,7 +43,11 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
   });
 
   //캘린더 색상
-  const [calColor, setCalColor] = useState(`${eventDetails.color}`);
+  const [calColor, setCalColor] = useState(eventDetails.color);
+  const [calTitle, setCalTitle] = useState(eventDetails.cal_title);
+  useEffect(() => {
+    setCalTitle(eventDetails.cal_title);
+  }, [eventDetails.cal_title]);
 
   useEffect(() => {
     async function fetchEventInfo() {
@@ -91,7 +95,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
       }
     }
     fetchEventInfo();
-  }, []);
+  }, [eventDetails]);
 
   //수정 및 편집
   const [isEdit, setIsEdit] = useState(false);
@@ -334,7 +338,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
               style={{ backgroundColor: calColor }}
             >
               <div className="flex items-center">
-                <p>{`${eventDetails.cal_title}`}</p>
+                <p>{eventInfo.title}</p>
               </div>
             </div>
           </div>

@@ -16,21 +16,10 @@ export default function Calendar() {
   const toggleCreateEvent = () => {
     setIsCreateEventOpen((prev) => !prev);
   };
-  const [calTitle, setCalTitle] = useState("");
-  const [calColor, setcalColor] = useState("");
 
   // 클릭된 이벤트를 처리하는 함수
   const handleEventClick = (info) => {
     const clickedEvent = info.event;
-    const findEvent = () => {
-      const event = events.find((event) => event.title === clickedEvent.title);
-
-      if (event) {
-        setCalTitle(event.calTitle);
-        setcalColor(event.color);
-      } else {
-      }
-    };
 
     const eventDetails = {
       id: clickedEvent.id,
@@ -39,10 +28,9 @@ export default function Calendar() {
       end: clickedEvent.end,
       description: clickedEvent.extendedProps.memo,
       groupId: clickedEvent.groupId,
-      cal_title: calTitle,
-      color: calColor,
+      cal_title: clickedEvent.extendedProps.calTitle,
+      color: clickedEvent.backgroundColor,
     };
-    findEvent();
 
     setSelectedEvent(eventDetails); // 클릭된 이벤트 정보 상태로 저장
     setIsModalOpen(true); // 모달 열기
