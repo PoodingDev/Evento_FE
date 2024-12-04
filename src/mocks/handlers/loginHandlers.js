@@ -2,7 +2,7 @@ import { rest } from "msw";
 
 export const loginHandlers = [
   // 소셜 로그인 요청 핸들러
-  rest.post("/api/auth/google-login", async (req, res, ctx) => {
+  rest.post("/api/users/google-login", async (req, res, ctx) => {
     let requestBody;
 
     try {
@@ -47,7 +47,7 @@ export const loginHandlers = [
     );
   }),
 
-  rest.post("/api/auth/kakao-login", async (req, res, ctx) => {
+  rest.post("/api/users/kakao-login", async (req, res, ctx) => {
     let requestBody;
 
     try {
@@ -92,7 +92,7 @@ export const loginHandlers = [
     );
   }),
 
-  rest.post("/api/auth/naver-login", async (req, res, ctx) => {
+  rest.post("/api/users/naver-login", async (req, res, ctx) => {
     let requestBody;
 
     try {
