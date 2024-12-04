@@ -1,18 +1,24 @@
 import axios from "axios";
 
 // 소셜 로그인
-export async function requestSocialLogin(code) {
-  const response = await axios.post(`/api/users/${provider}-login`, {
+export async function requestKakaoLogin(code) {
+  const response = await axios.post(`/api/users/kakao-login`, {
+    code: code,
+  });
+  return response.data;
+}
+
+export async function requestGoogleLogin(code) {
+  const response = await axios.post(`/api/users/google-login`, {
     code: code,
   });
   return response.data;
 }
 
 export async function requestNaverLogin(code, state) {
-  const response = await axios.post(`/api/users/${provider}-login`, {
+  const response = await axios.post(`/api/users/naver-login`, {
     code: code,
     state: state,
-
   });
   return response.data;
 }

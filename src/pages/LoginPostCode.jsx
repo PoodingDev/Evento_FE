@@ -23,10 +23,21 @@ export default function LoginPostCode() {
       }
 
       try {
-        // 로그인 요청 (네이버 따로)
-        const response = await (platform === "naver"
-          ? requestNaverLogin(authCode, state)
-          : requestSocialLogin(authCode));
+        let response;
+        // 로그인 요청
+        switch (platform) {
+          case "kakao":
+            response = await requestKakaoLogin(authCode);
+            break;
+          case "google":
+            response = await requestGoogleLogin(authCode);
+            break;
+          case "naver":
+            response = await requestNaverLogin(authCode,state);
+            break;
+          default:
+            break;
+        }
 
         const { access: accessToken, refresh: refreshToken } = response;
 
