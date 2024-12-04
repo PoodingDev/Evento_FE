@@ -12,6 +12,7 @@ export async function requestNaverLogin(code, state) {
   const response = await axios.post(`/api/users/${provider}-login`, {
     code: code,
     state: state,
+
   });
   return response.data;
 }
