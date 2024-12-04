@@ -360,7 +360,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                   })
                 }
                 dateFormat="yyyy-MM-dd"
-                className="w-[12rem] rounded-lg bg-eventoWhite p-1 text-right text-darkGray"
+                className="w-[12rem] rounded-lg bg-lightGray/20 p-1 pr-[1rem] text-center text-darkGray"
                 showYearDropdown
                 scrollableYearDropdown
                 yearDropdownItemNumber={100}
@@ -377,7 +377,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                   })
                 }
                 dateFormat="yyyy-MM-dd"
-                className="w-[12rem] rounded-lg bg-eventoWhite p-1 text-right text-darkGray"
+                className="w-[12rem] rounded-lg bg-lightGray/20 p-1 pr-[1rem] text-center text-darkGray"
                 showYearDropdown
                 scrollableYearDropdown
                 yearDropdownItemNumber={100}
@@ -400,10 +400,10 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                   })
                 }
                 dateFormat="yyyy-MM-dd"
-                className="w-[12rem] bg-transparent text-center"
+                className="w-[12rem] bg-transparent p-1 pr-[1rem] text-center"
                 disabled
               />
-              <span className="w-[2rem] text-center">-</span>
+              <span className="mx-[0.1rem] w-[2rem] text-center">-</span>
               <DatePicker
                 selected={eventInfo.endDate || eventInfo.startDate}
                 onChange={(date) =>
@@ -412,7 +412,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                   })
                 }
                 dateFormat="yyyy-MM-dd"
-                className="w-[12rem] bg-transparent text-center"
+                className="mr-[0.5rem] w-[12rem] bg-transparent p-1 pr-[1rem] text-center"
                 disabled
               />
             </div>
