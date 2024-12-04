@@ -250,6 +250,11 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
 
       if (response.status === 200) {
         // 삭제가 성공적으로 완료되었을 때
+        setEvents((prevEvents) => {
+          return prevEvents.filter(
+            (event) => event.id !== Number(eventInfo.eventId),
+          ); // 해당 이벤트를 제외한 나머지 반환
+        });
         alert("이벤트가 성공적으로 삭제되었습니다.");
         onClose(); // 삭제 후 모달 닫기
       }
