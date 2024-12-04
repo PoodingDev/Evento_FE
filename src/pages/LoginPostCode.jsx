@@ -33,7 +33,7 @@ export default function LoginPostCode() {
             response = await requestGoogleLogin(authCode);
             break;
           case "naver":
-            response = await requestNaverLogin(authCode,state);
+            response = await requestNaverLogin(authCode, state);
             break;
           default:
             break;
