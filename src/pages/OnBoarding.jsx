@@ -10,29 +10,58 @@ export default function OnBoarding() {
       body: "evento.와 함께 시작하세요",
     },
     {
-      img: "/assets/onboarding/editCalendar.png",
+      img: "/assets/onboarding/main_calendar.png",
       title: "Evento1",
-      body: "이벤토이 이벤토이 벤토설이벤토 설명설 명설 명이벤 ",
+      body: (<>
+        선택한 캘린더만 표시되고, 지정된 색상으로 구분되어
+        <br />
+        한눈에 쉽게 확인할 수 있는 맞춤형 캘린더 서비스입니다! 💖
+      </>)
     },
     {
-      img: "/assets/onboarding/editCalendar.png",
+      img: "/assets/onboarding/subscription_search.png",
       title: "Evento2",
-      body: "이벤토이 이벤토이 벤토설이벤토 설명설 명설 명이벤 ",
+      body: (<>
+        좋아하는 아티스트를 검색해 캘린더를 구독하고,
+        <br />
+        구독한 캘린더를 한눈에 확인할 수 있어요!
+      </>)
     },
     {
-      img: "/assets/onboarding/editCalendar.png",
+      img: "/assets/onboarding/subscription_list.png",
       title: "Evento3",
-      body: "이벤토이 이벤토이 벤토설이벤토 설명설 명설 명이벤 ",
+      body: (<>
+        원하는 캘린더를 선택해,
+        <br />
+        필요한 일정만 한눈에 확인할 수 있는 페이지입니다!
+      </>)
     },
     {
-      img: "/assets/onboarding/editCalendar.png",
+      img: "/assets/onboarding/comment_like.png",
       title: "Evento4",
-      body: "이벤토이 이벤토이 벤토설이벤토 설명설 명설 명이벤 ",
+      body: (<>
+        상세 일정을 클릭해 의견을 나누고,
+        <br />
+        '좋아요'를 눌러보세요!
+      </>)
     },
     {
-      img: "/assets/onboarding/editCalendar.png",
+      img: "/assets/onboarding/d_day.png",
       title: "Evento5",
-      body: "이벤토이 이벤토이 벤토설이벤토 설명설 명설 명이벤 ",
+      body: (<>
+        중요한 일정은 D-DAY로 표시되어,
+        <br />
+        이벤트까지 남은 일수를 한눈에 확인할 수 있습니다.
+      </>)
+    },
+    {
+      img: "/assets/onboarding/create_calendar.png",
+      title: "Evento6",
+      body: (<>
+        색상을 변경하고, 공개/비공개 설정으로 검색 여부를 조정할 수 있어요.
+        <br />
+        친구를 초대해 함께 캘린더를 관리할 수 있습니다!
+      </>)
     },
     {
       img: "/assets/evento_logo.png",
@@ -58,7 +87,7 @@ export default function OnBoarding() {
     <div className="flex min-h-screen items-center justify-center bg-eventoWhite px-5 py-5">
       {/* <div className="relative mx-auto w-[40%] overflow-hidden rounded-3xl bg-white px-10 pb-10 pt-16 text-gray-800 shadow-lg">
        */}
-      <div className="relative mx-auto w-[40%] overflow-hidden rounded-3xl px-10 pb-10 pt-16 text-gray-800">
+      <div className="relative w-[40%] overflow-hidden rounded-3xl mx-10 pb-10 pt-16 text-gray-800">
         {/* 슬라이드 컨테이너 */}
         <div
           className="flex transition-transform duration-500 ease-in-out"
@@ -72,14 +101,12 @@ export default function OnBoarding() {
               className="flex w-full flex-shrink-0 flex-col items-center text-center"
               style={{ width: "100%" }}
             >
-              <div
-                className="mb-5 h-64 w-64 bg-cover bg-center"
-                style={{
-                  backgroundImage: `url(${slide.img})`,
-                  backgroundSize: "contain",
-                  backgroundRepeat: "no-repeat",
-                }}
-              ></div>
+              {/* 이미지 렌더링 */}
+              <img
+                src={slide.img}
+                alt={slide.title}
+                className="mb-5 h-[300px] w-auto object-contain"
+              />
               <h2 className="mb-3 text-2xl font-bold text-eventoPurpleDark">
                 {slide.title}
               </h2>
@@ -104,9 +131,8 @@ export default function OnBoarding() {
             <span
               key={index}
               onClick={() => handleDotClick(index)}
-              className={`mx-1 h-3 w-3 cursor-pointer rounded-full ${
-                index === currentIndex ? "bg-eventoPurple" : "bg-gray-300"
-              }`}
+              className={`mx-1 h-3 w-3 cursor-pointer rounded-full ${index === currentIndex ? "bg-eventoPurple" : "bg-gray-300"
+                }`}
             ></span>
           ))}
         </div>
