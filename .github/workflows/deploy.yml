@@ -21,7 +21,9 @@ jobs:
       - name: 빌드하기
         env:
           VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
-          VITE_BACKEND_GOOGLE_URL: ${{ secrets.VITE_BACKEND_GOOGLE_URL }}
+           VITE_NAVER_CLIENT_ID: ${{ secrets.VITE_NAVER_CLIENT_ID }}
+            VITE_KAKAO_CLIENT_ID: ${{ secrets.VITE_KAKAO_CLIENT_ID }}
+            VITE_BACKEND_BASE_URL: ${{ secrets.VITE_BACKEND_BASE_URL }}
         run: npm run build
 
       - name: 빌드 결과 확인
