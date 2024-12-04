@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { AiOutlineLike, AiTwotoneLike } from "react-icons/ai";
 import { FaXmark } from "react-icons/fa6";
+import { useAuth } from "../context/AuthContext";
 
 import {
   FaLock,
@@ -42,6 +43,8 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
     newEventPublic: false,
   });
 
+  const { userInfo } = useAuth();
+
   //캘린더 색상
   const [calColor, setCalColor] = useState(eventDetails.color);
   const [calTitle, setCalTitle] = useState(eventDetails.cal_title);
@@ -70,9 +73,6 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
           is_public,
         } = response.data[1];
 
-        console.log(response.data);
-        console.log(eventDetails);
-
         setEventInfo({
           eventId: eventDetails.id,
           eventTitle: eventDetails.title,
@@ -96,6 +96,43 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
     }
     fetchEventInfo();
   }, [eventDetails]);
+
+  //캘린더 정보
+  const [calInfo, setCalInfo] = useState({
+    calenderName: "",
+    members: [],
+  });
+  useEffect(() => {
+    async function fetchCalInfo() {
+      try {
+        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
+        const response = await axios.get("/api/calendars/admins", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const selectedCalendar = response.data.find(
+          (cal) => cal.calendar_name === eventInfo.title,
+        );
+        console.log(selectedCalendar);
+        console.log(eventInfo.title);
+
+        if (selectedCalendar) {
+          setCalInfo({
+            calenderName: selectedCalendar.calendar_name,
+            members: selectedCalendar.members,
+          });
+        } else {
+          console.error("일치하는 캘린더를 찾을 수 없습니다.");
+          // 해당 캘린더가 없을 때 기본 값 설정 (필요에 따라 수정)
+        }
+      } catch (error) {
+        console.error("캘린더 정보를 가져오는 중 오류 발생:", error);
+      }
+    }
+    fetchCalInfo();
+  }, [eventInfo.title]);
 
   //수정 및 편집
   const [isEdit, setIsEdit] = useState(false);
@@ -267,11 +304,6 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
       alert("이벤트 삭제에 실패했습니다. 다시 시도해 주세요.");
     }
   };
-
-  useEffect(() => {
-    // calData가 업데이트된 후 출력
-    console.log(eventInfo);
-  }, [eventInfo]);
 
   return (
     <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
@@ -558,10 +590,19 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
           </div>
           <div className="absolute bottom-[3rem] right-[3rem] flex space-x-[0.5rem] text-[1.5rem] text-darkGray">
             <FaPen onClick={toggleIsEdit} />
-            <FaRegTrashAlt
-              className="cursor-pointer text-[1.5rem] text-darkGray"
-              onClick={handleDelete}
-            />
+            {console.log(userInfo.user_id)}
+            {console.log(
+              calInfo.members.find((cal) => cal.id === userInfo.user_id) !==
+                undefined,
+            )}
+
+            {calInfo.members.find((cal) => cal.id === userInfo.user_id) !==
+              undefined && (
+              <FaRegTrashAlt
+                className="cursor-pointer text-[1.5rem] text-darkGray"
+                onClick={handleDelete}
+              />
+            )}
           </div>
         </>
       )}
