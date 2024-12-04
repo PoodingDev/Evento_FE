@@ -172,7 +172,7 @@ function CaleanderSearch({ toggleSubscription }) {
   }, [debouncedInput]);
 
   return (
-    <section className="flex w-2/3 flex-col items-center justify-center py-[3rem] align-middle">
+    <section className="flex w-2/3 flex-col items-center py-[3rem] align-middle">
       <div className="flex items-center gap-2">
         <input
           type="text"
@@ -195,11 +195,10 @@ function CaleanderSearch({ toggleSubscription }) {
               <p className="text-darkGray">{calendar.creator.nickname}</p>
             </div>
             <button
-              className={`ml-auto h-[2rem] w-[5rem] rounded-[0.625rem] border-2 p-1 align-middle ${
-                calendar.isSubscribed
-                  ? "border-darkRed bg-white text-darkRed"
-                  : "border-darkRed bg-darkRed text-white"
-              }`}
+              className={`ml-auto h-[2rem] w-[5rem] rounded-[0.625rem] border-2 p-1 align-middle ${calendar.isSubscribed
+                ? "border-darkRed bg-white text-darkRed"
+                : "border-darkRed bg-darkRed text-white"
+                }`}
               onClick={() => toggleSubscription(calendar.calendar_id)}
             >
               {calendar.isSubscribed ? "구독 취소" : "구독"}
@@ -233,11 +232,10 @@ function SubscriptionCalender({ openCalendars, toggleSubscription }) {
                 </p>
               </div>
               <button
-                className={`ml-auto h-[1.8rem] w-[4.5rem] rounded-[0.625rem] border-2 p-1 align-middle text-[0.9rem] ${
-                  calendar.isSubscribed
-                    ? "border-darkRed/85 bg-white text-darkRed/85"
-                    : "border-darkRed/50 bg-darkRed/85 text-white"
-                }`}
+                className={`ml-auto h-[1.8rem] w-[4.5rem] rounded-[0.625rem] border-2 p-1 align-middle text-[0.9rem] ${calendar.isSubscribed
+                  ? "border-darkRed/85 bg-white text-darkRed/85"
+                  : "border-darkRed/50 bg-darkRed/85 text-white"
+                  }`}
                 onClick={() => toggleSubscription(calendar.calendar_id)}
               >
                 {calendar.isSubscribed ? "구독 취소" : "구독"}
