@@ -41,7 +41,7 @@ export default function App() {
         <Layout>
           <Routes>
             <Route path="/login" element={<LogIn />} />
-            <Route path="/auth/*" element={<LoginPostCode />} />
+            <Route path="/auth/:platform" element={<LoginPostCode />} />
             <Route path="/" element={<OnBoarding />} />
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/profile" element={<Profile />} />

@@ -1,10 +1,18 @@
 import axios from "axios";
 
 // 소셜 로그인
-export async function requestSocialLogin(platform, code) {
-  const response = await axios.post(`/api/users/${platform}-login`, {
-    provider: platform,
-    authCode: code,
+export async function requestSocialLogin(code) {
+  const response = await axios.post(`/api/users/${provider}-login`, {
+    code: code,
+  });
+  return response.data;
+}
+
+export async function requestNaverLogin(code, state) {
+  const response = await axios.post(`/api/users/${provider}-login`, {
+    code: code,
+    state: state,
+
   });
   return response.data;
 }

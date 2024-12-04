@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { fetchUserInfo, requestSocialLogin } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 
-export default function LoginPostCode() {
+export default function KakaoGoogleCallbackPage() {
   const [searchParams] = useSearchParams();
   const [errorMessage, setErrorMessage] = useState("");
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const navigate = useNavigate();
   const { setLoggedIn, setUserInfo } = useAuth();
-  const { platform } = useParams();
 
   useEffect(() => {
     const authenticate = async () => {
       const authCode = searchParams.get("code");
-      const state = searchParams.get("state");
 
       if (!authCode) {
         setErrorMessage("잘못된 인증 요청입니다.");
@@ -24,9 +22,7 @@ export default function LoginPostCode() {
 
       try {
         // 로그인 요청 (네이버 따로)
-        const response = await (platform === "naver"
-          ? requestNaverLogin(authCode, state)
-          : requestSocialLogin(authCode));
+        const response = await requestSocialLogin(authCode, platform);
 
         const { access: accessToken, refresh: refreshToken } = response;
 
