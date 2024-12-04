@@ -2,8 +2,13 @@ import axios from "axios";
 
 // src/api/axios.js
 
-const instance = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_BASE_URL,
+export const instance = axios.create({
+  baseURL: backendBaseURL,
+  timeout: 5000,
+  headers: {
+    "Content-Type": "application/json",
+  },
+  withCredentials: true,
 });
 
 export default instance;
