@@ -2,9 +2,9 @@ import axios from "axios";
 
 // 소셜 로그인
 export async function requestSocialLogin(platform, code) {
-  const response = await axios.post(`/api/auth/${platform}-login`, {
+  const response = await axios.post(`/api/users/${platform}-login`, {
     provider: platform,
-    access_token: code,
+    authCode: code,
   });
   return response.data;
 }
