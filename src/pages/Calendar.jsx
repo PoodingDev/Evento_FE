@@ -32,6 +32,7 @@ export default function Calendar() {
       cal_id: clickedEvent.extendedProps.calId,
       cal_title: clickedEvent.extendedProps.calTitle,
       color: clickedEvent.backgroundColor,
+      isPublic: clickedEvent.extendedProps.isPublic,
     };
 
     setSelectedEvent(eventDetails); // 클릭된 이벤트 정보 상태로 저장

@@ -69,18 +69,6 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
           },
         );
 
-        const {
-          event_id,
-          event_title,
-          cal_id,
-          cal_title,
-          cal_color,
-          start_time,
-          end_time,
-          event_description,
-          is_public,
-        } = response.data[1];
-
         setEventInfo({
           eventId: eventDetails.id,
           eventTitle: eventDetails.title,
@@ -89,7 +77,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
           startDate: eventDetails.start,
           endDate: eventDetails.end,
           detailEventMemo: eventDetails.description,
-          isEventPublic: is_public,
+          isEventPublic: eventDetails.isPublic,
         });
 
         setNewEventInfo({
@@ -97,7 +85,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
           newStartDate: eventDetails.start,
           newEndDate: eventDetails.end,
           newEventDetail: eventDetails.description,
-          newEventPublic: false,
+          newEventPublic: eventDetails.isPublic,
         });
       } catch (error) {
         console.error("이벤트 정보를 가져오는 중 오류 발생:", error);
@@ -277,7 +265,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
       newStartDate: eventDetails.start,
       newEndDate: eventDetails.end,
       newEventDetail: eventDetails.description,
-      newEventPublic: eventInfo.isEventPublic,
+      newEventPublic: eventDetails.isEventPublic,
     });
     setViewMode("info");
   };
@@ -345,9 +333,9 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                 <div className="flex items-center">
                   <div className="text-darkGray">
                     {eventInfo.isEventPublic ? (
-                      <FaLock size={20} />
-                    ) : (
                       <FaUnlock size={20} />
+                    ) : (
+                      <FaLock size={20} />
                     )}
                   </div>
                   <input
