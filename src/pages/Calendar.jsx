@@ -3,10 +3,10 @@ import CreateEvent from "components/CreateEventModal";
 import EventInfoModal from "/src/components/EventInfoModal";
 import FullCalendar from "@fullcalendar/react";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { FaPlus } from "react-icons/fa6";
-import axios from "axios";
 
 export default function Calendar() {
   const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
@@ -97,8 +97,37 @@ export default function Calendar() {
           events={events} // 이벤트 추가
           aspectRatio={2.1}
           eventClick={handleEventClick} // 이벤트 클릭 핸들러
+          dayMaxEventRows={7}
+          dayCellDidMount={(info) => {
+            // 특정 날짜 칸에 커스텀 스타일 적용
+            info.el.style.height = "10rem";
+            // info.el.style.overflow = "hidden";
+          }}
         />
       </div>
+
+      {/* <FullCalendar
+        plugins={[dayGridPlugin, interactionPlugin]} // 플러그인 추가
+        initialView="dayGridMonth" // 기본 뷰 설정
+        headerToolbar={{
+          left: "", // 왼쪽 버튼 제거
+          center: "title", // 가운데에 제목 배치
+          right: "prev,today,next", // 오른쪽에 이전/다음 버튼 배치
+        }}
+        buttonText={{
+          today: "TODAY", // 'today' 버튼 텍스트를 대문자로
+        }}
+        events={events} // 이벤트 추가
+        aspectRatio={2.1}
+        eventClick={handleEventClick} // 이벤트 클릭 핸들러
+        dayMaxEventRows={3} // 날짜별 최대 표시할 이벤트 수
+        moreLinkClick="popover"
+        dayCellDidMount={(info) => {
+          // 특정 날짜 칸에 커스텀 스타일 적용
+          info.el.style.height = "10rem";
+          // info.el.style.overflow = "hidden";
+        }}
+      /> */}
 
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
