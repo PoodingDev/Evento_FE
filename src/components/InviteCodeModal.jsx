@@ -43,7 +43,7 @@ export default function InviteCodeModal({ onClose, calendarId }) {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.post(
-          `/api/calendars/admins/invite/`,
+          `/api/calendars/admins/invite`,
           { invitation_code: inviteCode },
           {
             headers: {
