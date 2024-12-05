@@ -3,7 +3,7 @@ import { instance } from "./axios";
 // 소셜 로그인
 export async function requestKakaoLogin(code) {
   const response = await instance.post(`/api/users/kakao-login`, {
-    code: code.axios.baseURL,
+    code: code,
   });
   return response.data;
 }
