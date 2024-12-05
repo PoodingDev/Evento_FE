@@ -155,13 +155,13 @@ export default function CreateEvent({ onClose, setEvents }) {
   }, [calData, calColor]);
 
   return (
-    <div className="flex h-[29rem] w-[37rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
+    <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
       <FaXmark
         size={25}
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex w-full flex-col">
+      <div className="flex flex-col w-full">
         <div className="mb-[1rem] flex items-center justify-between">
           {/* 이벤트 제목 */}
           <input
@@ -176,14 +176,14 @@ export default function CreateEvent({ onClose, setEvents }) {
 
         {/* 캘린더 선택 */}
 
-        <div className="relative z-20 mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoPurpleLight text-center text-[1rem] font-bold">
+        <div
+          className="relative z-20 mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoPurpleLight text-center text-[1rem] font-bold"
+          onClick={() => {
+            showList();
+          }}
+        >
           <div className="flex h-[1.55rem] -translate-x-[0.3rem] items-center justify-between">
-            <FaCaretDown
-              size={25}
-              onClick={() => {
-                showList();
-              }}
-            />
+            <FaCaretDown size={25} />
             <p className="">{`${title}`}</p>
           </div>
           {showCalList && (
