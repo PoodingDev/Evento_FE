@@ -10,8 +10,8 @@ import axios from "axios";
 //   withCredentials: true,
 // });
 
-const instance = axios.create({
-  baseURL: "/", 
+export const instance = axios.create({
+  baseURL: "/",
 });
 
 export default instance;
