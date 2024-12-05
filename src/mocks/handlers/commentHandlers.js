@@ -7,7 +7,6 @@ let mockComments = [
     event_id: 1,
     content: "이벤트1 참석합니다!",
     created_at: "2024-11-20T14:30:00",
-    updated_at: "2024-11-20T14:30:00",
     admin_id: 1,
   },
   {
@@ -15,7 +14,6 @@ let mockComments = [
     event_id: 1,
     content: "event1 참석하겠습니다.",
     created_at: "2024-11-20T15:00:00",
-    updated_at: "2024-11-20T15:00:00",
     admin_id: 2,
   },
   {
@@ -23,7 +21,6 @@ let mockComments = [
     event_id: 2,
     content: "event2 참석",
     created_at: "2024-11-20T15:00:00",
-    updated_at: "2024-11-20T15:00:00",
     admin_id: 2,
   },
 ];

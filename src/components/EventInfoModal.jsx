@@ -185,8 +185,8 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
   const [commentList, setCommentList] = useState(data);
 
   //댓글 공감
-  const [IsCommentLike, setCommentLike] = useState(false);
-  const toggleIsCommentLike = () => setCommentLike(!IsCommentLike);
+  // const [IsCommentLike, setCommentLike] = useState(false);
+  // const toggleIsCommentLike = () => setCommentLike(!IsCommentLike);
 
   //댓글 작성
   const handleSubmit = (e) => {
@@ -267,7 +267,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
   };
 
   //취소
-  const cancle = () => {
+  const cancel = () => {
     setNewEventInfo({
       newEventTitle: eventDetails.title,
       newStartDate: eventDetails.start,
@@ -306,14 +306,14 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
   };
 
   return (
-    <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
+    <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite px-[2.8rem] py-[2.5rem] shadow-xl shadow-lightGray/50">
       <FaXmark
         size={25}
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex w-full flex-col">
-        <div className="mb-[1.5rem] flex items-center justify-between">
+      <div className="flex flex-col w-full">
+        <div className="mb-[1rem] flex items-center justify-between">
           {/* 이벤트 제목 */}
           {isEdit ? (
             <div className="flex items-center">
@@ -366,10 +366,10 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
         ) : (
           <div className="flex">
             <div
-              className="mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] text-center text-[1rem] font-bold"
+              className="mb-[1.5rem] flex h-[2rem] justify-center rounded-[2.5rem] px-[1.1rem] text-center text-[1rem] font-bold"
               style={{ backgroundColor: calColor }}
             >
-              <div className="flex items-center">
+              <div className="flex items-center text-eventoWhite">
                 <p>{eventInfo.title}</p>
               </div>
             </div>
@@ -379,7 +379,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
         {/* 시간 */}
         {isComment ? (
           <div className="mb-[1rem] flex">
-            <FaChevronLeft size={20} onClick={toggleIsComment} />
+            <FaChevronLeft size={15} onClick={toggleIsComment} />
           </div>
         ) : isEdit ? (
           <>
@@ -456,18 +456,20 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
         )}
 
         {/* 일정 상세 */}
+        {/* 댓글 */}
         {isComment ? (
-          <div className="h-[16rem] overflow-auto">
-            {commentList.map((comment) => {
-              return (
-                <div
-                  key={comment.id}
-                  className="mb-[0.5rem] flex flex-wrap pt-[0.5rem]"
-                >
-                  <div className="w-[42rem] text-lightGray">{`${comment.username}`}</div>
-                  <div className="mr-[1rem] flex items-center rounded-[0.3rem] font-medium leading-[1.5rem]">
-                    {`${comment.content}`}
-                    {IsCommentLike ? (
+          <div className="flex items-center justify-center">
+            <div className="h-[16rem] space-y-[0.8rem] overflow-auto px-[1rem]">
+              {commentList.map((comment) => {
+                return (
+                  <div key={comment.id} className="flex flex-wrap">
+                    <div className="ml-[0.2rem] w-[42rem] pb-[0.2rem] text-[0.8rem] text-darkGray">{`${comment.username}`}</div>
+                    <div
+                      style={{ backgroundColor: `${calColor}BB` }}
+                      className="mr-[1rem] flex items-center rounded-[0.6rem] px-[0.7rem] py-[0.2rem] text-[0.9rem] leading-[1.5rem] text-eventoWhite"
+                    >
+                      {`${comment.content}`}
+                      {/* {IsCommentLike ? (
                       <AiTwotoneLike
                         className="ml-[1rem] text-eventoPurple"
                         onClick={toggleIsCommentLike}
@@ -479,11 +481,12 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                         onClick={toggleIsCommentLike}
                         size={15}
                       />
-                    )}
+                    )} */}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         ) : isEdit ? (
           <>
@@ -565,7 +568,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
         <div className="absolute bottom-[2rem] right-[2rem] flex space-x-[0.5rem]">
           <button
             className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple/80 text-center text-[1.1rem] text-eventoPurple/80 hover:bg-eventoPurpleLight/70 active:bg-eventoPurpleLight"
-            onClick={cancle}
+            onClick={cancel}
           >
             <span>취소</span>
           </button>
