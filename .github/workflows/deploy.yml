@@ -3,7 +3,7 @@ name: Github Actions 실행
 on:
   push:
     branches:
-      - main
+      - deploy # main 대신 deploy 브랜치에서만 실행되도록 설정
 
 jobs:
   deploy:
