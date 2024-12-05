@@ -62,7 +62,7 @@ export default function InviteCodeModal({ onClose, calendarId }) {
         alert("유효하지 않은 초대 코드입니다. 다시 시도해 주세요.");
       }
     } else {
-      alert("모든 칸을 채워주세요!");
+      alert("참가 코드는 6자리입니다");
     }
   };
 

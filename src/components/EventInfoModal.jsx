@@ -13,19 +13,13 @@ import {
   FaRegBookmark,
   FaRegTrashAlt,
   FaPen,
-  FaCommentAlt,
-  FaCaretDown,
   FaToggleOn,
   FaToggleOff,
   FaChevronLeft,
-  FaComment,
   FaRegCommentDots,
 } from "react-icons/fa";
 
 export default function EventInfo({ onClose, eventDetails, setEvents }) {
-  // console.log("-------------");
-  // console.log(eventDetails);
-  // console.log(`${eventDetails.calendarId},${eventDetails.id} `);
   const [eventInfo, setEventInfo] = useState({
     eventId: "",
     eventTitle: "",
@@ -59,7 +53,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
   useEffect(() => {
     async function fetchEventInfo() {
       try {
-        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
+        const token = localStorage.getItem("token");
         const response = await axios.get(
           `/api/calendars/${eventDetails.calendarId}/events`,
 
@@ -355,7 +349,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex flex-col w-full">
+      <div className="flex w-full flex-col">
         <div className="mb-[1rem] flex items-center justify-between">
           {/* 이벤트 제목 */}
           {isEdit ? (
