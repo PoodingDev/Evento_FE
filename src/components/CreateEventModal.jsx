@@ -96,6 +96,7 @@ export default function CreateEvent({ onClose, setEvents }) {
           calId: calId,
           calTitle: title,
           color: calColor,
+          isPublic: isEventPublic,
           editable: true, // 이벤트 편집 가능
         };
         setEvents((prevEvents) => [...prevEvents, newEvent]); // 새로운 이벤트 추가
