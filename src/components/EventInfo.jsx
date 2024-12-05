@@ -337,7 +337,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                 onClose();
               }}
             />
-            <div className="flex flex-col w-full">
+            <div className="flex w-full flex-col">
               <div className="mb-[1rem] flex items-center justify-between">
                 {/* 이벤트 제목 */}
 
