@@ -176,14 +176,14 @@ export default function CreateEvent({ onClose, setEvents }) {
 
         {/* 캘린더 선택 */}
 
-        <div className="relative z-20 mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoPurpleLight text-center text-[1rem] font-bold">
+        <div
+          className="relative z-20 mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoPurpleLight text-center text-[1rem] font-bold"
+          onClick={() => {
+            showList();
+          }}
+        >
           <div className="flex h-[1.55rem] -translate-x-[0.3rem] items-center justify-between">
-            <FaCaretDown
-              size={25}
-              onClick={() => {
-                showList();
-              }}
-            />
+            <FaCaretDown size={25} />
             <p className="">{`${title}`}</p>
           </div>
           {showCalList && (
