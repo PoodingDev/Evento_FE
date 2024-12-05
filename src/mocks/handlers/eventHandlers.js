@@ -5,6 +5,7 @@ let mockEventData = [
     allDay: true,
     event_id: 1,
     event_title: "저녁 약속",
+    cal_id: 1,
     cal_title: "Creator test",
     cal_color: "#FFC960",
     start_time: new Date("2024-12-01"),
@@ -37,6 +38,7 @@ export const eventHandlers = [
     const token = req.headers.get("Authorization");
     const {
       event_title,
+      cal_id,
       cal_title,
       cal_color,
       start_time,
@@ -60,6 +62,7 @@ export const eventHandlers = [
     const newEvent = {
       event_id,
       event_title,
+      cal_id,
       cal_title,
       cal_color,
       start_time,
