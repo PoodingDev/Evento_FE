@@ -3,24 +3,10 @@ import DatePicker from "react-datepicker";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { AiOutlineLike, AiTwotoneLike } from "react-icons/ai";
+import { FaLock, FaToggleOff, FaToggleOn, FaUnlock } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { useAuth } from "../context/AuthContext";
 
-import {
-  FaLock,
-  FaUnlock,
-  FaBookmark,
-  FaRegBookmark,
-  FaRegTrashAlt,
-  FaPen,
-  FaCommentAlt,
-  FaCaretDown,
-  FaToggleOn,
-  FaToggleOff,
-  FaChevronLeft,
-  FaComment,
-  FaRegCommentDots,
-} from "react-icons/fa";
 export default function EventEdit({
   onClose,
   eventDetails,
@@ -306,7 +292,7 @@ export default function EventEdit({
             return event; // 수정되지 않은 이벤트는 그대로 반환
           });
         });
-        toggleIsEdit();
+        onSave();
       }
     } catch (error) {
       console.error("캘린더 수정 실패:", error);
@@ -323,34 +309,7 @@ export default function EventEdit({
       newEventDetail: eventDetails.description,
       newEventPublic: eventInfo.isEventPublic,
     });
-    toggleIsEdit();
-  };
-
-  // 삭제
-  const handleDelete = async () => {
-    try {
-      const token = localStorage.getItem("token"); // 토큰 가져오기
-      const response = await axios.delete(`/api/events/${eventInfo.eventId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.status === 200) {
-        // 삭제가 성공적으로 완료되었을 때
-        setEvents((prevEvents) => {
-          return prevEvents.filter(
-            (event) => event.id !== Number(eventInfo.eventId),
-          ); // 해당 이벤트를 제외한 나머지 반환
-        });
-        alert("이벤트가 성공적으로 삭제되었습니다.");
-        onClose(); // 삭제 후 모달 닫기
-      }
-    } catch (error) {
-      console.error("이벤트 삭제 실패:", error);
-      alert("이벤트 삭제에 실패했습니다. 다시 시도해 주세요.");
-    }
+    onCancel();
   };
 
   return (
@@ -490,12 +449,15 @@ export default function EventEdit({
       <div className="absolute bottom-[2rem] right-[2rem] flex space-x-[0.5rem]">
         <button
           className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple/80 text-center text-[1.1rem] text-eventoPurple/80 hover:bg-eventoPurpleLight/70 active:bg-eventoPurpleLight"
-          onClick={cancel}
+          onClick={() => onCancel()}
         >
           <span>취소</span>
         </button>
         <button
-          onClick={save}
+          onClick={() => {
+            save();
+            onCancel();
+          }}
           className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple/90 text-center text-[1.1rem] text-eventoWhite hover:bg-eventoPurple/70 active:bg-eventoPurple/50"
         >
           <span>저장</span>

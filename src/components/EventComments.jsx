@@ -21,7 +21,13 @@ import {
   FaComment,
   FaRegCommentDots,
 } from "react-icons/fa";
-export default function EventComments({ eventDetails, onClose }) {
+export default function EventComments({
+  onClose,
+  eventDetails,
+  onSave,
+  onCancel,
+  setEvents,
+}) {
   // console.log("-------------");
   // console.log(eventDetails);
   // console.log(`${eventDetails.calendarId},${eventDetails.id} `);
@@ -382,7 +388,7 @@ export default function EventComments({ eventDetails, onClose }) {
         {/* 캘린더 제목 */}
 
         <div className="mb-[1rem] flex">
-          <FaChevronLeft size={15} onClick={toggleIsComment} />
+          <FaChevronLeft size={15} onClick={() => onCancel()} />
         </div>
         {/* 일정 상세 */}
         {/* 댓글 */}

@@ -24,6 +24,15 @@ import {
   FaRegCommentDots,
 } from "react-icons/fa";
 export default function EventInfo({ onClose, eventDetails, setEvents }) {
+  const [viewMode, setViewMode] = useState("info");
+  console.log(`viewMode:${viewMode}`);
+  const handleViewChange = (mode) => {
+    setViewMode(mode);
+  };
+  const handleSave = () => {
+    setViewMode("info");
+  };
+
   const [eventInfo, setEventInfo] = useState({
     eventId: "",
     eventTitle: "",
@@ -299,7 +308,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
             return event; // 수정되지 않은 이벤트는 그대로 반환
           });
         });
-        toggleIsEdit();
+        setViewMode("info");
       }
     } catch (error) {
       console.error("캘린더 수정 실패:", error);
@@ -316,7 +325,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
       newEventDetail: eventDetails.description,
       newEventPublic: eventInfo.isEventPublic,
     });
-    toggleIsEdit();
+    setViewMode("info");
   };
 
   // 삭제
@@ -348,23 +357,32 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
 
   return (
     <>
-      {isEdit ? (
+      {viewMode === "edit" ? (
         <EventEdit
           onClose={onClose}
           eventDetails={eventDetails}
-          onSave={() => setIsEdit(false)}
-          onCancel={() => setIsEdit(false)}
+          onSave={() => save}
+          onCancel={() => handleViewChange("info")}
           setEvents={setEvents}
         />
-      ) : isComment ? (
-        <EventComments eventDetails={eventDetails} onClose={toggleIsComment} />
+      ) : viewMode === "comments" ? (
+        <EventComments
+          onClose={onClose}
+          eventDetails={eventDetails}
+          onSave={() => save}
+          onCancel={() => handleViewChange("info")}
+          setEvents={setEvents}
+        />
       ) : (
         <div>
           <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
             <FaXmark
               size={25}
               className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
-              onClick={onClose}
+              onClick={() => {
+                handleViewChange("info");
+                onClose();
+              }}
             />
             <div className="flex w-full flex-col">
               <div className="mb-[1rem] flex items-center justify-between">
@@ -477,10 +495,13 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
               ) : (
                 <FaRegBookmark size={25} onClick={toggleIsLike} />
               )}
-              <FaRegCommentDots size={25} onClick={toggleIsComment} />
+              <FaRegCommentDots
+                size={25}
+                onClick={() => handleViewChange("comments")}
+              />
             </div>
             <div className="absolute bottom-[3rem] right-[3rem] flex space-x-[0.5rem] text-[1.5rem] text-darkGray">
-              <FaPen onClick={toggleIsEdit} />
+              <FaPen onClick={() => handleViewChange("edit")} />
               {calInfo.members === undefined ? (
                 <FaRegTrashAlt
                   className="cursor-pointer text-[1.5rem] text-darkGray"
