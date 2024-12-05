@@ -28,52 +28,54 @@ export default function LoginPostCode() {
         return;
       }
 
-      try {
-        let response;
-        // 로그인 요청
-        switch (platform) {
-          case "kakao":
-            response = await requestKakaoLogin(authCode);
-            break;
-          case "google":
-            response = await requestGoogleLogin(authCode);
-            break;
-          case "naver":
-            response = await requestNaverLogin(authCode, state);
-            break;
-          default:
-            break;
-        }
+      // try {
+      // let response;
+      //   // 로그인 요청
+      //   switch (platform) {
+      //     case "kakao":
+      //       response = await requestKakaoLogin(authCode);
+      //       break;
+      //     case "google":
+      //       response = await requestGoogleLogin(authCode);
+      //       break;
+      //     case "naver":
+      //       response = await requestNaverLogin(authCode, state);
+      //       break;
+      //     default:
+      //       break;
+      //   }
 
-        const { access: accessToken, refresh: refreshToken } = response;
+      const response = await requestGoogleLogin(authCode);
 
-        // 토큰 저장
-        localStorage.setItem("token", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
+      const { access: accessToken, refresh: refreshToken } = response;
 
-        // 사용자 정보 가져오기
-        const userInfo = await fetchUserInfo(accessToken);
+      // 토큰 저장
+      localStorage.setItem("token", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
 
-        // 전역 상태 업데이트
-        setLoggedIn(true);
-        setUserInfo(userInfo);
+      // 사용자 정보 가져오기
+      const userInfo = await fetchUserInfo(accessToken);
 
-        // 캘린더 페이지로 이동
-        navigate("/calendar");
-      } catch (error) {
-        console.error("Authentication error:", error);
+      // 전역 상태 업데이트
+      setLoggedIn(true);
+      setUserInfo(userInfo);
 
-        // 에러 메시지 설정
-        if (error.response?.status === 401) {
-          setErrorMessage("유효하지 않은 인증 코드입니다.");
-        } else if (error.response?.status === 403) {
-          setErrorMessage("이 소셜 계정으로는 로그인할 수 없습니다.");
-        } else {
-          setErrorMessage("인증에 실패했습니다. 다시 시도해 주세요.");
-        }
-      } finally {
-        setIsAuthenticating(false);
-      }
+      // 캘린더 페이지로 이동
+      navigate("/calendar");
+      //  } catch (error) {
+      //    console.error("Authentication error:", error);
+
+      //    // 에러 메시지 설정
+      //    if (error.response?.status === 401) {
+      //      setErrorMessage("유효하지 않은 인증 코드입니다.");
+      //    } else if (error.response?.status === 403) {
+      //      setErrorMessage("이 소셜 계정으로는 로그인할 수 없습니다.");
+      //    } else {
+      //      setErrorMessage("인증에 실패했습니다. 다시 시도해 주세요.");
+      //    }
+      //  } finally {
+      //    setIsAuthenticating(false);
+      //  }
     };
 
     authenticate();
