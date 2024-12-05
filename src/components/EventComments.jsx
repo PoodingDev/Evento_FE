@@ -1,26 +1,10 @@
 import "react-datepicker/dist/react-datepicker.css";
-import DatePicker from "react-datepicker";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { AiOutlineLike, AiTwotoneLike } from "react-icons/ai";
+import { FaChevronLeft, FaLock, FaUnlock } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { useAuth } from "../context/AuthContext";
 
-import {
-  FaLock,
-  FaUnlock,
-  FaBookmark,
-  FaRegBookmark,
-  FaRegTrashAlt,
-  FaPen,
-  FaCommentAlt,
-  FaCaretDown,
-  FaToggleOn,
-  FaToggleOff,
-  FaChevronLeft,
-  FaComment,
-  FaRegCommentDots,
-} from "react-icons/fa";
 export default function EventComments({
   onClose,
   eventDetails,
@@ -28,9 +12,6 @@ export default function EventComments({
   onCancel,
   setEvents,
 }) {
-  // console.log("-------------");
-  // console.log(eventDetails);
-  // console.log(`${eventDetails.calendarId},${eventDetails.id} `);
   const [eventInfo, setEventInfo] = useState({
     eventId: "",
     eventTitle: "",
@@ -170,8 +151,6 @@ export default function EventComments({
   }, [eventDetails]);
 
   //수정 및 편집
-  const [isEdit, setIsEdit] = useState(false);
-  const toggleIsEdit = () => setIsEdit(!isEdit);
   const toggleIsPublic = () => {
     setNewEventInfo((prevState) => ({
       ...prevState,
@@ -182,46 +161,7 @@ export default function EventComments({
   //북마크
   const [isLike, setIsLike] = useState(false);
   const toggleIsLike = () => setIsLike(!isLike);
-
-  //댓글
-  const data = [
-    {
-      id: 1,
-      username: "호선",
-      content: "이날 뭐 먹을까용?",
-      isLike: false,
-      likeNum: 0,
-    },
-    {
-      id: 2,
-      username: "채영",
-      content: "고기 어때유",
-      isLike: false,
-      likeNum: 0,
-    },
-    {
-      id: 3,
-      username: "수진",
-      content: "오 너무 좋아용",
-      isLike: false,
-      likeNum: 0,
-    },
-    {
-      id: 4,
-      username: "호선",
-      content: "고기 ㄱㄱ",
-      isLike: false,
-      likeNum: 0,
-    },
-  ];
-  const [isComment, setIsComment] = useState(false);
-  const toggleIsComment = () => setIsComment(!isComment);
   const [input, setInput] = useState("");
-  const [commentList, setCommentList] = useState(data);
-
-  //댓글 공감
-  // const [IsCommentLike, setCommentLike] = useState(false);
-  // const toggleIsCommentLike = () => setCommentLike(!IsCommentLike);
 
   //댓글 작성
   const handleSubmit = async (e) => {
@@ -250,108 +190,6 @@ export default function EventComments({
     }
   };
 
-  //저장
-  const save = async () => {
-    try {
-      const token = localStorage.getItem("token"); // 토큰 가져오기
-      const response = await axios.patch(
-        `/api/calendars/${eventDetails.calendarId}/events/${eventDetails.id}`,
-        {
-          // event_title: eventInfo.eventTitle,
-          // cal_title: eventInfo.title,
-          // start_time: eventInfo.startDate,
-          // end_time: eventInfo.endDate,
-          // event_description: eventInfo.detailEventMemo,
-          // is_public: eventInfo.isEventPublic,
-          event_title: newEventInfo.newEventTitle,
-          cal_title: eventInfo.title,
-          start_time: newEventInfo.newStartDate,
-          end_time: newEventInfo.newEndDate,
-          event_description: newEventInfo.newEventDetail,
-          is_public: newEventInfo.newEventPublic,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      if (response.status === 200) {
-        setEventInfo({
-          eventTitle: newEventInfo.newEventTitle,
-          title: eventInfo.title,
-          startDate: newEventInfo.newStartDate,
-          endDate: newEventInfo.newEndDate,
-          detailEventMemo: newEventInfo.newEventDetail,
-          isEventPublic: newEventInfo.newEventPublic,
-        });
-
-        setEvents((prevEvents) => {
-          console.log(prevEvents);
-          return prevEvents.map((event) => {
-            if (event.id === Number(eventInfo.eventId)) {
-              // 수정된 이벤트를 반환하도록
-              return {
-                ...event,
-                title: newEventInfo.newEventTitle, // newEventInfo로 값 수정
-                start: new Date(newEventInfo.newStartDate), // 날짜 형식에 맞게 변환
-                end: new Date(newEventInfo.newEndDate),
-                extendedProps: {
-                  memo: newEventInfo.newEventDetail,
-                },
-              };
-            }
-            return event; // 수정되지 않은 이벤트는 그대로 반환
-          });
-        });
-        toggleIsEdit();
-      }
-    } catch (error) {
-      console.error("캘린더 수정 실패:", error);
-      alert("캘린더 수정에 실패했습니다. 다시 시도해 주세요.");
-    }
-  };
-
-  //취소
-  const cancel = () => {
-    setNewEventInfo({
-      newEventTitle: eventDetails.title,
-      newStartDate: eventDetails.start,
-      newEndDate: eventDetails.end,
-      newEventDetail: eventDetails.description,
-      newEventPublic: eventInfo.isEventPublic,
-    });
-    toggleIsEdit();
-  };
-
-  // 삭제
-  const handleDelete = async () => {
-    try {
-      const token = localStorage.getItem("token"); // 토큰 가져오기
-      const response = await axios.delete(`/api/events/${eventInfo.eventId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.status === 200) {
-        // 삭제가 성공적으로 완료되었을 때
-        setEvents((prevEvents) => {
-          return prevEvents.filter(
-            (event) => event.id !== Number(eventInfo.eventId),
-          ); // 해당 이벤트를 제외한 나머지 반환
-        });
-        alert("이벤트가 성공적으로 삭제되었습니다.");
-        onClose(); // 삭제 후 모달 닫기
-      }
-    } catch (error) {
-      console.error("이벤트 삭제 실패:", error);
-      alert("이벤트 삭제에 실패했습니다. 다시 시도해 주세요.");
-    }
-  };
   return (
     <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
       <FaXmark

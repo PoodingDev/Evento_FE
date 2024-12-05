@@ -4,23 +4,14 @@ import EventComments from "./EventComments";
 import EventEdit from "./EventEdit";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { AiOutlineLike, AiTwotoneLike } from "react-icons/ai";
-import { FaXmark } from "react-icons/fa6";
+import { FaHeart, FaRegHeart, FaXmark } from "react-icons/fa6";
 import { useAuth } from "../context/AuthContext";
 
 import {
   FaLock,
   FaUnlock,
-  FaBookmark,
-  FaRegBookmark,
   FaRegTrashAlt,
   FaPen,
-  FaCommentAlt,
-  FaCaretDown,
-  FaToggleOn,
-  FaToggleOff,
-  FaChevronLeft,
-  FaComment,
   FaRegCommentDots,
 } from "react-icons/fa";
 export default function EventInfo({ onClose, eventDetails, setEvents }) {
@@ -185,41 +176,9 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
   const [isLike, setIsLike] = useState(false);
   const toggleIsLike = () => setIsLike(!isLike);
 
-  //댓글
-  const data = [
-    {
-      id: 1,
-      username: "호선",
-      content: "이날 뭐 먹을까용?",
-      isLike: false,
-      likeNum: 0,
-    },
-    {
-      id: 2,
-      username: "채영",
-      content: "고기 어때유",
-      isLike: false,
-      likeNum: 0,
-    },
-    {
-      id: 3,
-      username: "수진",
-      content: "오 너무 좋아용",
-      isLike: false,
-      likeNum: 0,
-    },
-    {
-      id: 4,
-      username: "호선",
-      content: "고기 ㄱㄱ",
-      isLike: false,
-      likeNum: 0,
-    },
-  ];
   const [isComment, setIsComment] = useState(false);
   const toggleIsComment = () => setIsComment(!isComment);
   const [input, setInput] = useState("");
-  const [commentList, setCommentList] = useState(data);
 
   //댓글 공감
   // const [IsCommentLike, setCommentLike] = useState(false);
@@ -259,12 +218,6 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
       const response = await axios.patch(
         `/api/calendars/${eventDetails.calendarId}/events/${eventDetails.id}`,
         {
-          // event_title: eventInfo.eventTitle,
-          // cal_title: eventInfo.title,
-          // start_time: eventInfo.startDate,
-          // end_time: eventInfo.endDate,
-          // event_description: eventInfo.detailEventMemo,
-          // is_public: eventInfo.isEventPublic,
           event_title: newEventInfo.newEventTitle,
           cal_title: eventInfo.title,
           start_time: newEventInfo.newStartDate,
@@ -384,7 +337,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                 onClose();
               }}
             />
-            <div className="flex w-full flex-col">
+            <div className="flex flex-col w-full">
               <div className="mb-[1rem] flex items-center justify-between">
                 {/* 이벤트 제목 */}
 
@@ -491,9 +444,9 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
 
             <div className="absolute bottom-[3rem] left-[3rem] flex space-x-[0.5rem] text-[1.5rem] text-darkGray">
               {isLike ? (
-                <FaBookmark size={25} onClick={toggleIsLike} />
+                <FaHeart size={25} onClick={toggleIsLike} />
               ) : (
-                <FaRegBookmark size={25} onClick={toggleIsLike} />
+                <FaRegHeart size={25} onClick={toggleIsLike} />
               )}
               <FaRegCommentDots
                 size={25}

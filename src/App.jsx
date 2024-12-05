@@ -47,8 +47,6 @@ export default function App() {
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/edit" element={<ProfileEdit />} />
-            <Route path="/event" element={<EventInfo />} />
-            <Route path="/new-event" element={<EventCreate />} />
             <Route path="/subscription" element={<Subscription />} />
           </Routes>
         </Layout>

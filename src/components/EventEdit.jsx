@@ -2,10 +2,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { AiOutlineLike, AiTwotoneLike } from "react-icons/ai";
 import { FaLock, FaToggleOff, FaToggleOn, FaUnlock } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
-import { useAuth } from "../context/AuthContext";
 
 export default function EventEdit({
   onClose,
@@ -14,9 +12,6 @@ export default function EventEdit({
   onCancel,
   setEvents,
 }) {
-  // console.log("-------------");
-  // console.log(eventDetails);
-  // console.log(`${eventDetails.calendarId},${eventDetails.id} `);
   const [eventInfo, setEventInfo] = useState({
     eventId: "",
     eventTitle: "",
@@ -36,10 +31,6 @@ export default function EventEdit({
     newEventPublic: false,
   });
 
-  const { userInfo } = useAuth();
-
-  //캘린더 색상
-  const [calColor, setCalColor] = useState(eventDetails.color);
   const [calTitle, setCalTitle] = useState(eventDetails.cal_title);
 
   useEffect(() => {
@@ -114,8 +105,6 @@ export default function EventEdit({
         const selectedCalendar = response.data.find(
           (cal) => cal.calendar_name === eventInfo.title,
         );
-        console.log(selectedCalendar);
-        console.log(eventInfo.title);
 
         if (selectedCalendar) {
           setCalInfo({
@@ -156,8 +145,6 @@ export default function EventEdit({
   }, [eventDetails]);
 
   //수정 및 편집
-  const [isEdit, setIsEdit] = useState(false);
-  const toggleIsEdit = () => setIsEdit(!isEdit);
   const toggleIsPublic = () => {
     setNewEventInfo((prevState) => ({
       ...prevState,
@@ -169,41 +156,7 @@ export default function EventEdit({
   const [isLike, setIsLike] = useState(false);
   const toggleIsLike = () => setIsLike(!isLike);
 
-  //댓글
-  const data = [
-    {
-      id: 1,
-      username: "호선",
-      content: "이날 뭐 먹을까용?",
-      isLike: false,
-      likeNum: 0,
-    },
-    {
-      id: 2,
-      username: "채영",
-      content: "고기 어때유",
-      isLike: false,
-      likeNum: 0,
-    },
-    {
-      id: 3,
-      username: "수진",
-      content: "오 너무 좋아용",
-      isLike: false,
-      likeNum: 0,
-    },
-    {
-      id: 4,
-      username: "호선",
-      content: "고기 ㄱㄱ",
-      isLike: false,
-      likeNum: 0,
-    },
-  ];
-  const [isComment, setIsComment] = useState(false);
-  const toggleIsComment = () => setIsComment(!isComment);
   const [input, setInput] = useState("");
-  const [commentList, setCommentList] = useState(data);
 
   //댓글 공감
   // const [IsCommentLike, setCommentLike] = useState(false);
@@ -243,12 +196,6 @@ export default function EventEdit({
       const response = await axios.patch(
         `/api/calendars/${eventDetails.calendarId}/events/${eventDetails.id}`,
         {
-          // event_title: eventInfo.eventTitle,
-          // cal_title: eventInfo.title,
-          // start_time: eventInfo.startDate,
-          // end_time: eventInfo.endDate,
-          // event_description: eventInfo.detailEventMemo,
-          // is_public: eventInfo.isEventPublic,
           event_title: newEventInfo.newEventTitle,
           cal_title: eventInfo.title,
           start_time: newEventInfo.newStartDate,
@@ -265,17 +212,16 @@ export default function EventEdit({
       );
 
       if (response.status === 200) {
-        setEventInfo({
-          eventTitle: newEventInfo.newEventTitle,
-          title: eventInfo.title,
-          startDate: newEventInfo.newStartDate,
-          endDate: newEventInfo.newEndDate,
-          detailEventMemo: newEventInfo.newEventDetail,
+        onSave({
+          ...eventDetails,
+          title: newEventInfo.newEventTitle,
+          start: newEventInfo.newStartDate,
+          end: newEventInfo.newEndDate,
+          description: newEventInfo.newEventDetail,
           isEventPublic: newEventInfo.newEventPublic,
         });
 
         setEvents((prevEvents) => {
-          console.log(prevEvents);
           return prevEvents.map((event) => {
             if (event.id === Number(eventInfo.eventId)) {
               // 수정된 이벤트를 반환하도록
@@ -298,18 +244,6 @@ export default function EventEdit({
       console.error("캘린더 수정 실패:", error);
       alert("캘린더 수정에 실패했습니다. 다시 시도해 주세요.");
     }
-  };
-
-  //취소
-  const cancel = () => {
-    setNewEventInfo({
-      newEventTitle: eventDetails.title,
-      newStartDate: eventDetails.start,
-      newEndDate: eventDetails.end,
-      newEventDetail: eventDetails.description,
-      newEventPublic: eventInfo.isEventPublic,
-    });
-    onCancel();
   };
 
   return (
@@ -344,22 +278,6 @@ export default function EventEdit({
             />
           </div>
         </div>
-
-        {/* 캘린더 제목 */}
-        {isComment ? (
-          ""
-        ) : (
-          <div className="flex">
-            <div
-              className="mb-[1.5rem] flex h-[2rem] justify-center rounded-[2.5rem] px-[1.1rem] text-center text-[1rem] font-bold"
-              style={{ backgroundColor: calColor }}
-            >
-              <div className="flex items-center text-eventoWhite">
-                <p>{eventInfo.title}</p>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* 시간 */}
 
