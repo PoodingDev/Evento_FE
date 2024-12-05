@@ -97,10 +97,10 @@ export default function Calendar() {
           events={events} // 이벤트 추가
           aspectRatio={2.1}
           eventClick={handleEventClick} // 이벤트 클릭 핸들러
-          dayMaxEventRows={7}
+          dayMaxEventRows={5}
           dayCellDidMount={(info) => {
             // 특정 날짜 칸에 커스텀 스타일 적용
-            info.el.style.height = "10rem";
+            info.el.style.height = "6rem";
             // info.el.style.overflow = "hidden";
           }}
         />
