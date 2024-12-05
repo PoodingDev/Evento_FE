@@ -14,6 +14,21 @@ let mockEventData = [
   },
 ];
 
+let favorites = [
+  {
+    favorite_event_id: 1,
+    event_id: 1,
+    event_title: "프로젝트 끝!",
+    d_day: "2024-12-11",
+  },
+  {
+    favorite_event_id: 2,
+    event_id: 2,
+    event_title: "2025년",
+    d_day: "2025-01-01",
+  },
+];
+
 export const eventHandlers = [
   // 이벤트 리스트 가져오기 핸들러
   rest.get("/api/calendars/:calendar_id/events", (req, res, ctx) => {
@@ -175,7 +190,6 @@ export const eventHandlers = [
   }),
 
   rest.get("/api/users/:userId/favorite-events", (req, res, ctx) => {
-    const { userId } = req.params;
     const token = req.headers.get("Authorization");
 
     if (!token || token !== "Bearer fake_token") {
@@ -188,24 +202,30 @@ export const eventHandlers = [
       );
     }
 
-    return res(
-      ctx.status(200),
-      ctx.json({
-        favorite_events: [
-          {
-            favorite_event_id: 1,
-            event_id: 1,
-            event_title: "프로젝트 끝!",
-            d_day: "2024-12-11",
-          },
-          {
-            favorite_event_id: 2,
-            event_id: 2,
-            event_title: "2025년",
-            d_day: "2025-01-01",
-          },
-        ],
-      }),
-    );
+    return res(ctx.status(200), ctx.json(favorites));
+  }),
+
+  rest.post("/api/users/:userId/favorite-events", async (req, res, ctx) => {
+    const token = req.headers.get("Authorization");
+    const { event_id } = await req.json();
+
+    const newFavorite = {
+      favorite_event_id: favoriteEvents.length + 1,
+      event_id: event_id,
+      event_title: event_title,
+      d_day: d_day,
+    };
+
+    if (!token || token !== "Bearer fake_token") {
+      return res(
+        ctx.status(40),
+        ctx.json({
+          error: "인증 실패",
+          message: "로그인이 필요합니다. 다시 로그인해 주세요.",
+        }),
+      );
+    }
+
+    return res(ctx.status(201), ctx.json(newFavorite));
   }),
 ];
