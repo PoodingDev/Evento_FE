@@ -222,6 +222,7 @@ export default function SideBarLeft() {
         <ul className="space-y-[.8rem]">
           {dday.map((item, index) => {
             const today = new Date();
+            console.log(today);
             const dDay = new Date(item.d_day);
             const differenceInTime = dDay - today;
             const differenceInDays = Math.ceil(
