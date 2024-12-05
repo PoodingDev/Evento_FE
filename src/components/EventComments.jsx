@@ -47,7 +47,7 @@ export default function EventComments({
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
         const response = await axios.get(
-          `/api/calendars/${eventDetails.calendarId}/events`,
+          `/api/calendars/${eventDetails.cal_id}/events`,
 
           {
             headers: {
@@ -56,25 +56,15 @@ export default function EventComments({
           },
         );
 
-        const {
-          event_id,
-          event_title,
-          cal_title,
-          cal_color,
-          start_time,
-          end_time,
-          event_description,
-          is_public,
-        } = response.data[1];
-
         setEventInfo({
           eventId: eventDetails.id,
           eventTitle: eventDetails.title,
+          cal_id: eventDetails.calId,
           title: eventDetails.cal_title,
           startDate: eventDetails.start,
           endDate: eventDetails.end,
           detailEventMemo: eventDetails.description,
-          isEventPublic: is_public,
+          isEventPublic: eventDetails.isPublic,
         });
 
         setNewEventInfo({
@@ -82,7 +72,7 @@ export default function EventComments({
           newStartDate: eventDetails.start,
           newEndDate: eventDetails.end,
           newEventDetail: eventDetails.description,
-          newEventPublic: false,
+          newEventPublic: eventDetails.isPublic,
         });
       } catch (error) {
         console.error("이벤트 정보를 가져오는 중 오류 발생:", error);
@@ -128,6 +118,38 @@ export default function EventComments({
     fetchCalInfo();
   }, [eventInfo.title]);
 
+  const data = [
+    {
+      id: 1,
+      username: "호선",
+      content: "이날 뭐 먹을까용?",
+      isLike: false,
+      likeNum: 0,
+    },
+    {
+      id: 2,
+      username: "채영",
+      content: "고기 어때유",
+      isLike: false,
+      likeNum: 0,
+    },
+    {
+      id: 3,
+      username: "수진",
+      content: "오 너무 좋아용",
+      isLike: false,
+      likeNum: 0,
+    },
+    {
+      id: 4,
+      username: "호선",
+      content: "고기 ㄱㄱ",
+      isLike: false,
+      likeNum: 0,
+    },
+  ];
+  //댓글 정보
+  const [commentList, setCommentList] = useState(data);
   useEffect(() => {
     async function fetchComments() {
       try {
