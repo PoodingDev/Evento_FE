@@ -1,5 +1,6 @@
 import Calendar from "/src/pages/Calendar";
 import EventCreate from "components/CreateEventModal";
+import EventInfo from "components/EventInfoModal";
 import EventInfoModal from "/src/components/EventInfoModal";
 import Header from "components/Header";
 import LogIn from "/src/pages/LogIn";
@@ -46,8 +47,6 @@ export default function App() {
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/edit" element={<ProfileEdit />} />
-            <Route path="/event" element={<EventInfoModal />} />
-            <Route path="/new-event" element={<EventCreate />} />
             <Route path="/subscription" element={<Subscription />} />
           </Routes>
         </Layout>

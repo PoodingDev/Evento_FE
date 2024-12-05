@@ -43,7 +43,7 @@ export default function InviteCodeModal({ onClose, calendarId }) {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.post(
-          `/api/calendars/${calendarId}/admins`, // calendarId는 초대받은 캘린더의 ID로 설정 필요
+          `/api/calendars/admins/invite/`,
           { invitation_code: inviteCode },
           {
             headers: {
