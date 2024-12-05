@@ -110,16 +110,20 @@ export default function OnBoarding() {
           {slides.map((slide, index) => (
             <div
               key={index}
-              className="flex w-full flex-shrink-0 flex-col items-center text-center"
+              className="flex w-full flex-shrink-0 flex-col items-center justify-center text-center"
               style={{ width: "100%" }}
             >
               {/* 이미지 렌더링 */}
               <img
                 src={slide.img}
                 alt={slide.title}
-                className="mb-5 h-[100px] w-auto object-contain"
+                className="mb-5 w-auto object-contain "
+                style={{
+                  height: index === 0 || index === slides.length - 1 ? "100px" : "250px",
+                }}
               />
-              <h2 className="mb-3 text-[1.3rem] font-bold text-eventoPurpleDark">
+              <h2 className={`text-[1.3rem] font-bold text-eventoPurpleDark ${index === 0 ? "mt-20" : "mb-3"
+                }`}>
                 {slide.title}
               </h2>
               <p className="h-16 text-[1.1rem] font-semibold leading-tight text-eventoPurple/80">
@@ -143,9 +147,8 @@ export default function OnBoarding() {
             <span
               key={index}
               onClick={() => handleDotClick(index)}
-              className={`mx-1 h-3 w-3 cursor-pointer rounded-full ${
-                index === currentIndex ? "bg-eventoPurple" : "bg-gray-300"
-              }`}
+              className={`mx-1 h-3 w-3 cursor-pointer rounded-full ${index === currentIndex ? "bg-eventoPurple" : "bg-gray-300"
+                }`}
             ></span>
           ))}
         </div>
