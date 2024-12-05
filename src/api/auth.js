@@ -1,9 +1,9 @@
-import instance from "./axios";
+import { instance } from "./axios";
 
 // 소셜 로그인
 export async function requestKakaoLogin(code) {
   const response = await instance.post(`/api/users/kakao-login`, {
-    code: code,
+    code: code.axios.baseURL,
   });
   return response.data;
 }
