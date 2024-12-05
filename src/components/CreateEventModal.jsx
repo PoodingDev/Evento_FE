@@ -31,6 +31,7 @@ export default function CreateEvent({ onClose, setEvents }) {
 
   //캘린더 이름
   const [title, setTitle] = useState(`캘린더 이름`);
+  const [calId, setCalId] = useState(0);
 
   //시간
   const [startDate, setStartDate] = useState(new Date());
@@ -60,6 +61,7 @@ export default function CreateEvent({ onClose, setEvents }) {
         "/api/calendars/:calendar_id/events",
         {
           event_title: eventTitle,
+          cal_id: calId,
           cal_title: title,
           cal_color: calColor,
           start_time: startDate,
@@ -91,6 +93,7 @@ export default function CreateEvent({ onClose, setEvents }) {
           extendedProps: {
             memo: response.data.event_description,
           },
+          calId: calId,
           calTitle: title,
           color: calColor,
           editable: true, // 이벤트 편집 가능
@@ -196,6 +199,7 @@ export default function CreateEvent({ onClose, setEvents }) {
                     className="h-[1.5rem] w-[6.7rem] rounded-[0.3rem] border-[0.05rem] border-solid border-eventoWhite leading-[1.5rem]"
                     onClick={() => {
                       setTitle(calData.calendarName[cal - 1]);
+                      setCalId(calData.calId[cal - 1]);
                       setCalColor(calData.calendarColor[cal - 1]);
                     }}
                     style={{ backgroundColor: calData.calendarColor[cal - 1] }}

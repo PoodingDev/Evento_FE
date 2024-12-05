@@ -22,14 +22,14 @@ export default function Calendar() {
   // 클릭된 이벤트를 처리하는 함수
   const handleEventClick = (info) => {
     const clickedEvent = info.event;
-    console.log(clickedEvent);
     const eventDetails = {
       id: clickedEvent.id,
       title: clickedEvent.title,
       start: clickedEvent.start,
       end: clickedEvent.end,
       description: clickedEvent.extendedProps.memo,
-      // groupId: clickedEvent.groupId,
+      groupId: clickedEvent.groupId,
+      cal_id: clickedEvent.extendedProps.calId,
       cal_title: clickedEvent.extendedProps.calTitle,
       color: clickedEvent.backgroundColor,
     };
@@ -68,6 +68,7 @@ export default function Calendar() {
           extendedProps: {
             memo: event.event_description,
           },
+          calId: event.cal_id,
           calTitle: event.cal_title,
           color: event.cal_color,
           editable: true, // 이벤트 편집 가능
