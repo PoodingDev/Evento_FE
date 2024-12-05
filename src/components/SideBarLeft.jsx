@@ -34,7 +34,7 @@ export default function SideBarLeft() {
       try {
         const token = localStorage.getItem("token");
         const [myCalendarsResponse, subscribedCalendarsResponse, ddayResponse] =
-          await Promise.all([
+          await Promise.allSettled([
             axios.get("/api/calendars/admins", {
               headers: { Authorization: `Bearer ${token}` },
             }),
@@ -46,14 +46,18 @@ export default function SideBarLeft() {
             }),
           ]);
 
-        if (myCalendarsResponse.status === 200) {
-          setMyCalendars(myCalendarsResponse.data);
+        if (myCalendarsResponse.status === "fulfilled") {
+          setMyCalendars(myCalendarsResponse.value.data);
         }
-        if (subscribedCalendarsResponse.status === 200) {
-          setSubscribedCalendars(subscribedCalendarsResponse.data);
+
+        if (subscribedCalendarsResponse.status === "fulfilled") {
+          setSubscribedCalendars(subscribedCalendarsResponse.value.data);
         }
-        if (ddayResponse.status === 200) {
-          setDday(ddayResponse.data.favorite_events);
+
+        if (ddayResponse.status === "fulfilled") {
+          setDday(ddayResponse.value.data);
+        } else {
+          setDday([]); // 기본값으로 설정
         }
       } catch (error) {
         console.error("캘린더 데이터를 가져오는 중 오류 발생:", error);
@@ -214,15 +218,14 @@ export default function SideBarLeft() {
             calendar={selectedCalendar}
             onClose={() => setCalendarInfoOpen(false)}
             onSave={handleSaveCalendar}
-            userId={userInfo?.user_id} // 현재 로그인한 사용자 ID 전달
+            userId={userInfo?.user_id}
           />
         </div>
       )}
       <div className="fixed bottom-[3rem] left-[4rem] flex flex-col items-center justify-center">
         <ul className="space-y-[.8rem]">
-          {dday.map((item, index) => {
+          {(dday || []).map((item, index) => {
             const today = new Date();
-            console.log(today);
             const dDay = new Date(item.d_day);
             const differenceInTime = dDay - today;
             const differenceInDays = Math.ceil(

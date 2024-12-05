@@ -14,7 +14,7 @@ let mockEventData = [
   },
 ];
 
-let favorites = [
+let favorite_events = [
   {
     favorite_event_id: 1,
     event_id: 1,
@@ -194,7 +194,7 @@ export const eventHandlers = [
 
     if (!token || token !== "Bearer fake_token") {
       return res(
-        ctx.status(40),
+        ctx.status(401),
         ctx.json({
           error: "인증 실패",
           message: "로그인이 필요합니다. 다시 로그인해 주세요.",
@@ -202,7 +202,7 @@ export const eventHandlers = [
       );
     }
 
-    return res(ctx.status(200), ctx.json(favorites));
+    return res(ctx.status(200), ctx.json(favorite_events));
   }),
 
   rest.post("/api/users/:userId/favorite-events", async (req, res, ctx) => {
