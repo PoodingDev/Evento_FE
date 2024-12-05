@@ -23,7 +23,9 @@ import {
 } from "react-icons/fa";
 
 export default function EventInfo({ onClose, eventDetails, setEvents }) {
-  //초기 값 세팅
+  // console.log("-------------");
+  // console.log(eventDetails);
+  // console.log(`${eventDetails.calendarId},${eventDetails.id} `);
   const [eventInfo, setEventInfo] = useState({
     eventId: "",
     eventTitle: "",
@@ -48,19 +50,25 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
   //캘린더 색상
   const [calColor, setCalColor] = useState(eventDetails.color);
   const [calTitle, setCalTitle] = useState(eventDetails.cal_title);
+
   useEffect(() => {
     setCalTitle(eventDetails.cal_title);
   }, [eventDetails.cal_title]);
 
+  //이벤트 정보 가져오기
   useEffect(() => {
     async function fetchEventInfo() {
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await axios.get("/api/calendars/:calendar_id/events", {
-          headers: {
-            Authorization: `Bearer ${token}`,
+        const response = await axios.get(
+          `/api/calendars/${eventDetails.calendarId}/events`,
+
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        });
+        );
 
         const {
           event_id,
@@ -97,7 +105,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
     fetchEventInfo();
   }, [eventDetails]);
 
-  //캘린더 정보
+  //캘린더 정보가져오기
   const [calInfo, setCalInfo] = useState({
     calenderName: "",
     members: [],
@@ -133,6 +141,28 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
     }
     fetchCalInfo();
   }, [eventInfo.title]);
+
+  useEffect(() => {
+    async function fetchComments() {
+      try {
+        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
+        const response = await axios.get(
+          `/api/calendars/${eventDetails.calendarId}/events/${eventDetails.id}/comments`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        setCommentList(response.data.comments || []);
+      } catch (error) {
+        console.error("댓글 정보를 가져오는 중 오류 발생:", error);
+      }
+    }
+
+    fetchComments();
+  }, [eventDetails]);
 
   //수정 및 편집
   const [isEdit, setIsEdit] = useState(false);
@@ -185,20 +215,33 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
   const [commentList, setCommentList] = useState(data);
 
   //댓글 공감
-  const [IsCommentLike, setCommentLike] = useState(false);
-  const toggleIsCommentLike = () => setCommentLike(!IsCommentLike);
+  // const [IsCommentLike, setCommentLike] = useState(false);
+  // const toggleIsCommentLike = () => setCommentLike(!IsCommentLike);
 
   //댓글 작성
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (input.trim() !== "") {
-      const newComment = {
-        id: commentList.length + 1,
-        username: "수진", //현재 사용자 이름
-        content: input,
-      };
-      setCommentList([...commentList, newComment]);
+
+    if (input.trim() === "") return;
+
+    try {
+      const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
+      const response = await axios.post(
+        `/api/calendars/${eventDetails.calendarId}/events/${eventDetails.id}/comments`,
+        { content: input },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      // 새로운 댓글 추가
+      setCommentList((prevComments) => [...prevComments, response.data]);
       setInput("");
+    } catch (error) {
+      console.error("댓글 작성 중 오류 발생:", error);
     }
   };
 
@@ -207,7 +250,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
     try {
       const token = localStorage.getItem("token"); // 토큰 가져오기
       const response = await axios.patch(
-        `/api/calendars/10/events/${eventInfo.eventId}`,
+        `/api/calendars/${eventDetails.calendarId}/events/${eventDetails.id}`,
         {
           // event_title: eventInfo.eventTitle,
           // cal_title: eventInfo.title,
@@ -267,7 +310,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
   };
 
   //취소
-  const cancle = () => {
+  const cancel = () => {
     setNewEventInfo({
       newEventTitle: eventDetails.title,
       newStartDate: eventDetails.start,
@@ -312,8 +355,8 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex w-full flex-col">
-        <div className="mb-[1.5rem] flex items-center justify-between">
+      <div className="flex flex-col w-full">
+        <div className="mb-[1rem] flex items-center justify-between">
           {/* 이벤트 제목 */}
           {isEdit ? (
             <div className="flex items-center">
@@ -366,10 +409,10 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
         ) : (
           <div className="flex">
             <div
-              className="mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] text-center text-[1rem] font-bold"
+              className="mb-[1.5rem] flex h-[2rem] justify-center rounded-[2.5rem] px-[1.1rem] text-center text-[1rem] font-bold"
               style={{ backgroundColor: calColor }}
             >
-              <div className="flex items-center">
+              <div className="flex items-center text-eventoWhite">
                 <p>{eventInfo.title}</p>
               </div>
             </div>
@@ -379,14 +422,14 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
         {/* 시간 */}
         {isComment ? (
           <div className="mb-[1rem] flex">
-            <FaChevronLeft size={20} onClick={toggleIsComment} />
+            <FaChevronLeft size={15} onClick={toggleIsComment} />
           </div>
         ) : isEdit ? (
           <>
             <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
               시간
             </div>
-            <div className="mb-[2rem] flex w-[25rem] -translate-x-[0.3rem] items-center text-[2rem] font-bold text-darkGray">
+            <div className="relative z-10 mb-[2rem] flex w-[25rem] -translate-x-[0.3rem] items-center text-[2rem] font-bold text-darkGray">
               <DatePicker
                 selected={newEventInfo.newStartDate}
                 onChange={(date) =>
@@ -396,14 +439,14 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                   })
                 }
                 dateFormat="yyyy-MM-dd"
-                className="w-[12rem] rounded-lg bg-lightGray/20 p-1 pr-[1rem] text-center text-darkGray"
+                className="w-[12rem] bg-transparent text-center"
                 showYearDropdown
                 scrollableYearDropdown
                 yearDropdownItemNumber={100}
                 minDate={new Date(1900, 0, 1)}
                 maxDate={new Date(2050, 11, 31)}
               />
-              <span className="w-[2rem] text-center">-</span>
+              <span className="w-[2rem] text-center">&nbsp;-</span>
               <DatePicker
                 selected={newEventInfo.newEndDate || newEventInfo.newStartDate}
                 onChange={(date) =>
@@ -413,7 +456,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                   })
                 }
                 dateFormat="yyyy-MM-dd"
-                className="w-[12rem] rounded-lg bg-lightGray/20 p-1 pr-[1rem] text-center text-darkGray"
+                className="w-[12rem] bg-transparent text-center"
                 showYearDropdown
                 scrollableYearDropdown
                 yearDropdownItemNumber={100}
@@ -427,28 +470,40 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
             <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
               시간
             </div>
-            <div className="mb-[2rem] flex w-[25rem] -translate-x-[0.3rem] items-center text-[2rem] font-bold text-darkGray">
+            <div className="relative z-10 mb-[2rem] flex w-[25rem] -translate-x-[0.3rem] items-center text-[2rem] font-bold text-darkGray">
               <DatePicker
-                selected={eventInfo.startDate}
+                selected={newEventInfo.newStartDate}
                 onChange={(date) =>
-                  setEventInfo({
-                    startDate: date,
+                  setNewEventInfo({
+                    ...newEventInfo,
+                    newStartDate: date,
                   })
                 }
                 dateFormat="yyyy-MM-dd"
-                className="w-[12rem] bg-transparent p-1 pr-[1rem] text-center"
+                className="w-[12rem] bg-transparent text-center"
+                showYearDropdown
+                scrollableYearDropdown
+                yearDropdownItemNumber={100}
+                minDate={new Date(1900, 0, 1)}
+                maxDate={new Date(2050, 11, 31)}
                 disabled
               />
-              <span className="mx-[0.1rem] w-[2rem] text-center">-</span>
+              <span className="w-[2rem] text-center">&nbsp;-</span>
               <DatePicker
-                selected={eventInfo.endDate || eventInfo.startDate}
+                selected={newEventInfo.newEndDate || newEventInfo.newStartDate}
                 onChange={(date) =>
-                  setEventInfo({
-                    endDate: date,
+                  setNewEventInfo({
+                    ...newEventInfo,
+                    newEndDate: date,
                   })
                 }
                 dateFormat="yyyy-MM-dd"
-                className="mr-[0.5rem] w-[12rem] bg-transparent p-1 pr-[1rem] text-center"
+                className="w-[12rem] bg-transparent text-center"
+                showYearDropdown
+                scrollableYearDropdown
+                yearDropdownItemNumber={100}
+                minDate={new Date(1900, 0, 1)}
+                maxDate={new Date(2050, 11, 31)}
                 disabled
               />
             </div>
@@ -456,18 +511,20 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
         )}
 
         {/* 일정 상세 */}
+        {/* 댓글 */}
         {isComment ? (
-          <div className="h-[16rem] overflow-auto">
-            {commentList.map((comment) => {
-              return (
-                <div
-                  key={comment.id}
-                  className="mb-[0.5rem] flex flex-wrap pt-[0.5rem]"
-                >
-                  <div className="w-[42rem] text-lightGray">{`${comment.username}`}</div>
-                  <div className="mr-[1rem] flex items-center rounded-[0.3rem] font-medium leading-[1.5rem]">
-                    {`${comment.content}`}
-                    {IsCommentLike ? (
+          <div className="flex items-center justify-center">
+            <div className="h-[16rem] space-y-[0.8rem] overflow-auto px-[1rem]">
+              {commentList.map((comment) => {
+                return (
+                  <div key={comment.id} className="flex flex-wrap">
+                    <div className="ml-[0.2rem] w-[42rem] pb-[0.2rem] text-[0.8rem] text-darkGray">{`${comment.username}`}</div>
+                    <div
+                      style={{ backgroundColor: `${calColor}BB` }}
+                      className="mr-[1rem] flex items-center rounded-[0.6rem] px-[0.7rem] py-[0.2rem] text-[0.9rem] leading-[1.5rem] text-eventoWhite"
+                    >
+                      {`${comment.content}`}
+                      {/* {IsCommentLike ? (
                       <AiTwotoneLike
                         className="ml-[1rem] text-eventoPurple"
                         onClick={toggleIsCommentLike}
@@ -479,11 +536,12 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                         onClick={toggleIsCommentLike}
                         size={15}
                       />
-                    )}
+                    )} */}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         ) : isEdit ? (
           <>
@@ -500,7 +558,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                     newEventDetail: e.target.value,
                   });
                 }}
-                className="w-[15rem] rounded-md border-b-[0.1rem] border-solid border-eventoPurple bg-lightGray/20 pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
+                className="w-[15rem] rounded-md border-b-[0.1rem] bg-lightGray/20 pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
               />
             </div>
           </>
@@ -530,7 +588,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
             <input
               type="text"
               value={input}
-              className="relative mt-[0.7rem] h-[1.8rem] w-[37rem] rounded-full border-[0.15rem] border-lightGray bg-transparent px-[1rem] text-darkGray focus:outline-none"
+              className="relative ml-[0.8rem] mr-[1.8rem] mt-[1.2rem] h-[1.8rem] w-[35rem] rounded-full border-[0.15rem] border-lightGray/50 bg-transparent px-[1rem] text-darkGray placeholder-lightGray/50 focus:outline-none"
               onChange={(e) => setInput(e.target.value)}
               placeholder="댓글을 입력하세요"
             />
@@ -565,7 +623,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
         <div className="absolute bottom-[2rem] right-[2rem] flex space-x-[0.5rem]">
           <button
             className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple/80 text-center text-[1.1rem] text-eventoPurple/80 hover:bg-eventoPurpleLight/70 active:bg-eventoPurpleLight"
-            onClick={cancle}
+            onClick={cancel}
           >
             <span>취소</span>
           </button>
