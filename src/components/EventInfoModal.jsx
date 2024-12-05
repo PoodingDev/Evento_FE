@@ -590,19 +590,20 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
           </div>
           <div className="absolute bottom-[3rem] right-[3rem] flex space-x-[0.5rem] text-[1.5rem] text-darkGray">
             <FaPen onClick={toggleIsEdit} />
-            {console.log(userInfo.user_id)}
-            {console.log(
-              calInfo.members.find((cal) => cal.id === userInfo.user_id) !==
-                undefined,
-            )}
-
-            {calInfo.members.find((cal) => cal.id === userInfo.user_id) !==
-              undefined && (
+            {calInfo.members === undefined ? (
               <FaRegTrashAlt
                 className="cursor-pointer text-[1.5rem] text-darkGray"
                 onClick={handleDelete}
               />
-            )}
+            ) : null}
+            {calInfo.members &&
+              calInfo.members.find((cal) => cal.id === userInfo.user_id) !==
+                undefined && (
+                <FaRegTrashAlt
+                  className="cursor-pointer text-[1.5rem] text-darkGray"
+                  onClick={handleDelete}
+                />
+              )}
           </div>
         </>
       )}
