@@ -1,7 +1,5 @@
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
-import EventComments from "./EventComments";
-import EventEdit from "./EventEdit";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { AiOutlineLike, AiTwotoneLike } from "react-icons/ai";
@@ -23,7 +21,10 @@ import {
   FaComment,
   FaRegCommentDots,
 } from "react-icons/fa";
-export default function EventInfo({ onClose, eventDetails, setEvents }) {
+export default function EventComments({ eventDetails, onClose }) {
+  // console.log("-------------");
+  // console.log(eventDetails);
+  // console.log(`${eventDetails.calendarId},${eventDetails.id} `);
   const [eventInfo, setEventInfo] = useState({
     eventId: "",
     eventTitle: "",
@@ -345,160 +346,89 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
       alert("이벤트 삭제에 실패했습니다. 다시 시도해 주세요.");
     }
   };
-
   return (
-    <>
-      {isEdit ? (
-        <EventEdit
-          onClose={onClose}
-          eventDetails={eventDetails}
-          onSave={() => setIsEdit(false)}
-          onCancel={() => setIsEdit(false)}
-          setEvents={setEvents}
-        />
-      ) : isComment ? (
-        <EventComments eventDetails={eventDetails} onClose={toggleIsComment} />
-      ) : (
-        <div>
-          <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
-            <FaXmark
-              size={25}
-              className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
-              onClick={onClose}
-            />
-            <div className="flex w-full flex-col">
-              <div className="mb-[1rem] flex items-center justify-between">
-                {/* 이벤트 제목 */}
+    <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
+      <FaXmark
+        size={25}
+        className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
+        onClick={onClose}
+      />
+      <div className="flex w-full flex-col">
+        <div className="mb-[1rem] flex items-center justify-between">
+          {/* 이벤트 제목 */}
 
-                <div className="flex items-center">
-                  <div className="text-darkGray">
-                    {eventInfo.isEventPublic ? (
-                      <FaLock size={20} />
-                    ) : (
-                      <FaUnlock size={20} />
-                    )}
-                  </div>
-                  <input
-                    type="text"
-                    value={eventInfo.eventTitle}
-                    className="ml-[1rem] h-[2.5rem] w-full bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
-                    onChange={(e) => {
-                      setEventInfo({
-                        eventTitle: e.target.value,
-                      });
-                    }}
-                    disabled
-                  />
-                </div>
-              </div>
-
-              {/* 캘린더 제목 */}
-
-              <div className="flex">
-                <div
-                  className="mb-[1.5rem] flex h-[2rem] justify-center rounded-[2.5rem] px-[1.1rem] text-center text-[1rem] font-bold"
-                  style={{ backgroundColor: calColor }}
-                >
-                  <div className="flex items-center text-eventoWhite">
-                    <p>{eventInfo.title}</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* 시간 */}
-
-              <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
-                시간
-              </div>
-              <div className="relative z-10 mb-[2rem] flex w-[25rem] -translate-x-[0.3rem] items-center text-[2rem] font-bold text-darkGray">
-                <DatePicker
-                  selected={newEventInfo.newStartDate}
-                  onChange={(date) =>
-                    setNewEventInfo({
-                      ...newEventInfo,
-                      newStartDate: date,
-                    })
-                  }
-                  dateFormat="yyyy-MM-dd"
-                  className="w-[12rem] bg-transparent text-center"
-                  showYearDropdown
-                  scrollableYearDropdown
-                  yearDropdownItemNumber={100}
-                  minDate={new Date(1900, 0, 1)}
-                  maxDate={new Date(2050, 11, 31)}
-                  disabled
-                />
-                <span className="w-[2rem] text-center">&nbsp;-</span>
-                <DatePicker
-                  selected={
-                    newEventInfo.newEndDate || newEventInfo.newStartDate
-                  }
-                  onChange={(date) =>
-                    setNewEventInfo({
-                      ...newEventInfo,
-                      newEndDate: date,
-                    })
-                  }
-                  dateFormat="yyyy-MM-dd"
-                  className="w-[12rem] bg-transparent text-center"
-                  showYearDropdown
-                  scrollableYearDropdown
-                  yearDropdownItemNumber={100}
-                  minDate={new Date(1900, 0, 1)}
-                  maxDate={new Date(2050, 11, 31)}
-                  disabled
-                />
-              </div>
-
-              {/* 일정 상세 */}
-              {/* 댓글 */}
-
-              <div className="mb-[2rem]">
-                <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
-                  일정 상세
-                </div>
-                <input
-                  type="text"
-                  value={eventInfo.detailEventMemo}
-                  onChange={(e) => {
-                    setEventInfo({ detailEventMemo: e.target.value });
-                  }}
-                  className="w-[15rem] bg-transparent pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
-                  disabled
-                />
-              </div>
-
-              {/* 기타 아이콘 */}
-            </div>
-
-            <div className="absolute bottom-[3rem] left-[3rem] flex space-x-[0.5rem] text-[1.5rem] text-darkGray">
-              {isLike ? (
-                <FaBookmark size={25} onClick={toggleIsLike} />
+          <div className="flex items-center">
+            <div className="text-darkGray">
+              {eventInfo.isEventPublic ? (
+                <FaLock size={20} />
               ) : (
-                <FaRegBookmark size={25} onClick={toggleIsLike} />
+                <FaUnlock size={20} />
               )}
-              <FaRegCommentDots size={25} onClick={toggleIsComment} />
             </div>
-            <div className="absolute bottom-[3rem] right-[3rem] flex space-x-[0.5rem] text-[1.5rem] text-darkGray">
-              <FaPen onClick={toggleIsEdit} />
-              {calInfo.members === undefined ? (
-                <FaRegTrashAlt
-                  className="cursor-pointer text-[1.5rem] text-darkGray"
-                  onClick={handleDelete}
-                />
-              ) : null}
-              {calInfo.members &&
-                calInfo.members.find((cal) => cal.id === userInfo.user_id) !==
-                  undefined && (
-                  <FaRegTrashAlt
-                    className="cursor-pointer text-[1.5rem] text-darkGray"
-                    onClick={handleDelete}
-                  />
-                )}
-            </div>
+            <input
+              type="text"
+              value={eventInfo.eventTitle}
+              className="ml-[1rem] h-[2.5rem] w-full bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
+              onChange={(e) => {
+                setEventInfo({
+                  eventTitle: e.target.value,
+                });
+              }}
+              disabled
+            />
           </div>
         </div>
-      )}
-    </>
+
+        {/* 캘린더 제목 */}
+
+        <div className="mb-[1rem] flex">
+          <FaChevronLeft size={15} onClick={toggleIsComment} />
+        </div>
+        {/* 일정 상세 */}
+        {/* 댓글 */}
+        <div className="flex items-center justify-center">
+          <div className="h-[16rem] space-y-[0.8rem] overflow-auto px-[1rem]">
+            {commentList.map((comment) => {
+              return (
+                <div key={comment.id} className="flex flex-wrap">
+                  <div className="ml-[0.2rem] w-[42rem] pb-[0.2rem] text-[0.8rem] text-darkGray">{`${comment.username}`}</div>
+                  <div
+                    style={{ backgroundColor: `${calColor}BB` }}
+                    className="mr-[1rem] flex items-center rounded-[0.6rem] px-[0.7rem] py-[0.2rem] text-[0.9rem] leading-[1.5rem] text-eventoWhite"
+                  >
+                    {`${comment.content}`}
+                    {/* {IsCommentLike ? (
+                      <AiTwotoneLike
+                        className="ml-[1rem] text-eventoPurple"
+                        onClick={toggleIsCommentLike}
+                        size={15}
+                      />
+                    ) : (
+                      <AiOutlineLike
+                        className="ml-[1rem] text-eventoPurple"
+                        onClick={toggleIsCommentLike}
+                        size={15}
+                      />
+                    )} */}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* 기타 아이콘 */}
+
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            value={input}
+            className="relative ml-[0.8rem] mr-[1.8rem] mt-[1.2rem] h-[1.8rem] w-[35rem] rounded-full border-[0.15rem] border-lightGray/50 bg-transparent px-[1rem] text-darkGray placeholder-lightGray/50 focus:outline-none"
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="댓글을 입력하세요"
+          />
+        </form>
+      </div>
+    </div>
   );
 }

@@ -1,5 +1,6 @@
 import "../styles/calendar.css";
 import CreateEvent from "components/CreateEventModal";
+import EventInfo from "components/EventInfo";
 import EventInfoModal from "/src/components/EventInfoModal";
 import FullCalendar from "@fullcalendar/react";
 import React, { useEffect, useState } from "react";
@@ -131,7 +132,7 @@ export default function Calendar() {
 
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-          <EventInfoModal
+          <EventInfo
             eventDetails={selectedEvent}
             events={events}
             onClose={closeModal}
@@ -152,7 +153,6 @@ export default function Calendar() {
           <CreateEvent onClose={toggleCreateEvent} setEvents={setEvents} />
         </div>
       )}
-      {console.log("dk", events)}
     </>
   );
 }
