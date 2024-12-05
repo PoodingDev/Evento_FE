@@ -134,6 +134,28 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
     fetchCalInfo();
   }, [eventInfo.title]);
 
+  useEffect(() => {
+    async function fetchComments() {
+      try {
+        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
+        const response = await axios.get(
+          `/api/calendars/${eventDetails.calendarId}/events/${eventDetails.id}/comments`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        setCommentList(response.data.comments || []);
+      } catch (error) {
+        console.error("댓글 정보를 가져오는 중 오류 발생:", error);
+      }
+    }
+
+    fetchComments();
+  }, [eventDetails]);
+
   //수정 및 편집
   const [isEdit, setIsEdit] = useState(false);
   const toggleIsEdit = () => setIsEdit(!isEdit);
@@ -189,16 +211,29 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
   // const toggleIsCommentLike = () => setCommentLike(!IsCommentLike);
 
   //댓글 작성
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (input.trim() !== "") {
-      const newComment = {
-        id: commentList.length + 1,
-        username: "수진", //현재 사용자 이름
-        content: input,
-      };
-      setCommentList([...commentList, newComment]);
+
+    if (input.trim() === "") return;
+
+    try {
+      const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
+      const response = await axios.post(
+        `/api/calendars/${eventDetails.calendarId}/events/${eventDetails.id}/comments`,
+        { content: input },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      // 새로운 댓글 추가
+      setCommentList((prevComments) => [...prevComments, response.data]);
       setInput("");
+    } catch (error) {
+      console.error("댓글 작성 중 오류 발생:", error);
     }
   };
 
@@ -533,7 +568,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
             <input
               type="text"
               value={input}
-              className="relative mt-[0.7rem] h-[1.8rem] w-[37rem] rounded-full border-[0.15rem] border-lightGray bg-transparent px-[1rem] text-darkGray focus:outline-none"
+              className="relative ml-[0.8rem] mr-[1.8rem] mt-[1.2rem] h-[1.8rem] w-[35rem] rounded-full border-[0.15rem] border-lightGray/50 bg-transparent px-[1rem] text-darkGray placeholder-lightGray/50 focus:outline-none"
               onChange={(e) => setInput(e.target.value)}
               placeholder="댓글을 입력하세요"
             />
