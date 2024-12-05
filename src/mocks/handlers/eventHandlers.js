@@ -168,10 +168,44 @@ export const eventHandlers = [
     // 캘린더 삭제
     mockEventData.splice(eventIndex, 1);
 
-    // 200 OK 응답 반환
     return res(
       ctx.status(200),
       ctx.json({ message: "이벤트가 성공적으로 삭제되었습니다." }),
+    );
+  }),
+
+  rest.get("/api/users/:userId/favorite-events", (req, res, ctx) => {
+    const { userId } = req.params;
+    const token = req.headers.get("Authorization");
+
+    if (!token || token !== "Bearer fake_token") {
+      return res(
+        ctx.status(40),
+        ctx.json({
+          error: "인증 실패",
+          message: "로그인이 필요합니다. 다시 로그인해 주세요.",
+        }),
+      );
+    }
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        favorite_events: [
+          {
+            favorite_event_id: 1,
+            event_id: 1,
+            event_title: "프로젝트 끝!",
+            d_day: "2024-12-11",
+          },
+          {
+            favorite_event_id: 2,
+            event_id: 2,
+            event_title: "2025년",
+            d_day: "2025-01-01",
+          },
+        ],
+      }),
     );
   }),
 ];

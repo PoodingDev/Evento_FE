@@ -17,13 +17,15 @@ import {
 export default function SideBarLeft() {
   const [isCalendarInfoOpen, setCalendarInfoOpen] = useState(false);
   const [selectedCalendar, setSelectedCalendar] = useState(null);
-  const [myCalendars, setMyCalendars] = useState([]);
-  const [subscribedCalendars, setSubscribedCalendars] = useState([]);
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const [checked, setChecked] = useState({});
   const [isInviteOpen, setIsInviteOpen] = useState(false);
-  const [isCreateCalendarOpen, setIsCreateCalendarOpen] = useState(false);
+  const [isCreateOpen, setIsCreateCalendarOpen] = useState(false);
+
+  const [myCalendars, setMyCalendars] = useState([]);
+  const [subscribedCalendars, setSubscribedCalendars] = useState([]);
+  const [dday, setDday] = useState([]);
 
   const { loggedIn, userInfo } = useAuth();
 
@@ -31,12 +33,15 @@ export default function SideBarLeft() {
     async function fetchData() {
       try {
         const token = localStorage.getItem("token");
-        const [myCalendarsResponse, subscribedCalendarsResponse] =
+        const [myCalendarsResponse, subscribedCalendarsResponse, ddayResponse] =
           await Promise.all([
             axios.get("/api/calendars/admins", {
               headers: { Authorization: `Bearer ${token}` },
             }),
             axios.get(`/api/users/${userInfo.user_id}/subscriptions`, {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+            axios.get(`/api/users/${userInfo.user_id}/favorite-events`, {
               headers: { Authorization: `Bearer ${token}` },
             }),
           ]);
@@ -47,6 +52,9 @@ export default function SideBarLeft() {
         if (subscribedCalendarsResponse.status === 200) {
           setSubscribedCalendars(subscribedCalendarsResponse.data);
         }
+        if (ddayResponse.status === 200) {
+          setDday(ddayResponse.data.favorite_events);
+        }
       } catch (error) {
         console.error("캘린더 데이터를 가져오는 중 오류 발생:", error);
       }
@@ -55,7 +63,7 @@ export default function SideBarLeft() {
     if (userInfo?.user_id) {
       fetchData();
     }
-  }, [userInfo, isCalendarInfoOpen, isCreateCalendarOpen]);
+  }, [userInfo, isCalendarInfoOpen, isCreateOpen]);
 
   const handleToggle = (id) => {
     setChecked((prev) => ({
@@ -195,7 +203,7 @@ export default function SideBarLeft() {
           <InviteCodeModal onClose={toggleInvite} />
         </div>
       )}
-      {isCreateCalendarOpen && (
+      {isCreateOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
           <CreateCalendar onClose={toggleCreateCalendar} />
         </div>
@@ -210,12 +218,33 @@ export default function SideBarLeft() {
           />
         </div>
       )}
+      <div className="fixed bottom-[3rem] left-[4rem] flex flex-col items-center justify-center">
+        <ul className="space-y-[.8rem]">
+          {dday.map((item, index) => {
+            const today = new Date();
+            const dDay = new Date(item.d_day);
+            const differenceInTime = dDay - today;
+            const differenceInDays = Math.ceil(
+              differenceInTime / (1000 * 60 * 60 * 24),
+            );
+
+            return (
+              <li key={index} className="flex">
+                <span className="w-[3rem] text-left text-[.9rem] font-bold text-eventoPurpleDark/70">
+                  {differenceInDays > 0
+                    ? `D-${differenceInDays}`
+                    : differenceInDays === 0
+                      ? "D-Day"
+                      : `D+${Math.abs(differenceInDays)}`}
+                </span>
+                <span className="flex-1 pl-2 text-left text-[0.9rem] text-darkGray/90">
+                  {item.event_title}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 }
-
-const dDayItems = [
-  { day: "D-1", description: "evento 배포" },
-  { day: "D-6", description: "푸딩즈 회식!" },
-  { day: "D-69", description: "졸업 언제하냐" },
-];
