@@ -384,11 +384,11 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
               </div>
               <div className="relative z-10 mb-[2rem] flex w-[25rem] -translate-x-[0.3rem] items-center text-[2rem] font-bold text-darkGray">
                 <DatePicker
-                  selected={newEventInfo.newStartDate}
+                  selected={eventInfo.startDate}
                   onChange={(date) =>
-                    setNewEventInfo({
-                      ...newEventInfo,
-                      newStartDate: date,
+                    setEventInfo({
+                      ...eventInfo,
+                      startDate: date,
                     })
                   }
                   dateFormat="yyyy-MM-dd"
@@ -402,13 +402,11 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                 />
                 <span className="w-[2rem] text-center">&nbsp;-</span>
                 <DatePicker
-                  selected={
-                    newEventInfo.newEndDate || newEventInfo.newStartDate
-                  }
+                  selected={eventInfo.endDate || eventInfo.startDate}
                   onChange={(date) =>
-                    setNewEventInfo({
-                      ...newEventInfo,
-                      newEndDate: date,
+                    setEventInfo({
+                      ...eventInfo,
+                      endDate: date,
                     })
                   }
                   dateFormat="yyyy-MM-dd"
