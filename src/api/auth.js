@@ -3,14 +3,23 @@ import { instance } from "./axios";
 
 // 소셜 로그인
 export async function requestKakaoLogin(code) {
-  const response = await instance.post(`/api/users/kakao-login/`, {
-    code: code.axios.baseURL,
-  });
+  const response = await axios.post(
+    `https://evento.r-e.kr/api/users/kakao-login/`,
+    {
+      code: code,
+      state: "state",
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    },
+  );
   return response.data;
 }
 
 export async function requestGoogleLogin(code) {
-  console.log("auth.js requestGoogleLogin");
   const response = await axios.post(
     `https://evento.r-e.kr/api/users/google-login/`,
     {
@@ -29,15 +38,24 @@ export async function requestGoogleLogin(code) {
 }
 
 export async function requestNaverLogin(code, state) {
-  const response = await instance.post(`/api/users/naver-login/`, {
-    code: code,
-    state: state,
-  });
+  const response = await axios.post(
+    `https://evento.r-e.kr/api/users/naver-login/`,
+    {
+      code: code,
+      state: state,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    },
+  );
   return response.data;
 }
 
 export async function fetchUserInfo(token) {
-  const response = await fetch("/api/users/me", {
+  const response = await axios.get("https://evento.r-e.kr/api/users/me", {
     headers: {
       Authorization: `Bearer ${token}`,
     },

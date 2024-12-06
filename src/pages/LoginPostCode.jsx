@@ -17,42 +17,41 @@ export default function LoginPostCode() {
   const { setLoggedIn, setUserInfo } = useAuth();
   const { platform } = useParams();
 
-  useEffect(() => {
-    console.log("loginpostcode");
-    const authenticate = async () => {
-      const authCode = searchParams.get("code");
-      const state = searchParams.get("state");
+  const authenticate = async () => {
+    const authCode = searchParams.get("code");
+    const state = searchParams.get("state");
 
-      if (!authCode) {
-        setErrorMessage("잘못된 인증 요청입니다.");
-        setIsAuthenticating(false);
-        return;
+    if (!authCode) {
+      setErrorMessage("잘못된 인증 요청입니다.");
+      setIsAuthenticating(false);
+      return;
+    }
+
+    try {
+      let response;
+      // 로그인 요청
+      switch (platform) {
+        case "kakao":
+          response = await requestKakaoLogin(authCode);
+          break;
+        case "google":
+          console.log("1");
+          response = await requestGoogleLogin(authCode);
+          break;
+        case "naver":
+          response = await requestNaverLogin(authCode, state);
+          break;
+        default:
+          break;
       }
 
-      // try {
-      // let response;
-      //   // 로그인 요청
-      //   switch (platform) {
-      //     case "kakao":
-      //       response = await requestKakaoLogin(authCode);
-      //       break;
-      //     case "google":
-      //       response = await requestGoogleLogin(authCode);
-      //       break;
-      //     case "naver":
-      //       response = await requestNaverLogin(authCode, state);
-      //       break;
-      //     default:
-      //       break;
-      //   }
-
-      const response = await requestGoogleLogin(authCode);
+      // const response = await requestGoogleLogin(authCode);
       const { access: accessToken, refresh: refreshToken } = response;
-
+      console.log("2");
       // 토큰 저장
       localStorage.setItem("token", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
-
+      console.log("3");
       // 사용자 정보 가져오기
       const userInfo = await fetchUserInfo(accessToken);
 
@@ -61,23 +60,25 @@ export default function LoginPostCode() {
       setUserInfo(userInfo);
 
       // 캘린더 페이지로 이동
+      console.log("4");
       navigate("/calendar");
-      //  } catch (error) {
-      //    console.error("Authentication error:", error);
+    } catch (error) {
+      console.error("Authentication error:", error);
 
-      //    // 에러 메시지 설정
-      //    if (error.response?.status === 401) {
-      //      setErrorMessage("유효하지 않은 인증 코드입니다.");
-      //    } else if (error.response?.status === 403) {
-      //      setErrorMessage("이 소셜 계정으로는 로그인할 수 없습니다.");
-      //    } else {
-      //      setErrorMessage("인증에 실패했습니다. 다시 시도해 주세요.");
-      //    }
-      //  } finally {
-      //    setIsAuthenticating(false);
-      //  }
-    };
+      // 에러 메시지 설정
+      if (error.response?.status === 401) {
+        setErrorMessage("유효하지 않은 인증 코드입니다.");
+      } else if (error.response?.status === 403) {
+        setErrorMessage("이 소셜 계정으로는 로그인할 수 없습니다.");
+      } else {
+        setErrorMessage("인증에 실패했습니다. 다시 시도해 주세요.");
+      }
+    } finally {
+      setIsAuthenticating(false);
+    }
+  };
 
+  useEffect(() => {
     authenticate();
   }, [searchParams, setLoggedIn, setUserInfo, navigate]);
 
