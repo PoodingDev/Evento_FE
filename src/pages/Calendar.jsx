@@ -87,7 +87,8 @@ export default function Calendar() {
     <>
       <div className="mainCalendar bg-eventoWhite">
         <FullCalendar
-          plugins={[dayGridPlugin, interactionPlugin]} // 플러그인 추가
+          // plugins={[dayGridPlugin, interactionPlugin]} // 플러그인 추가
+          plugins={[dayGridPlugin]} // 플러그인 추가
           initialView="dayGridMonth" // 기본 뷰 설정
           headerToolbar={{
             left: "", // 왼쪽 버튼 제거
@@ -100,11 +101,11 @@ export default function Calendar() {
           events={events} // 이벤트 추가
           aspectRatio={2.1}
           eventClick={handleEventClick} // 이벤트 클릭 핸들러
-          dayMaxEventRows={5}
+          dayMaxEventRows={4}
           dayCellDidMount={(info) => {
             // 특정 날짜 칸에 커스텀 스타일 적용
-            info.el.style.height = "auto";
-            // info.el.style.overflow = "hidden";
+            info.el.style.height = "6rem";
+            // info.el.style.overflow="scroll";
           }}
         />
       </div>

@@ -75,29 +75,4 @@ export const loginHandlers = [
       }),
     );
   }),
-
-  // 사용자 정보 요청 핸들러
-  rest.get("/api/users/me", (req, res, ctx) => {
-    const authHeader = req.headers.get("Authorization");
-
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res(
-        ctx.status(401),
-        ctx.json({
-          error: "unauthorized",
-          message: "인증 토큰이 제공되지 않았습니다.",
-        }),
-      );
-    }
-
-    // 가짜 사용자 정보
-    const userInfo = {
-      user_id: 1,
-      user_name: "김구글",
-      user_email: "vento@evento.com",
-      user_nickname: "vento1",
-    };
-
-    return res(ctx.status(200), ctx.json(userInfo));
-  }),
 ];

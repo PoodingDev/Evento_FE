@@ -6,7 +6,7 @@ let mockUserData = {
   user_email: "vento@evento.com",
   user_birth: "2024-11-30",
   user_nickname: "vento1",
-  is_birth_public: true,
+  // is_birth_public: true,
 };
 
 export const userHandlers = [
@@ -23,7 +23,7 @@ export const userHandlers = [
         }),
       );
     }
-
+    console.log(mockUserData);
     return res(ctx.status(200), ctx.json(mockUserData));
   }),
 

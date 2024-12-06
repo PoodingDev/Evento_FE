@@ -2,6 +2,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { FaBirthdayCake } from "react-icons/fa";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
@@ -159,17 +160,20 @@ export default function ProfileEdit() {
               </li>
               <li className="flex items-center justify-between">
                 <span className="font-semibold text-darkGray">내 생일</span>
-                <DatePicker
-                  selected={userBirth}
-                  onChange={(date) => setUserBirth(date)} // Date 객체 업데이트
-                  dateFormat="yyyy-MM-dd"
-                  className="rounded-lg bg-eventoWhite p-1 text-right text-darkGray"
-                  showYearDropdown
-                  scrollableYearDropdown
-                  yearDropdownItemNumber={100}
-                  minDate={new Date(1900, 0, 1)}
-                  maxDate={new Date(2050, 11, 31)}
-                />
+                <div className="flex items-center justify-end">
+                  <DatePicker
+                    selected={userBirth}
+                    onChange={(date) => setUserBirth(date)} // Date 객체 업데이트
+                    dateFormat="yyyy-MM-dd"
+                    className="rounded-lg bg-eventoWhite p-1 text-right text-darkGray"
+                    showYearDropdown
+                    scrollableYearDropdown
+                    yearDropdownItemNumber={100}
+                    minDate={new Date(1900, 0, 1)}
+                    maxDate={new Date(2050, 11, 31)}
+                  />
+                  <FaBirthdayCake className="ml-[0.2rem] text-center text-[1.1rem] text-eventoPurpleBase/80" />
+                </div>
               </li>
             </ul>
           </div>

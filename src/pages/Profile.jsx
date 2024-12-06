@@ -26,7 +26,7 @@ export default function Profile() {
         });
 
         // 사용자 정보 -> 상태
-        const { user_name, user_nickname, user_email, user_birth } =
+        const { user_id, user_name, user_email, user_birth, user_nickname } =
           response.data;
         setUserInfo({
           userName: user_name,
@@ -38,7 +38,6 @@ export default function Profile() {
         console.error("사용자 정보를 가져오는 중 오류 발생:", error);
       }
     }
-
     fetchUserInfo();
   }, []);
 

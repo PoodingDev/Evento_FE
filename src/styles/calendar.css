@@ -80,6 +80,23 @@
   font-size: 0.5rem;
 }
 
+.fc-popover {
+  translate: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: auto !important;
+  border-radius: 10% !important;
+  max-height: 20rem !important;
+  min-height: 6rem !important;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+}
+
+.fc-popover-body {
+  max-height: 15rem !important;
+}
 /* 
 자주 사용하는 FullCalendar 이벤트 속성
 
