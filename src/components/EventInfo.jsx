@@ -233,7 +233,6 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
         });
 
         setEvents((prevEvents) => {
-          console.log(prevEvents);
           return prevEvents.map((event) => {
             if (event.id === Number(eventInfo.eventId)) {
               // 수정된 이벤트를 반환하도록
@@ -245,6 +244,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                 extendedProps: {
                   memo: newEventInfo.newEventDetail,
                 },
+                isPublic: newEventInfo.newEventPublic,
               };
             }
             return event; // 수정되지 않은 이벤트는 그대로 반환
@@ -303,6 +303,8 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
         <EventEdit
           onClose={onClose}
           eventDetails={eventDetails}
+          eventInfo={eventInfo}
+          setEventInfo={setEventInfo}
           onSave={() => save}
           onCancel={() => handleViewChange("info")}
           setEvents={setEvents}
@@ -380,7 +382,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                     })
                   }
                   dateFormat="yyyy-MM-dd"
-                  className="w-[12rem] bg-transparent text-center"
+                  className="w-[12rem] bg-transparent pr-[1rem] text-center"
                   showYearDropdown
                   scrollableYearDropdown
                   yearDropdownItemNumber={100}
@@ -398,7 +400,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                     })
                   }
                   dateFormat="yyyy-MM-dd"
-                  className="w-[12rem] bg-transparent text-center"
+                  className="w-[12rem] bg-transparent pr-[1rem] text-center"
                   showYearDropdown
                   scrollableYearDropdown
                   yearDropdownItemNumber={100}

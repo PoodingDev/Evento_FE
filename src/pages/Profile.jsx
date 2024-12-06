@@ -55,12 +55,12 @@ export default function Profile() {
     <>
       <div className="h-[100vh] bg-eventoWhite pl-[18rem] pt-[4rem]">
         <div className="ml-[5rem] mt-[2rem] flex items-center text-center">
-          <Link to="/">
+          <Link to="/calendar">
             <IoChevronBack className="text-[1.2rem]" />
           </Link>
           <p className="text-[1.1rem]">&nbsp; 내 프로필</p>
         </div>
-        <div className="flex h-full -translate-y-[6rem] items-center justify-center">
+        <div className="mt-[7rem] flex h-full -translate-y-[6rem] items-center justify-center pb-[10rem]">
           <div className="flex h-[30rem] w-[30rem] flex-col items-center justify-center">
             <IoPersonCircleOutline className="h-[8rem] w-[8rem] text-eventoPurpleBase" />
             <ul className="mt-[0.5rem] space-y-[0.8rem] text-[1.2rem]">

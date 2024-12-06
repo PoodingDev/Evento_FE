@@ -103,7 +103,7 @@ export default function Calendar() {
           dayMaxEventRows={5}
           dayCellDidMount={(info) => {
             // 특정 날짜 칸에 커스텀 스타일 적용
-            info.el.style.height = "6rem";
+            info.el.style.height = "auto";
             // info.el.style.overflow = "hidden";
           }}
         />
