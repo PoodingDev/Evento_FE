@@ -2,22 +2,23 @@ import { instance } from "./axios";
 
 // 소셜 로그인
 export async function requestKakaoLogin(code) {
-  const response = await instance.post(`/api/users/kakao-login`, {
+  const response = await instance.post(`/api/users/kakao-login/`, {
     code: code.axios.baseURL,
   });
   return response.data;
 }
 
 export async function requestGoogleLogin(code) {
-  const response = await instance.post(`/api/users/google-login`, {
+  console.log("auth.js requestGoogleLogin");
+  const response = await instance.post(`/api/users/google-login/`, {
     code: code,
   });
-  console.log("auth.js requestGoogleLogin");
+
   return response.data;
 }
 
 export async function requestNaverLogin(code, state) {
-  const response = await instance.post(`/api/users/naver-login`, {
+  const response = await instance.post(`/api/users/naver-login/`, {
     code: code,
     state: state,
   });

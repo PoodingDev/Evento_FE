@@ -47,7 +47,6 @@ export default function LoginPostCode() {
       //   }
 
       const response = await requestGoogleLogin(authCode);
-
       const { access: accessToken, refresh: refreshToken } = response;
 
       // 토큰 저장
@@ -62,7 +61,7 @@ export default function LoginPostCode() {
       setUserInfo(userInfo);
 
       // 캘린더 페이지로 이동
-      // navigate("/calendar");
+      navigate("/calendar");
       //  } catch (error) {
       //    console.error("Authentication error:", error);
 
