@@ -43,7 +43,7 @@ export default function EventEdit({
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
         const response = await axios.get(
-          `/api/calendars/${eventDetails.calendarId}/events`,
+          `/api/calendars/${eventDetails.cal_id}/events`,
 
           {
             headers: {
@@ -52,25 +52,15 @@ export default function EventEdit({
           },
         );
 
-        const {
-          event_id,
-          event_title,
-          cal_title,
-          cal_color,
-          start_time,
-          end_time,
-          event_description,
-          is_public,
-        } = response.data[1];
-
         setEventInfo({
           eventId: eventDetails.id,
           eventTitle: eventDetails.title,
+          cal_id: eventDetails.calId,
           title: eventDetails.cal_title,
           startDate: eventDetails.start,
           endDate: eventDetails.end,
           detailEventMemo: eventDetails.description,
-          isEventPublic: is_public,
+          isEventPublic: eventDetails.isPublic,
         });
 
         setNewEventInfo({
@@ -78,7 +68,7 @@ export default function EventEdit({
           newStartDate: eventDetails.start,
           newEndDate: eventDetails.end,
           newEventDetail: eventDetails.description,
-          newEventPublic: false,
+          newEventPublic: eventDetails.isPublic,
         });
       } catch (error) {
         console.error("이벤트 정보를 가져오는 중 오류 발생:", error);
@@ -127,7 +117,7 @@ export default function EventEdit({
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
         const response = await axios.get(
-          `/api/calendars/${eventDetails.calendarId}/events/${eventDetails.id}/comments`,
+          `/api/calendars/${eventDetails.cal_id}/events/${eventDetails.id}/comments`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -171,7 +161,7 @@ export default function EventEdit({
     try {
       const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
       const response = await axios.post(
-        `/api/calendars/${eventDetails.calendarId}/events/${eventDetails.id}/comments`,
+        `/api/calendars/${eventDetails.cal_id}/events/${eventDetails.id}/comments`,
         { content: input },
         {
           headers: {
@@ -194,7 +184,7 @@ export default function EventEdit({
     try {
       const token = localStorage.getItem("token"); // 토큰 가져오기
       const response = await axios.patch(
-        `/api/calendars/${eventDetails.calendarId}/events/${eventDetails.id}`,
+        `/api/calendars/${eventDetails.cal_id}/events/${eventDetails.id}`,
         {
           event_title: newEventInfo.newEventTitle,
           cal_title: eventInfo.title,
@@ -214,10 +204,11 @@ export default function EventEdit({
       if (response.status === 200) {
         onSave({
           ...eventDetails,
-          title: newEventInfo.newEventTitle,
-          start: newEventInfo.newStartDate,
-          end: newEventInfo.newEndDate,
-          description: newEventInfo.newEventDetail,
+          eventTitle: newEventInfo.newEventTitle,
+          title: eventInfo.title,
+          startDate: newEventInfo.newStartDate,
+          endDate: newEventInfo.newEndDate,
+          detailEventMemo: newEventInfo.newEventDetail,
           isEventPublic: newEventInfo.newEventPublic,
         });
 
@@ -233,6 +224,7 @@ export default function EventEdit({
                 extendedProps: {
                   memo: newEventInfo.newEventDetail,
                 },
+                isPublic: newEventInfo.newEventPublic,
               };
             }
             return event; // 수정되지 않은 이벤트는 그대로 반환
@@ -260,9 +252,9 @@ export default function EventEdit({
           <div className="flex items-center">
             <div className="text-darkGray">
               {newEventInfo.newEventPublic ? (
-                <FaLock size={20} />
-              ) : (
                 <FaUnlock size={20} />
+              ) : (
+                <FaLock size={20} />
               )}
             </div>
             <input
@@ -348,13 +340,13 @@ export default function EventEdit({
           <div className="flex items-center space-x-[0.5rem] text-[1rem] text-darkGray">
             <p>구독자들에게 공개하기</p>
             {newEventInfo.newEventPublic === true ? (
-              <FaToggleOff
+              <FaToggleOn
                 size={25}
                 className="cursor-pointer text-eventoPurple"
                 onClick={toggleIsPublic}
               />
             ) : (
-              <FaToggleOn
+              <FaToggleOff
                 size={25}
                 className="cursor-pointer text-eventoPurple"
                 onClick={toggleIsPublic}

@@ -233,7 +233,6 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
         });
 
         setEvents((prevEvents) => {
-          console.log(prevEvents);
           return prevEvents.map((event) => {
             if (event.id === Number(eventInfo.eventId)) {
               // 수정된 이벤트를 반환하도록
@@ -245,6 +244,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                 extendedProps: {
                   memo: newEventInfo.newEventDetail,
                 },
+                isPublic: newEventInfo.newEventPublic,
               };
             }
             return event; // 수정되지 않은 이벤트는 그대로 반환
