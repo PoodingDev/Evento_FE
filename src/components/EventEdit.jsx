@@ -252,7 +252,7 @@ export default function EventEdit({
               })
             }
             dateFormat="yyyy-MM-dd"
-            className="w-[12rem] bg-transparent text-center"
+            className="w-[12rem] rounded-md bg-lightGray/20 pr-[1rem] text-center"
             showYearDropdown
             scrollableYearDropdown
             yearDropdownItemNumber={100}
@@ -269,7 +269,7 @@ export default function EventEdit({
               })
             }
             dateFormat="yyyy-MM-dd"
-            className="w-[12rem] bg-transparent text-center"
+            className="w-[12rem] rounded-md bg-lightGray/20 pr-[1rem] text-center"
             showYearDropdown
             scrollableYearDropdown
             yearDropdownItemNumber={100}
