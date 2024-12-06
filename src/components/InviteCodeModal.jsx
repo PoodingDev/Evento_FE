@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
-import axios from "axios";
 import { FaXmark } from "react-icons/fa6";
+import { instance } from "../api/axios";
 
 export default function InviteCodeModal({ onClose, calendarId }) {
   const inputRefs = useRef([]);
@@ -42,8 +42,8 @@ export default function InviteCodeModal({ onClose, calendarId }) {
     if (inviteCode.length === 6) {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.post(
-          `/api/calendars/admins/invite`,
+        const response = await instance.post(
+          `/api/calendars/admins/invite/`,
           { invitation_code: inviteCode },
           {
             headers: {

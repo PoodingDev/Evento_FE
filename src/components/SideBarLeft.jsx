@@ -2,8 +2,8 @@ import CalendarInfo from "./CalendarInfoModal";
 import CreateCalendar from "./CreateCalendarModal";
 import InviteCodeModal from "./InviteCodeModal";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { instance } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 
 import {
@@ -35,13 +35,13 @@ export default function SideBarLeft() {
         const token = localStorage.getItem("token");
         const [myCalendarsResponse, subscribedCalendarsResponse, ddayResponse] =
           await Promise.allSettled([
-            axios.get("/api/calendars/admins", {
+            instance.get("/api/calendars/admins/", {
               headers: { Authorization: `Bearer ${token}` },
             }),
-            axios.get(`/api/users/${userInfo.user_id}/subscriptions`, {
+            instance.get(`/api/users/${userInfo.user_id}/subscriptions/`, {
               headers: { Authorization: `Bearer ${token}` },
             }),
-            axios.get(`/api/users/${userInfo.user_id}/favorite-events`, {
+            instance.get(`/api/users/${userInfo.user_id}/favorite-events/`, {
               headers: { Authorization: `Bearer ${token}` },
             }),
           ]);
@@ -120,7 +120,6 @@ export default function SideBarLeft() {
     setCalendarInfoOpen(false);
   };
 
-  console.log("dk", myCalendars);
   return (
     <div>
       <div className="evento-sidebarleft absolute mt-[5rem] h-[calc(100vh-5rem)] w-[18rem] rounded-tr-[2.5rem] bg-eventoGray pl-[2.25rem] pr-[1.75rem] pt-[1.6rem]">

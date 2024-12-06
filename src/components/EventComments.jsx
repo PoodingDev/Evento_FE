@@ -1,8 +1,8 @@
 import "react-datepicker/dist/react-datepicker.css";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { FaChevronLeft, FaLock, FaUnlock } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
+import { instance } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 
 export default function EventComments({
@@ -46,8 +46,8 @@ export default function EventComments({
     async function fetchEventInfo() {
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await axios.get(
-          `/api/calendars/${eventDetails.cal_id}/events`,
+        const response = await instance.get(
+          `/api/calendars/${eventDetails.cal_id}/events/`,
 
           {
             headers: {
@@ -90,7 +90,7 @@ export default function EventComments({
     async function fetchCalInfo() {
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await axios.get("/api/calendars/admins", {
+        const response = await instance.get("/api/calendars/admins/", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -154,8 +154,8 @@ export default function EventComments({
     async function fetchComments() {
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await axios.get(
-          `/api/calendars/${eventDetails.calendarId}/events/${eventDetails.id}/comments`,
+        const response = await instance.get(
+          `/api/calendars/${eventDetails.calendarId}/events/${eventDetails.id}/comments/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -193,8 +193,8 @@ export default function EventComments({
 
     try {
       const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-      const response = await axios.post(
-        `/api/calendars/${eventDetails.calendarId}/events/${eventDetails.id}/comments`,
+      const response = await instance.post(
+        `/api/calendars/${eventDetails.calendarId}/events/${eventDetails.id}/comments/`,
         { content: input },
         {
           headers: {
@@ -219,7 +219,7 @@ export default function EventComments({
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex w-full flex-col">
+      <div className="flex flex-col w-full">
         <div className="mb-[1rem] flex items-center justify-between">
           {/* 이벤트 제목 */}
 

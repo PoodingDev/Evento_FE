@@ -4,6 +4,7 @@ import axios from "axios";
 import { FaBirthdayCake, FaPen } from "react-icons/fa";
 import { IoChevronBack, IoPersonCircleOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
+import { instance } from "../api/axios";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ export default function Profile() {
     async function fetchUserInfo() {
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await axios.get("/api/users/me", {
+        const response = await instance.get("/api/users/me/", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

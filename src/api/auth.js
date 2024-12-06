@@ -4,14 +4,14 @@ import { instance } from "./axios";
 // 소셜 로그인
 export async function requestKakaoLogin(code) {
   const response = await instance.post(
-    `api/users/kakao-login`,
+    `api/users/kakao-login/`,
     {
       code: code,
       state: "state",
     },
     {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json/",
       },
       withCredentials: true,
     },
@@ -21,7 +21,7 @@ export async function requestKakaoLogin(code) {
 
 export async function requestGoogleLogin(code) {
   const response = await instance.post(
-    `api/users/google-login`,
+    `api/users/google-login/`,
     {
       code: code,
       state: "state",
@@ -39,7 +39,7 @@ export async function requestGoogleLogin(code) {
 
 export async function requestNaverLogin(code, state) {
   const response = await instance.post(
-    `api/users/naver-login`,
+    `api/users/naver-login/`,
     {
       code: code,
       state: state,
@@ -55,7 +55,7 @@ export async function requestNaverLogin(code, state) {
 }
 
 export async function fetchUserInfo(token) {
-  const response = await instance.get("api/users/me", {
+  const response = await instance.get("api/users/me/", {
     headers: {
       Authorization: `Bearer ${token}`,
     },

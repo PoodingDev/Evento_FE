@@ -11,7 +11,7 @@ let mockUserData = {
 
 export const userHandlers = [
   // 사용자 정보 조회 핸들러
-  rest.get("/api/users/me", (req, res, ctx) => {
+  rest.get("/api/users/me/", (req, res, ctx) => {
     const token = req.headers.get("Authorization");
 
     if (!token || token !== "Bearer fake_token") {
@@ -28,7 +28,7 @@ export const userHandlers = [
   }),
 
   // 사용자 정보 수정 핸들러
-  rest.post("/api/users/:user_id", async (req, res, ctx) => {
+  rest.post("/api/users/:user_id/", async (req, res, ctx) => {
     const token = req.headers.get("Authorization");
     const { user_id } = req.params;
     const { user_nickname, user_birth, is_birth_public } = await req.json();
@@ -92,7 +92,7 @@ export const userHandlers = [
   }),
 
   //회원탈퇴
-  rest.delete("/api/users/delete", (req, res, ctx) => {
+  rest.delete("/api/users/delete/", (req, res, ctx) => {
     const token = req.headers.get("Authorization");
 
     if (!token || token !== "Bearer fake_token") {

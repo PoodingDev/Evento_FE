@@ -1,10 +1,10 @@
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { FaBirthdayCake } from "react-icons/fa";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { instance } from "../api/axios";
 
 export default function ProfileEdit() {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ export default function ProfileEdit() {
     async function fetchUserInfo() {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("/api/users/me", {
+        const response = await instance.get("/api/users/me/", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -78,8 +78,8 @@ export default function ProfileEdit() {
         throw new Error("사용자 ID를 찾을 수 없습니다.");
       }
 
-      const response = await axios.post(
-        `/api/users/${userId}`,
+      const response = await instance.post(
+        `/api/users/${userId}/`,
         {
           user_nickname: userNickname,
           user_birth: userBirth
@@ -165,7 +165,7 @@ export default function ProfileEdit() {
                     selected={userBirth}
                     onChange={(date) => setUserBirth(date)} // Date 객체 업데이트
                     dateFormat="yyyy-MM-dd"
-                    className="rounded-lg bg-eventoWhite p-1 text-right text-darkGray"
+                    className="p-1 text-right rounded-lg bg-eventoWhite text-darkGray"
                     showYearDropdown
                     scrollableYearDropdown
                     yearDropdownItemNumber={100}

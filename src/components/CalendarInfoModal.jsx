@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FaTrashCan, FaXmark } from "react-icons/fa6";
+import { instance } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 
 import {
@@ -56,8 +56,8 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
   const save = async () => {
     try {
       const token = localStorage.getItem("token"); // 토큰 가져오기
-      const response = await axios.patch(
-        `/api/calendars/${calendar.calendar_id}`,
+      const response = await instance.patch(
+        `/api/calendars/${calendar.calendar_id}/`,
         {
           calendar_name: calendarState.title,
           calendar_description: calendarState.detailMemo,
@@ -87,8 +87,8 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
   const handleDelete = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.delete(
-        `/api/calendars/${calendar.calendar_id}`,
+      const response = await instance.delete(
+        `/api/calendars/${calendar.calendar_id}/`,
         {
           headers: {
             "Content-Type": "application/json",

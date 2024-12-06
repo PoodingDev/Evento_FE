@@ -3,8 +3,8 @@ import DatePicker from "react-datepicker";
 import EventComments from "./EventComments";
 import EventEdit from "./EventEdit";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { FaHeart, FaRegHeart, FaXmark } from "react-icons/fa6";
+import { instance } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 
 import {
@@ -59,8 +59,8 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
     async function fetchEventInfo() {
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await axios.get(
-          `/api/calendars/${eventDetails.cal_id}/events`,
+        const response = await instance.get(
+          `/api/calendars/${eventDetails.cal_id}/events/`,
 
           {
             headers: {
@@ -103,7 +103,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
     async function fetchCalInfo() {
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await axios.get("/api/calendars/admins", {
+        const response = await instance.get("/api/calendars/admins/", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -133,8 +133,8 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
     async function fetchComments() {
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await axios.get(
-          `/api/calendars/${eventDetails.cal_id}/events/${eventDetails.id}/comments`,
+        const response = await instance.get(
+          `/api/calendars/${eventDetails.cal_id}/events/${eventDetails.id}/comments/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -181,8 +181,8 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
 
     try {
       const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-      const response = await axios.post(
-        `/api/calendars/${eventDetails.cal_id}/events/${eventDetails.id}/comments`,
+      const response = await instance.post(
+        `/api/calendars/${eventDetails.cal_id}/events/${eventDetails.id}/comments/`,
         { content: input },
         {
           headers: {
@@ -204,8 +204,8 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
   const save = async () => {
     try {
       const token = localStorage.getItem("token"); // 토큰 가져오기
-      const response = await axios.patch(
-        `/api/calendars/${eventDetails.cal_id}/events/${eventDetails.id}`,
+      const response = await instance.patch(
+        `/api/calendars/${eventDetails.cal_id}/events/${eventDetails.id}/`,
         {
           event_title: newEventInfo.newEventTitle,
           cal_title: eventInfo.title,
@@ -274,7 +274,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
   const handleDelete = async () => {
     try {
       const token = localStorage.getItem("token"); // 토큰 가져오기
-      const response = await axios.delete(`/api/events/${eventInfo.eventId}`, {
+      const response = await instance.delete(`/api/events/${eventInfo.eventId}/`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -328,7 +328,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                 onClose();
               }}
             />
-            <div className="flex w-full flex-col">
+            <div className="flex flex-col w-full">
               <div className="mb-[1rem] flex items-center justify-between">
                 {/* 이벤트 제목 */}
 

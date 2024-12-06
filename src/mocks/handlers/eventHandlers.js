@@ -32,7 +32,7 @@ let favorite_events = [
 
 export const eventHandlers = [
   // 이벤트 리스트 가져오기 핸들러
-  rest.get("/api/calendars/:calendar_id/events", (req, res, ctx) => {
+  rest.get("/api/calendars/:calendar_id/events/", (req, res, ctx) => {
     const token = req.headers.get("Authorization");
 
     if (!token || token !== "Bearer fake_token") {
@@ -49,7 +49,7 @@ export const eventHandlers = [
   }),
 
   // 이벤트 생성 핸들러
-  rest.post("/api/calendars/:calendar_id/events", async (req, res, ctx) => {
+  rest.post("/api/calendars/:calendar_id/events/", async (req, res, ctx) => {
     const token = req.headers.get("Authorization");
     const {
       event_title,
@@ -95,7 +95,7 @@ export const eventHandlers = [
 
   //이벤트 수정 핸들러
   rest.patch(
-    "/api/calendars/:calendar_id/events/:eventId",
+    "/api/calendars/:calendar_id/events/:eventId/",
     async (req, res, ctx) => {
       const token = req.headers.get("Authorization");
       const { eventId } = req.params;
@@ -154,7 +154,7 @@ export const eventHandlers = [
       return res(ctx.status(200), ctx.json(eventIndex[eventIndex]));
     },
   ), // 캘린더 삭제 핸들러
-  rest.delete("/api/events/:eventId", async (req, res, ctx) => {
+  rest.delete("/api/events/:eventId/", async (req, res, ctx) => {
     const token = req.headers.get("Authorization");
     const { eventId } = req.params;
 
@@ -192,7 +192,7 @@ export const eventHandlers = [
     );
   }),
 
-  rest.get("/api/users/:userId/favorite-events", (req, res, ctx) => {
+  rest.get("/api/users/:userId/favorite-events/", (req, res, ctx) => {
     const token = req.headers.get("Authorization");
 
     if (!token || token !== "Bearer fake_token") {
@@ -208,7 +208,7 @@ export const eventHandlers = [
     return res(ctx.status(200), ctx.json(favorite_events));
   }),
 
-  rest.post("/api/users/:userId/favorite-events", async (req, res, ctx) => {
+  rest.post("/api/users/:userId/favorite-events/", async (req, res, ctx) => {
     const token = req.headers.get("Authorization");
     const { event_id } = await req.json();
 

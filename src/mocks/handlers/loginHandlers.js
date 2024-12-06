@@ -2,7 +2,7 @@ import { rest } from "msw";
 
 export const loginHandlers = [
   // Google 로그인 요청 핸들러
-  rest.post("/api/users/google-login", async (req, res, ctx) => {
+  rest.post("/api/users/google-login/", async (req, res, ctx) => {
     const { code } = await req.json();
 
     if (!code) {
@@ -27,7 +27,7 @@ export const loginHandlers = [
   }),
 
   // Kakao 로그인 요청 핸들러
-  rest.post("/api/users/kakao-login", async (req, res, ctx) => {
+  rest.post("/api/users/kakao-login/", async (req, res, ctx) => {
     const { code } = await req.json();
 
     if (!code) {
@@ -52,7 +52,7 @@ export const loginHandlers = [
   }),
 
   // Naver 로그인 요청 핸들러
-  rest.post("/api/users/naver-login", async (req, res, ctx) => {
+  rest.post("/api/users/naver-login/", async (req, res, ctx) => {
     const { code, state } = await req.json();
 
     if (!code || !state) {

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
-import axios from "axios";
 import { FaCheck, FaToggleOff, FaToggleOn } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
+import { instance } from "../api/axios";
 
 export default function CreateCalendar({ onClose }) {
   const inputRefs = useRef([]);
@@ -32,8 +32,8 @@ export default function CreateCalendar({ onClose }) {
         throw new Error("캘린더 제목을 입력해주세요.");
       }
 
-      const response = await axios.post(
-        "/api/calendars",
+      const response = await instance.post(
+        "/api/calendars/",
         {
           calendar_name: title,
           calendar_description: detailMemo,
@@ -68,7 +68,7 @@ export default function CreateCalendar({ onClose }) {
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex w-full flex-col">
+      <div className="flex flex-col w-full">
         <div className="mb-[2.8rem] flex items-center justify-between">
           <input
             type="text"

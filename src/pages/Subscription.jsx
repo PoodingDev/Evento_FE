@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import { instance } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 
 import {
@@ -30,7 +30,7 @@ export default function Subscription() {
       ) {
         // 구독 취소
         const token = localStorage.getItem("token");
-        await axios.delete(`/api/subscriptions/${id}`, {
+        await instance.delete(`/api/subscriptions/${id}/`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -49,8 +49,8 @@ export default function Subscription() {
       } else {
         // 구독 추가
         const token = localStorage.getItem("token");
-        const response = await axios.post(
-          `/api/subscriptions`,
+        const response = await instance.post(
+          `/api/subscriptions/`,
           { calendar_id: id },
           { headers: { Authorization: `Bearer ${token}` } },
         );
@@ -82,8 +82,8 @@ export default function Subscription() {
     async function fetchData() {
       try {
         const token = localStorage.getItem("token");
-        const subscribedCalendarsResponse = await axios.get(
-          `/api/users/${userInfo.user_id}/subscriptions`,
+        const subscribedCalendarsResponse = await instance.get(
+          `/api/users/${userInfo.user_id}/subscriptions/`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },
@@ -154,7 +154,7 @@ function CaleanderSearch({ toggleSubscription }) {
 
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("/api/users/calendars/search", {
+        const response = await instance.get("/api/users/calendars/search/", {
           headers: { Authorization: `Bearer ${token}` },
           params: { nickname: debouncedInput }, // 검색어를 쿼리 파라미터로 전달
         });
@@ -195,10 +195,11 @@ function CaleanderSearch({ toggleSubscription }) {
               <p className="text-darkGray">{calendar.creator.nickname}</p>
             </div>
             <button
-              className={`ml-auto h-[2rem] w-[5rem] rounded-[0.625rem] border-2 p-1 align-middle ${calendar.isSubscribed
-                ? "border-darkRed bg-white text-darkRed"
-                : "border-darkRed bg-darkRed text-white"
-                }`}
+              className={`ml-auto h-[2rem] w-[5rem] rounded-[0.625rem] border-2 p-1 align-middle ${
+                calendar.isSubscribed
+                  ? "border-darkRed bg-white text-darkRed"
+                  : "border-darkRed bg-darkRed text-white"
+              }`}
               onClick={() => toggleSubscription(calendar.calendar_id)}
             >
               {calendar.isSubscribed ? "구독 취소" : "구독"}
@@ -214,9 +215,9 @@ function SubscriptionCalender({ openCalendars, toggleSubscription }) {
   return (
     <>
       <div className="relative after:absolute after:bottom-0 after:left-0 after:top-0 after:w-[2px] after:bg-gray-200 after:content-['']"></div>
-      <section className="flex flex-col items-center w-1/3">
+      <section className="flex w-1/3 flex-col items-center">
         <h1>구독한 캘린더</h1>
-        <ul className="flex flex-col w-auto">
+        <ul className="flex w-auto flex-col">
           {openCalendars.map((calendar) => (
             <li
               key={calendar.calendar_id}
@@ -232,10 +233,11 @@ function SubscriptionCalender({ openCalendars, toggleSubscription }) {
                 </p>
               </div>
               <button
-                className={`ml-auto h-[1.8rem] w-[4.5rem] rounded-[0.625rem] border-2 p-1 align-middle text-[0.9rem] ${calendar.isSubscribed
-                  ? "border-darkRed/85 bg-white text-darkRed/85"
-                  : "border-darkRed/50 bg-darkRed/85 text-white"
-                  }`}
+                className={`ml-auto h-[1.8rem] w-[4.5rem] rounded-[0.625rem] border-2 p-1 align-middle text-[0.9rem] ${
+                  calendar.isSubscribed
+                    ? "border-darkRed/85 bg-white text-darkRed/85"
+                    : "border-darkRed/50 bg-darkRed/85 text-white"
+                }`}
                 onClick={() => toggleSubscription(calendar.calendar_id)}
               >
                 {calendar.isSubscribed ? "구독 취소" : "구독"}

@@ -1,9 +1,9 @@
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { FaCaretDown, FaToggleOff, FaToggleOn } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
+import { instance } from "../api/axios";
 
 export default function CreateEvent({ onClose, setEvents }) {
   //캘린더 리스트 데이터
@@ -57,8 +57,8 @@ export default function CreateEvent({ onClose, setEvents }) {
         throw new Error("캘린더 이름을 선택해주세요.");
       }
 
-      const response = await axios.post(
-        "/api/calendars/:calendar_id/events",
+      const response = await instance.post(
+        "/api/calendars/:calendar_id/events/",
         {
           event_title: eventTitle,
           cal_id: calId,
@@ -120,7 +120,7 @@ export default function CreateEvent({ onClose, setEvents }) {
     async function fetchCalInfo() {
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await axios.get("/api/calendars/admins", {
+        const response = await instance.get("/api/calendars/admins/", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -165,7 +165,7 @@ export default function CreateEvent({ onClose, setEvents }) {
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex w-full flex-col">
+      <div className="flex flex-col w-full">
         <div className="mb-[1rem] flex items-center justify-between">
           {/* 이벤트 제목 */}
           <input
