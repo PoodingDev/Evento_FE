@@ -18,7 +18,7 @@ export default function LoginPostCode() {
   const { platform } = useParams();
 
   useEffect(() => {
-    console.log('loginpostcode')
+    console.log("loginpostcode");
     const authenticate = async () => {
       const authCode = searchParams.get("code");
       const state = searchParams.get("state");
@@ -62,7 +62,7 @@ export default function LoginPostCode() {
       setUserInfo(userInfo);
 
       // 캘린더 페이지로 이동
-      navigate("/calendar");
+      // navigate("/calendar");
       //  } catch (error) {
       //    console.error("Authentication error:", error);
 
