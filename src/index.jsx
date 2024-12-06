@@ -5,11 +5,11 @@ import { createRoot } from "react-dom/client";
 import { worker } from "./mocks/browser";
 
 // // 개발 환경에서만 MSW 시작
-if (process.env.NODE_ENV === "development") {
-  worker.start({
-    onUnhandledRequest: "bypass",
-  });
-}
+// if (process.env.NODE_ENV === "development") {
+//   worker.start({
+//     onUnhandledRequest: "bypass",
+//   });
+// }
 
 const container = document.getElementById("root");
 const root = createRoot(container);

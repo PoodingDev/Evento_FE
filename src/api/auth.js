@@ -12,6 +12,7 @@ export async function requestGoogleLogin(code) {
   const response = await instance.post(`/api/users/google-login`, {
     code: code,
   });
+  console.log("auth.js requestGoogleLogin");
   return response.data;
 }
 

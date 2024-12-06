@@ -28,7 +28,7 @@ export default function LogIn() {
         console.error("지원하지 않는 플랫폼입니다.");
         return;
     }
-
+    console.log(`redirecting to ${authUrl}`);
     window.location.href = authUrl;
   }
 

@@ -18,6 +18,7 @@ export default function LoginPostCode() {
   const { platform } = useParams();
 
   useEffect(() => {
+    console.log('loginpostcode')
     const authenticate = async () => {
       const authCode = searchParams.get("code");
       const state = searchParams.get("state");
