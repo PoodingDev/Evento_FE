@@ -38,19 +38,19 @@ export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        {/* <Layout> */}
-        <Routes>
-          <Route path="/login" element={<LogIn />} />
-          <Route path="/auth/google" element={<LoginPostCode />} />
-          <Route path="/" element={<OnBoarding />} />
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/profile/edit" element={<ProfileEdit />} />
-          <Route path="/event" element={<EventInfoModal />} />
-          <Route path="/new-event" element={<EventCreate />} />
-          <Route path="/subscription" element={<Subscription />} />
-        </Routes>
-        {/* </Layout> */}
+        <Layout>
+          <Routes>
+            <Route path="/login" element={<LogIn />} />
+            <Route path="/auth/google" element={<LoginPostCode />} />
+            <Route path="/" element={<OnBoarding />} />
+            <Route path="/calendar" element={<Calendar />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/edit" element={<ProfileEdit />} />
+            <Route path="/event" element={<EventInfoModal />} />
+            <Route path="/new-event" element={<EventCreate />} />
+            <Route path="/subscription" element={<Subscription />} />
+          </Routes>
+        </Layout>
       </BrowserRouter>
     </AuthProvider>
   );

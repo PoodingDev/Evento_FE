@@ -15,6 +15,7 @@ export async function requestGoogleLogin(code) {
     `https://evento.r-e.kr/api/users/google-login/`,
     {
       code: code,
+      state: "state",
     },
     {
       headers: {
