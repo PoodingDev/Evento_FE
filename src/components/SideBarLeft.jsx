@@ -48,6 +48,14 @@ export default function SideBarLeft() {
 
         if (myCalendarsResponse.status === "fulfilled") {
           setMyCalendars(myCalendarsResponse.value.data);
+          const initialChecked = myCalendarsResponse.value.data.reduce(
+            (acc, calendar) => {
+              acc[calendar.calendar_id] = true; // 기본적으로 모든 캘린더는 선택된 상태로 설정
+              return acc;
+            },
+            {},
+          );
+          setChecked(initialChecked);
         }
 
         if (subscribedCalendarsResponse.status === "fulfilled") {
@@ -70,12 +78,22 @@ export default function SideBarLeft() {
   }, [userInfo, isCalendarInfoOpen, isCreateOpen]);
 
   const handleToggle = (id) => {
-    setChecked((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
+    // 체크 상태 변경
+    setChecked((prev) => {
+      const newChecked = { ...prev, [id]: !prev[id] }; // 현재 id의 체크 상태 반전
+      // myCalendars의 isOnCalendar 값을 업데이트
+      setMyCalendars((prevCalendars) =>
+        prevCalendars.map((calendar) =>
+          calendar.calendar_id === id
+            ? { ...calendar, isOnCalendar: newChecked[id] }
+            : calendar,
+        ),
+      );
+      return newChecked;
+    });
   };
 
+  console.log(checked);
   const toggleInvite = () => {
     setIsInviteOpen((prev) => !prev);
   };
@@ -102,6 +120,7 @@ export default function SideBarLeft() {
     setCalendarInfoOpen(false);
   };
 
+  console.log("dk", myCalendars);
   return (
     <div>
       <div className="evento-sidebarleft absolute mt-[5rem] h-[calc(100vh-5rem)] w-[18rem] rounded-tr-[2.5rem] bg-eventoGray pl-[2.25rem] pr-[1.75rem] pt-[1.6rem]">
