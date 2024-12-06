@@ -20,8 +20,8 @@ export async function requestKakaoLogin(code) {
 }
 
 export async function requestGoogleLogin(code) {
-  const response = await axios.post(
-    `https://evento.r-e.kr/api/users/google-login/`,
+  const response = await instance.post(
+    `api/users/google-login/`,
     {
       code: code,
       state: "state",
@@ -38,8 +38,8 @@ export async function requestGoogleLogin(code) {
 }
 
 export async function requestNaverLogin(code, state) {
-  const response = await axios.post(
-    `https://evento.r-e.kr/api/users/naver-login/`,
+  const response = await instance.post(
+    `api/users/naver-login/`,
     {
       code: code,
       state: state,
@@ -55,15 +55,15 @@ export async function requestNaverLogin(code, state) {
 }
 
 export async function fetchUserInfo(token) {
-  const response = await axios.get("https://evento.r-e.kr/api/users/me", {
+  const response = await axios.get("https://evento.r-e.kr/api/users/me/", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch user info");
-  }
+  // if (!response.ok) {
+  //   throw new Error("Failed to fetch user info");
+  // }
 
-  return response.json();
+  return response.data;
 }

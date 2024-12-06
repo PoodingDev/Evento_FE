@@ -3,10 +3,10 @@ import CreateEvent from "components/CreateEventModal";
 import EventInfoModal from "/src/components/EventInfoModal";
 import FullCalendar from "@fullcalendar/react";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { FaPlus } from "react-icons/fa6";
-import axios from "axios";
 
 export default function Calendar() {
   const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
@@ -47,11 +47,14 @@ export default function Calendar() {
     async function fetchEventInfo() {
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await axios.get("/api/calendars/:calendar_id/events", {
-          headers: {
-            Authorization: `Bearer ${token}`,
+        const response = await axios.get(
+          "/api/calendars/:calendar_id/events/",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        });
+        );
         const start_date = new Date(response.data.start_time);
         const end_date = new Date(response.data.end_time);
 

@@ -33,10 +33,10 @@ export default function SideBarLeft() {
         const token = localStorage.getItem("token");
         const [myCalendarsResponse, subscribedCalendarsResponse] =
           await Promise.all([
-            axios.get("/api/calendars/admins", {
+            axios.get("/api/calendars/admins/", {
               headers: { Authorization: `Bearer ${token}` },
             }),
-            axios.get(`/api/users/${userInfo.user_id}/subscriptions`, {
+            axios.get(`/api/users/${userInfo.user_id}/subscriptions/`, {
               headers: { Authorization: `Bearer ${token}` },
             }),
           ]);

@@ -57,7 +57,7 @@ export default function CreateEvent({ onClose, setEvents }) {
       }
 
       const response = await axios.post(
-        "/api/calendars/:calendar_id/events",
+        "/api/calendars/:calendar_id/events/",
         {
           event_title: eventTitle,
           cal_title: title,
@@ -116,7 +116,7 @@ export default function CreateEvent({ onClose, setEvents }) {
     async function fetchCalInfo() {
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await axios.get("/api/calendars/admins", {
+        const response = await axios.get("/api/calendars/admins/", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -161,7 +161,7 @@ export default function CreateEvent({ onClose, setEvents }) {
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex flex-col w-full">
+      <div className="flex w-full flex-col">
         <div className="mb-[1rem] flex items-center justify-between">
           {/* 이벤트 제목 */}
           <input

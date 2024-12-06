@@ -6,7 +6,7 @@ export default function DeleteAccountModal({ onClose }) {
   const handleDeleteAccount = async () => {
     try {
       const token = localStorage.getItem("token"); // 토큰 가져오기
-      const response = await axios.delete("/api/users/delete", {
+      const response = await axios.delete("/api/users/delete/", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

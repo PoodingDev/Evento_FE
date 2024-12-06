@@ -57,7 +57,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
     try {
       const token = localStorage.getItem("token"); // 토큰 가져오기
       const response = await axios.patch(
-        `/api/calendars/${calendar.calendar_id}`,
+        `/api/calendars/${calendar.calendar_id}/`,
         {
           calendar_name: calendarState.title,
           calendar_description: calendarState.detailMemo,
@@ -88,7 +88,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.delete(
-        `/api/calendars/${calendar.calendar_id}`,
+        `/api/calendars/${calendar.calendar_id}/`,
         {
           headers: {
             "Content-Type": "application/json",

@@ -54,7 +54,7 @@ export default function LoginPostCode() {
       console.log("3");
       // 사용자 정보 가져오기
       const userInfo = await fetchUserInfo(accessToken);
-
+      console.log(userInfo);
       // 전역 상태 업데이트
       setLoggedIn(true);
       setUserInfo(userInfo);
