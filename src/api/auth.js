@@ -12,7 +12,7 @@ export async function requestKakaoLogin(code) {
 export async function requestGoogleLogin(code) {
   console.log("auth.js requestGoogleLogin");
   const response = await axios.post(
-    `http://evento.r-e.kr/api/users/google-login/`,
+    `https://evento.r-e.kr/api/users/google-login/`,
     {
       code: code,
     },
