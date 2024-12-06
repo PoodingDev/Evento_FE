@@ -40,8 +40,8 @@ export default function App() {
       <BrowserRouter>
         {/* <Layout> */}
         <Routes>
-          {/* <Route path="/login" element={<LogIn />} />
-          <Route path="/auth/google" element={<LoginPostCode />} /> */}
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/auth/google" element={<LoginPostCode />} />
           <Route path="/" element={<OnBoarding />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/profile" element={<Profile />} />

@@ -1,3 +1,4 @@
+import axios from "axios";
 import { instance } from "./axios";
 
 // 소셜 로그인
@@ -10,9 +11,18 @@ export async function requestKakaoLogin(code) {
 
 export async function requestGoogleLogin(code) {
   console.log("auth.js requestGoogleLogin");
-  const response = await instance.post(`/api/users/google-login/`, {
-    code: code,
-  });
+  const response = await axios.post(
+    `http://evento.r-e.kr/api/users/google-login/`,
+    {
+      code: code,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    },
+  );
 
   return response.data;
 }
