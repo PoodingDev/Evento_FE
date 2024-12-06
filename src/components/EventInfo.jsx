@@ -303,6 +303,8 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
         <EventEdit
           onClose={onClose}
           eventDetails={eventDetails}
+          eventInfo={eventInfo}
+          setEventInfo={setEventInfo}
           onSave={() => save}
           onCancel={() => handleViewChange("info")}
           setEvents={setEvents}

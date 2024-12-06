@@ -8,20 +8,12 @@ import { FaXmark } from "react-icons/fa6";
 export default function EventEdit({
   onClose,
   eventDetails,
+  setEventInfo,
+  eventInfo,
   onSave,
   onCancel,
   setEvents,
 }) {
-  const [eventInfo, setEventInfo] = useState({
-    eventId: "",
-    eventTitle: "",
-    title: "",
-    startDate: new Date(),
-    endDate: new Date(),
-    detailEventMemo: "",
-    isEventPublic: false,
-  });
-
   //상태 관리
   const [newEventInfo, setNewEventInfo] = useState({
     newEventTitle: "",
@@ -39,45 +31,16 @@ export default function EventEdit({
 
   //이벤트 정보 가져오기
   useEffect(() => {
-    async function fetchEventInfo() {
-      try {
-        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await axios.get(
-          `/api/calendars/${eventDetails.cal_id}/events`,
+    setNewEventInfo({
+      newEventTitle: eventDetails.title,
+      newStartDate: eventDetails.start,
+      newEndDate: eventDetails.end,
+      newEventDetail: eventDetails.description,
+      newEventPublic: eventDetails.isPublic,
+    });
+  }, []);
 
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-
-        setEventInfo({
-          eventId: eventDetails.id,
-          eventTitle: eventDetails.title,
-          cal_id: eventDetails.calId,
-          title: eventDetails.cal_title,
-          startDate: eventDetails.start,
-          endDate: eventDetails.end,
-          detailEventMemo: eventDetails.description,
-          isEventPublic: eventDetails.isPublic,
-        });
-
-        setNewEventInfo({
-          newEventTitle: eventDetails.title,
-          newStartDate: eventDetails.start,
-          newEndDate: eventDetails.end,
-          newEventDetail: eventDetails.description,
-          newEventPublic: eventDetails.isPublic,
-        });
-      } catch (error) {
-        console.error("이벤트 정보를 가져오는 중 오류 발생:", error);
-      }
-    }
-    fetchEventInfo();
-  }, [eventDetails]);
-
-  //캘린더 정보가져오기
+  //캘린더 정보 가져오기
   const [calInfo, setCalInfo] = useState({
     calenderName: "",
     members: [],
@@ -202,8 +165,7 @@ export default function EventEdit({
       );
 
       if (response.status === 200) {
-        onSave({
-          ...eventDetails,
+        setEventInfo({
           eventTitle: newEventInfo.newEventTitle,
           title: eventInfo.title,
           startDate: newEventInfo.newStartDate,
