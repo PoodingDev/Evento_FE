@@ -23,12 +23,6 @@ export default function EventEdit({
     newEventPublic: false,
   });
 
-  const [calTitle, setCalTitle] = useState(eventDetails.cal_title);
-
-  useEffect(() => {
-    setCalTitle(eventDetails.cal_title);
-  }, [eventDetails.cal_title]);
-
   //이벤트 정보 가져오기
   useEffect(() => {
     setNewEventInfo({
@@ -210,7 +204,6 @@ export default function EventEdit({
       <div className="flex w-full flex-col">
         <div className="mb-[1rem] flex items-center justify-between">
           {/* 이벤트 제목 */}
-
           <div className="flex items-center">
             <div className="text-darkGray">
               {newEventInfo.newEventPublic ? (
@@ -233,8 +226,19 @@ export default function EventEdit({
           </div>
         </div>
 
-        {/* 시간 */}
+        {/* 캘린더 제목 */}
+        <div className="flex">
+          <div
+            className="mb-[1.5rem] flex h-[2rem] justify-center rounded-[2.5rem] px-[1.1rem] text-center text-[1rem] font-bold"
+            style={{ backgroundColor: eventDetails.color }}
+          >
+            <div className="flex items-center text-eventoWhite">
+              <p>{eventDetails.cal_title}</p>
+            </div>
+          </div>
+        </div>
 
+        {/* 시간 */}
         <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
           시간
         </div>
