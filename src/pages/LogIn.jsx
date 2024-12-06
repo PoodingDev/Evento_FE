@@ -5,30 +5,36 @@ export default function LogIn() {
     let clientId = "";
     let authUrl = "";
 
-    // const redirectUri = `https://evento.kro.kr/auth/${platform}`; //배포용
-    const redirectUri = `http://localhost:5173/auth/${platform}`;
+    let redirectUri;
+    if (
+      import.meta.env.VITE_NODE_ENV === "development" ||
+      import.meta.env.VITE_NODE_ENV === "test"
+    ) {
+      redirectUri = `http://localhost:5173/auth/${platform}`;
+      console.log(redirectUri);
+    } else {
+      redirectUri = `https://evento.kro.kr/auth/${platform}`;
+    }
 
     switch (platform) {
       case "kakao":
         clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
-        authUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&state=kakao`;
+        authUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
         break;
-
       case "naver":
         clientId = import.meta.env.VITE_NAVER_CLIENT_ID;
-        authUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&state=naver`;
+        authUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
         break;
 
       case "google":
         clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-        authUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=email%20profile&state=google`;
+        authUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=email%20profile`;
         break;
 
       default:
         console.error("지원하지 않는 플랫폼입니다.");
         return;
     }
-
     window.location.href = authUrl;
   }
 
