@@ -26,70 +26,13 @@ export default function EventEdit({
   //이벤트 정보 가져오기
   useEffect(() => {
     setNewEventInfo({
-      newEventTitle: eventDetails.title,
-      newStartDate: eventDetails.start,
-      newEndDate: eventDetails.end,
-      newEventDetail: eventDetails.description,
-      newEventPublic: eventDetails.isPublic,
+      newEventTitle: eventInfo.eventTitle,
+      newStartDate: eventInfo.startDate,
+      newEndDate: eventInfo.endDate,
+      newEventDetail: eventInfo.detailEventMemo,
+      newEventPublic: eventInfo.isEventPublic,
     });
   }, []);
-
-  //캘린더 정보 가져오기
-  const [calInfo, setCalInfo] = useState({
-    calenderName: "",
-    members: [],
-  });
-  useEffect(() => {
-    async function fetchCalInfo() {
-      try {
-        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await axios.get("/api/calendars/admins", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const selectedCalendar = response.data.find(
-          (cal) => cal.calendar_name === eventInfo.title,
-        );
-
-        if (selectedCalendar) {
-          setCalInfo({
-            calenderName: selectedCalendar.calendar_name,
-            members: selectedCalendar.members,
-          });
-        } else {
-          console.error("일치하는 캘린더를 찾을 수 없습니다.");
-          // 해당 캘린더가 없을 때 기본 값 설정 (필요에 따라 수정)
-        }
-      } catch (error) {
-        console.error("캘린더 정보를 가져오는 중 오류 발생:", error);
-      }
-    }
-    fetchCalInfo();
-  }, [eventInfo.title]);
-
-  useEffect(() => {
-    async function fetchComments() {
-      try {
-        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await axios.get(
-          `/api/calendars/${eventDetails.cal_id}/events/${eventDetails.id}/comments`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-
-        setCommentList(response.data.comments || []);
-      } catch (error) {
-        console.error("댓글 정보를 가져오는 중 오류 발생:", error);
-      }
-    }
-
-    fetchComments();
-  }, [eventDetails]);
 
   //수정 및 편집
   const toggleIsPublic = () => {
@@ -102,39 +45,6 @@ export default function EventEdit({
   //북마크
   const [isLike, setIsLike] = useState(false);
   const toggleIsLike = () => setIsLike(!isLike);
-
-  const [input, setInput] = useState("");
-
-  //댓글 공감
-  // const [IsCommentLike, setCommentLike] = useState(false);
-  // const toggleIsCommentLike = () => setCommentLike(!IsCommentLike);
-
-  //댓글 작성
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (input.trim() === "") return;
-
-    try {
-      const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-      const response = await axios.post(
-        `/api/calendars/${eventDetails.cal_id}/events/${eventDetails.id}/comments`,
-        { content: input },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      // 새로운 댓글 추가
-      setCommentList((prevComments) => [...prevComments, response.data]);
-      setInput("");
-    } catch (error) {
-      console.error("댓글 작성 중 오류 발생:", error);
-    }
-  };
 
   //저장
   const save = async () => {
