@@ -10,8 +10,8 @@ export const instance = axios.create({
   withCredentials: true,
 });
 
-// const instance = axios.create({
-//   baseURL: "/", 
+// export const devinstance = axios.create({
+//   baseURL: "/",
 // });
 
 export default instance;
