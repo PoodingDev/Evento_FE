@@ -27,10 +27,10 @@ export default function Profile() {
         });
 
         setUserInfo({
-          userName: "응답수정(이름)",
-          userNickname: response.data.nickname,
-          userEmail: "응답수정(이메일)",
-          userBirth: response.data.birth,
+          userName: response.data.user_name,
+          userNickname: response.data.user_nickname,
+          userEmail: response.data.user_email,
+          userBirth: response.data.user_birth,
         });
         // console.log(userInfo);
       } catch (error) {

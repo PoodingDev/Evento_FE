@@ -13,7 +13,7 @@ export default function ProfileEdit() {
 
   const { userName, userNickname, userEmail, userBirth } = location.state || {};
 
-  const [nickname, setNickname] = useState(userNickname || "");
+  const [nickname, setNickname] = useState(userNickname);
   const [birth, setBirth] = useState(userBirth ? new Date(userBirth) : null);
   const [isToggled, setIsToggled] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
@@ -33,9 +33,10 @@ export default function ProfileEdit() {
       const response = await instance.put(
         `/api/users/me/`,
         {
-          nickname,
-          birth: birth ? birth.toISOString().substring(0, 10) : null,
-          is_birth_public: isToggled,
+          user_email: userEmail,
+          user_name: userName,
+          userbirth: birth ? birth.toISOString().substring(0, 10) : null,
+          user_nickname: nickname,
         },
         {
           headers: {
