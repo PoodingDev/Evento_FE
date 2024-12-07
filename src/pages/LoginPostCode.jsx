@@ -59,7 +59,7 @@ export default function LoginPostCode() {
         setUserInfo(userInfo);
 
         // 캘린더 페이지로 이동
-        navigate("/calendar");
+        navigate("/profile");
       } catch (error) {
         console.error("Authentication error:", error);
 

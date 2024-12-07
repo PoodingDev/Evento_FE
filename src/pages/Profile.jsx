@@ -26,21 +26,19 @@ export default function Profile() {
           },
         });
 
-        // 사용자 정보 -> 상태
-        const { user_id, user_name, user_email, user_birth, user_nickname } =
-          response.data;
         setUserInfo({
-          userName: user_name,
-          userNickname: user_nickname,
-          userEmail: user_email,
-          userBirth: user_birth,
+          userName: "응답수정(이름)",
+          userNickname: response.data.nickname,
+          userEmail: "응답수정(이메일)",
+          userBirth: response.data.birth,
         });
+        // console.log(userInfo);
       } catch (error) {
         console.error("사용자 정보를 가져오는 중 오류 발생:", error);
       }
     }
     fetchUserInfo();
-  }, []);
+  }, [userInfo]);
 
   const editClick = () =>
     navigate("/profile/edit", {
