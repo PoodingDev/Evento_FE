@@ -116,7 +116,6 @@ export default function SideBarLeft() {
       console.error("ERROR: ", error);
     }
   };
-  console.log(myCalendars);
 
   const toggleInvite = () => {
     setIsInviteOpen((prev) => !prev);

@@ -49,11 +49,14 @@ export default function Calendar() {
     async function fetchEventInfo() {
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await axios.get("/api/calendars/:calendar_id/events", {
-          headers: {
-            Authorization: `Bearer ${token}`,
+        const response = await axios.get(
+          `/api/calendars/${calInfo.calId}/events`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        });
+        );
         const start_date = new Date(response.data.start_time);
         const end_date = new Date(response.data.end_time);
 
@@ -83,6 +86,45 @@ export default function Calendar() {
     fetchEventInfo();
   }, []);
 
+  //isactive인 캘린더의 이벤트(바뀐 API)
+  // useEffect(() => {
+  //   async function fetchEventInfo() {
+  //     try {
+  //       const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
+  //       const response = await axios.get(`api/calendars/active`, {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+  //       const start_date = new Date(response.data.start_time);
+  //       const end_date = new Date(response.data.end_time);
+
+  //       const formattedStartDate = start_date.toLocaleDateString("ko");
+  //       const formattedEndDate = end_date.toLocaleDateString("ko");
+
+  //       const eventMockData = response.data.map((event) => ({
+  //         allDay: true,
+  //         id: event.event_id,
+  //         title: event.event_title,
+  //         start: event.start_time,
+  //         end: event.end_time,
+  //         extendedProps: {
+  //           memo: event.event_description,
+  //         },
+  //         calId: event.cal_id,
+  //         calTitle: event.cal_title,
+  //         color: event.cal_color,
+  //         editable: true, // 이벤트 편집 가능
+  //       }));
+
+  //       setEvents(eventMockData);
+  //     } catch (error) {
+  //       console.error("이벤트 정보를 가져오는 중 오류 발생:", error);
+  //     }
+  //   }
+  //   fetchEventInfo();
+  // }, []);
+
   //캘린더 정보 가져오기
   const [calInfo, setCalInfo] = useState({
     calId: 0,
@@ -109,15 +151,6 @@ export default function Calendar() {
     }
     fetchCalInfo();
   }, []);
-
-  // useEffect(() => {
-  //   console.log("calinfo", calInfo);
-  //   setEventData();
-  // }, []);
-
-  // console.log(events);
-  // console.log(eventData);
-  console.log("ak", calInfo);
 
   return (
     <>
