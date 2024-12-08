@@ -45,7 +45,8 @@ export default function SideBarLeft() {
               headers: { Authorization: `Bearer ${token}` },
             }),
           ]);
-        console.log(myCalendarsResponse);
+        // console.log("123");
+        // console.log(myCalendarsResponse);
         if (myCalendarsResponse.status === "fulfilled") {
           setMyCalendars(myCalendarsResponse.value.data);
           const initialChecked = myCalendarsResponse.value.data.reduce(

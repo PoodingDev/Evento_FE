@@ -60,7 +60,7 @@ export default function Header() {
             className="mb-[1rem] mt-[0.5rem] text-[1.5rem] text-eventoPurpleDark"
           />
           <p className="mb-[1.4rem] text-center text-[1.25rem] font-medium text-eventoblack">
-            {userInfo?.user_name || "Guest"}
+            {userInfo?.user_nickname || "Guest"}
           </p>
           <button
             className="mb-[0.3rem] h-[2rem] w-[7rem] cursor-pointer rounded-[0.5rem] text-[0.95rem] font-semibold text-darkGray hover:bg-eventoPurpleLight hover:text-eventoPurple"

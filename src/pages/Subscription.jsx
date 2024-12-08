@@ -30,7 +30,7 @@ export default function Subscription() {
       ) {
         // 구독 취소
         const token = localStorage.getItem("token");
-        await instance.delete(`/api/subscriptions/${id}/`, {
+        await instance.delete(`/api/calendars/subscriptions/${id}/`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -50,7 +50,7 @@ export default function Subscription() {
         // 구독 추가
         const token = localStorage.getItem("token");
         const response = await instance.post(
-          `/api/subscriptions/`,
+          `/api/calendars/subscriptions/`,
           { calendar_id: id },
           { headers: { Authorization: `Bearer ${token}` } },
         );
@@ -83,7 +83,7 @@ export default function Subscription() {
       try {
         const token = localStorage.getItem("token");
         const subscribedCalendarsResponse = await instance.get(
-          `/api/users/${userInfo.user_id}/subscriptions/`,
+          `/api/calendars/subscriptions/`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },
@@ -154,10 +154,13 @@ function CaleanderSearch({ toggleSubscription }) {
 
       try {
         const token = localStorage.getItem("token");
-        const response = await instance.get("/api/users/calendars/search/", {
-          headers: { Authorization: `Bearer ${token}` },
-          params: { nickname: debouncedInput }, // 검색어를 쿼리 파라미터로 전달
-        });
+        const response = await instance.get(
+          "/api/calendars/calendars/search/",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+            params: { nickname: debouncedInput }, // 검색어를 쿼리 파라미터로 전달
+          },
+        );
 
         if (response.status === 200) {
           setFilteredSearch(response.data); // 검색 결과 업데이트
@@ -170,7 +173,6 @@ function CaleanderSearch({ toggleSubscription }) {
 
     fetchCalendars();
   }, [debouncedInput]);
-
   return (
     <section className="flex w-2/3 flex-col items-center py-[3rem] align-middle">
       <div className="flex items-center gap-2">
@@ -191,8 +193,12 @@ function CaleanderSearch({ toggleSubscription }) {
           >
             <IoPersonCircleOutline className="h-[3.5rem] w-[3.5rem] object-cover" />
             <div>
-              <h3 className="text-eventoPurpleDark">{calendar.name}</h3>
-              <p className="text-darkGray">{calendar.creator.nickname}</p>
+              <h3 className="text-eventoPurpleDark">
+                {calendar.calendar_name}
+              </h3>
+              <p className="text-darkGray">
+                {calendar.creator?.nickname || "닉네임 없음"}
+              </p>
             </div>
             <button
               className={`ml-auto h-[2rem] w-[5rem] rounded-[0.625rem] border-2 p-1 align-middle ${

@@ -22,7 +22,6 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
     calColor: calendar.calendar_color,
     visitCode: calendar.invitation_code,
   });
-
   const { loggedIn, userInfo, setLoggedIn } = useAuth();
   const [isEdit, setIsEdit] = useState(false);
 
@@ -48,8 +47,9 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
 
   // 컴포넌트가 마운트될 때 creator_id와 userId 확인
   useEffect(() => {
-    console.log("Calendar Creator ID:", calendar.creator_id);
-    console.log("Current User ID:", userInfo.user_id);
+    // console.log("Calendar Creator ID:", calendar.creator);
+    // console.log("Current User ID:", userInfo.user_id);
+    // console.log(calendar);
   }, [calendar.creator_id, userId]);
 
   // 저장
@@ -64,6 +64,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
           is_public: calendarState.isPublic,
           calendar_color: calendarState.calColor,
         },
+
         {
           headers: {
             "Content-Type": "application/json",
