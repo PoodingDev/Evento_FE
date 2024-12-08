@@ -56,42 +56,25 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
 
   //이벤트 정보 가져오기
   useEffect(() => {
-    async function fetchEventInfo() {
-      try {
-        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await instance.get(
-          `/api/calendars/${eventDetails.cal_id}/events/`,
+    setEventInfo({
+      eventId: eventDetails.id,
+      eventTitle: eventDetails.title,
+      cal_id: eventDetails.calId,
+      title: eventDetails.cal_title,
+      startDate: eventDetails.start,
+      endDate: eventDetails.end,
+      detailEventMemo: eventDetails.description,
+      isEventPublic: eventDetails.isPublic,
+    });
 
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
 
-        setEventInfo({
-          eventId: eventDetails.id,
-          eventTitle: eventDetails.title,
-          cal_id: eventDetails.calId,
-          title: eventDetails.cal_title,
-          startDate: eventDetails.start,
-          endDate: eventDetails.end,
-          detailEventMemo: eventDetails.description,
-          isEventPublic: eventDetails.isPublic,
-        });
-
-        setNewEventInfo({
-          newEventTitle: eventDetails.title,
-          newStartDate: eventDetails.start,
-          newEndDate: eventDetails.end,
-          newEventDetail: eventDetails.description,
-          newEventPublic: eventDetails.isPublic,
-        });
-      } catch (error) {
-        console.error("이벤트 정보를 가져오는 중 오류 발생:", error);
-      }
-    }
-    fetchEventInfo();
+    setNewEventInfo({
+      newEventTitle: eventDetails.title,
+      newStartDate: eventDetails.start,
+      newEndDate: eventDetails.end,
+      newEventDetail: eventDetails.description,
+      newEventPublic: eventDetails.isPublic,
+    });
   }, [eventDetails]);
 
   //캘린더 정보가져오기

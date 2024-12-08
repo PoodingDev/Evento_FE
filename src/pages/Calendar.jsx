@@ -14,10 +14,10 @@ export default function Calendar() {
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const [events, setEvents] = useState([]); // 이벤트 상태s
   const [selectedEvent, setSelectedEvent] = useState(null); // 클릭된 이벤트 상태 관리
-  const [eventData, setEventData] = useState([]);
   const toggleCreateEvent = () => {
     setIsCreateEventOpen((prev) => !prev);
   };
+  const [sidebarUpdate, setSidebarUpdate] = useState(false); // 사이트바 체크박스 변화
 
   // 클릭된 이벤트를 처리하는 함수
   const handleEventClick = (info) => {
@@ -49,11 +49,17 @@ export default function Calendar() {
     async function fetchEventInfo() {
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await instance.get("/api/events/public/", {
-          headers: {
-            Authorization: `Bearer ${token}`,
+        const response = await axios.get(
+          `/api/calendars/${calInfo.calId}/events`,
+          {
+            //isactive인 캘린더의 이벤트(바뀐 API)
+            //const response = await axios.get(`api/calendars/active`, {
+
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        });
+        );
         const start_date = new Date(response.data.start_time);
         const end_date = new Date(response.data.end_time);
 
@@ -82,6 +88,37 @@ export default function Calendar() {
     }
     fetchEventInfo();
   }, []);
+
+  //캘린더 정보 가져오기
+  const [calInfo, setCalInfo] = useState({
+    calId: 0,
+    isOnCalender: true,
+  });
+  useEffect(() => {
+    async function fetchCalInfo() {
+      try {
+        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
+        const response = await axios.get("/api/calendars/admins", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const info = response.data.map((cal) => ({
+          calId: cal.calendar_id,
+          isactive: cal.isactive,
+        }));
+        setCalInfo(info);
+      } catch (error) {
+        console.error("캘린더 정보를 가져오는 중 오류 발생:", error);
+      }
+    }
+    fetchCalInfo();
+  }, []);
+
+  useEffect(() => {
+    console.log("확인", calInfo);
+  }, [calInfo]);
 
   return (
     <>
