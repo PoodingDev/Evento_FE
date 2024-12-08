@@ -45,7 +45,7 @@ export default function SideBarLeft() {
               headers: { Authorization: `Bearer ${token}` },
             }),
           ]);
-
+        console.log(myCalendarsResponse);
         if (myCalendarsResponse.status === "fulfilled") {
           setMyCalendars(myCalendarsResponse.value.data);
           const initialChecked = myCalendarsResponse.value.data.reduce(
@@ -96,7 +96,6 @@ export default function SideBarLeft() {
           },
         },
       );
-
       if (response.status === 200) {
         // 체크 상태 변경
         setChecked((prev) => {

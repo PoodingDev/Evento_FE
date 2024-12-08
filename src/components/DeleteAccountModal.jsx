@@ -1,8 +1,10 @@
 import React from "react";
 import { FaXmark } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 import { instance } from "../api/axios";
 
 export default function DeleteAccountModal({ onClose }) {
+  const navigate = useNavigate();
   const handleDeleteAccount = async () => {
     try {
       const token = localStorage.getItem("token"); // 토큰 가져오기
@@ -15,7 +17,8 @@ export default function DeleteAccountModal({ onClose }) {
       if (response.status === 200) {
         alert(response.data.message); // "회원탈퇴가 완료되었습니다."
         localStorage.removeItem("token"); // 토큰 제거
-        window.location.href = "/"; // 메인 페이지로 리다이렉트
+        localStorage.removeItem("refreshToken"); //refresh 토큰제거
+        navigate("/login");
       }
     } catch (error) {
       console.error("회원탈퇴 중 오류 발생:", error);
