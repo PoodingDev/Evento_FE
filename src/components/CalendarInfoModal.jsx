@@ -265,7 +265,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
             className="cursor-pointer text-[1.5rem] text-darkGray"
             onClick={() => setIsEdit(true)}
           />
-          {calendar.creator_id === userInfo.user_id && (
+          {calendar.creator === userInfo.user_id && (
             <FaTrashCan
               className="cursor-pointer text-[1.5rem] text-darkGray"
               onClick={handleDelete}
