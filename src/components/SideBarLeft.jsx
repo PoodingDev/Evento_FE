@@ -87,7 +87,7 @@ export default function SideBarLeft() {
           calendar_description: myCalendars.calendar_description,
           is_public: myCalendars.is_public,
           calendar_color: myCalendars.calendar_color,
-          isOnCalendar: checked[id],
+          isactive: checked[id],
         },
         {
           headers: {
@@ -101,11 +101,11 @@ export default function SideBarLeft() {
         // 체크 상태 변경
         setChecked((prev) => {
           const newChecked = { ...prev, [id]: !prev[id] }; // 현재 id의 체크 상태 반전
-          // myCalendars의 isOnCalendar 값을 업데이트
+          // myCalendars의 isactive 값을 업데이트
           setMyCalendars((prevCalendars) =>
             prevCalendars.map((calendar) =>
               calendar.calendar_id === id
-                ? { ...calendar, isOnCalendar: newChecked[id] }
+                ? { ...calendar, isactive: newChecked[id] }
                 : calendar,
             ),
           );

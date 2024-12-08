@@ -10,7 +10,7 @@ let mockCalendars = [
     is_public: false,
     creator_id: 1,
     invitation_code: "ABC123",
-    isOnCalendar: true,
+    isactive: true,
     members: [
       { id: 11, nickname: "Manager1" },
       { id: 12, nickname: "Manager2" },
@@ -24,7 +24,7 @@ let mockCalendars = [
     is_public: true,
     creator_id: 2,
     invitation_code: "G3G7H3",
-    isOnCalendar: true,
+    isactive: true,
     members: [
       { id: 1, nickname: "김벤토" },
       { id: 12, nickname: "Manager2" },
@@ -38,7 +38,7 @@ let mockCalendars = [
     is_public: false,
     creator_id: 1,
     invitation_code: "ABC123",
-    isOnCalendar: true,
+    isactive: true,
     members: [
       { id: 11, nickname: "Manager1" },
       { id: 12, nickname: "Manager2" },
@@ -52,7 +52,7 @@ let mockCalendars = [
     is_public: true,
     creator_id: 1,
     invitation_code: "A1B2C3",
-    isOnCalendar: true,
+    isactive: true,
     members: [
       { id: 11, nickname: "Manager1" },
       { id: 12, nickname: "Manager2" },
@@ -205,7 +205,7 @@ export const calendarHandlers = [
       is_public: is_public || false,
       creator_id: 1,
       invitation_code: "DEF456", // 생성된 초대 코드
-      isOnCalendar: true,
+      isactive: true,
       admins: [1], // 생성자는 자동으로 관리자
     };
 
@@ -225,7 +225,7 @@ export const calendarHandlers = [
       calendar_description,
       calendar_color,
       is_public,
-      isOnCalendar,
+      isactive,
     } = await req.json();
 
     if (!token || token !== "Bearer fake_token") {
@@ -267,7 +267,7 @@ export const calendarHandlers = [
         typeof is_public === "boolean"
           ? is_public
           : mockCalendars[calendarIndex].is_public,
-      isOnCalendar: isOnCalendar || mockCalendars[calendarIndex].isOnCalendar,
+      isactive: isactive || mockCalendars[calendarIndex].isactive,
     };
 
     // 200 OK 응답 반환
