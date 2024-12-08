@@ -49,7 +49,7 @@ export const eventHandlers = [
   }),
 
   // 이벤트 생성 핸들러
-  rest.post("/api/calendars/:calendar_id/events", async (req, res, ctx) => {
+  rest.post("/api/events/public/create", async (req, res, ctx) => {
     const token = req.headers.get("Authorization");
     const {
       event_title,

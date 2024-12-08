@@ -56,26 +56,49 @@ export default function CreateEvent({ onClose, setEvents }) {
       } else if (title === "캘린더 이름") {
         throw new Error("캘린더 이름을 선택해주세요.");
       }
+      let response;
 
-      const response = await axios.post(
-        "/api/calendars/:calendar_id/events",
-        {
-          event_title: eventTitle,
-          cal_id: calId,
-          cal_title: title,
-          cal_color: calColor,
-          start_time: startDate,
-          end_time: endDate,
-          event_description: detailEventMemo,
-          is_public: isEventPublic,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+      if (isEventPublic) {
+        response = await axios.post(
+          "/api/events/public/create",
+          {
+            event_title: eventTitle,
+            cal_id: calId,
+            cal_title: title,
+            cal_color: calColor,
+            start_time: startDate,
+            end_time: endDate,
+            event_description: detailEventMemo,
+            is_public: isEventPublic,
           },
-        },
-      );
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+      } else {
+        response = await axios.post(
+          "/api/events/private/create",
+          {
+            event_title: eventTitle,
+            cal_id: calId,
+            cal_title: title,
+            cal_color: calColor,
+            start_time: startDate,
+            end_time: endDate,
+            event_description: detailEventMemo,
+            is_public: isEventPublic,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+      }
 
       if (response.status === 201) {
         const start_date = new Date(response.data.start_time);
