@@ -3,17 +3,14 @@ import axios from "axios";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FaTrashCan, FaXmark } from "react-icons/fa6";
 import { useAuth } from "../context/AuthContext";
-
 import {
   FaCheck,
-  FaCopy,
   FaPen,
   FaRegCopy,
   FaToggleOff,
   FaToggleOn,
-  FaTrash,
 } from "react-icons/fa";
-export default function CalendarInfo({ calendar, onClose, userId }) {
+export default function CalendarInfo({ calendar, onClose, userId, onDelete }) {
   // 통합 상태 관리
   const [calendarState, setCalendarState] = useState({
     title: calendar.calendar_name,
@@ -25,6 +22,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
 
   const { loggedIn, userInfo, setLoggedIn } = useAuth();
   const [isEdit, setIsEdit] = useState(false);
+  // const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   // 상태 변경 핸들러
   const updateState = (key, value) => {
@@ -83,29 +81,9 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
     }
   };
 
-  // 삭제
-  const handleDelete = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.delete(
-        `/api/calendars/${calendar.calendar_id}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      if (response.status === 200) {
-        alert("캘린더가 성공적으로 삭제되었습니다.");
-        onClose();
-      }
-    } catch (error) {
-      console.error("캘린더 삭제 실패:", error);
-      alert("캘린더 삭제에 실패했습니다. 다시 시도해 주세요.");
-    }
-  };
+  // const toggleConfirm = () => {
+  //   setIsConfirmOpen((prev) => !prev);
+  // };
 
   return (
     <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
@@ -268,7 +246,8 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
           {calendar.creator_id === userInfo.user_id && (
             <FaTrashCan
               className="cursor-pointer text-[1.5rem] text-darkGray"
-              onClick={handleDelete}
+              // onClick={toggleConfirm}
+              onClick={onDelete} // DeleteModal 열기
             />
           )}
         </div>

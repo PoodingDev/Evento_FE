@@ -1,4 +1,5 @@
 import CalendarInfo from "./CalendarInfoModal";
+import DeleteCalendarModal from "./DeleteCalendarModal";
 import CreateCalendar from "./CreateCalendarModal";
 import InviteCodeModal from "./InviteCodeModal";
 import React, { useEffect, useState } from "react";
@@ -14,9 +15,30 @@ import {
   FaSignInAlt,
 } from "react-icons/fa";
 
-export default function SideBarLeft() {
-  const [isCalendarInfoOpen, setCalendarInfoOpen] = useState(false);
+export default function SideBarLeft({ calendar, userId }) {
+  const [isCalendarInfoOpen, setIsCalendarInfoOpen] = useState(false);
   const [selectedCalendar, setSelectedCalendar] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const openDeleteModal = () => {
+    setIsCalendarInfoOpen(false); // CalendarInfo 닫기
+    setIsDeleteModalOpen(true);  // DeleteCalendarModal 열기
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false); // DeleteCalendarModal 닫기
+    setIsCalendarInfoOpen(true); // CalendarInfo 열기
+    console.log(" CalendarInfo 모달 상태:", isCalendarInfoOpen);
+    console.log(" DeleteCalendarModal 모달 상태:", isDeleteModalOpen);
+
+  };
+  useEffect(() => {
+    console.log("isCalendarInfoOpen changed:", isCalendarInfoOpen);
+  }, [isCalendarInfoOpen]);
+
+  useEffect(() => {
+    console.log("isDeleteModalOpen changed:", isDeleteModalOpen);
+  }, [isDeleteModalOpen]);
 
   const navigate = useNavigate();
   const [checked, setChecked] = useState({});
@@ -87,7 +109,7 @@ export default function SideBarLeft() {
   // 캘린더 정보 보기 및 수정 저장 핸들러
   const handleViewCalendar = (calendar) => {
     setSelectedCalendar(calendar);
-    setCalendarInfoOpen(true);
+    setIsCalendarInfoOpen(true);
   };
 
   const handleSaveCalendar = (updatedCalendar) => {
@@ -99,7 +121,7 @@ export default function SideBarLeft() {
           : calendar,
       ),
     );
-    setCalendarInfoOpen(false);
+    setIsCalendarInfoOpen(false);
   };
 
   return (
@@ -216,9 +238,22 @@ export default function SideBarLeft() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
           <CalendarInfo
             calendar={selectedCalendar}
-            onClose={() => setCalendarInfoOpen(false)}
+            onClose={() => setIsCalendarInfoOpen(false)} // CalendarInfo 닫기
+            onDelete={openDeleteModal} // DeleteModal 열기
             onSave={handleSaveCalendar}
             userId={userInfo?.user_id}
+          />
+        </div>
+      )}
+      {isDeleteModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <DeleteCalendarModal
+            calendar={selectedCalendar}
+            onClose={closeDeleteModal} // DeleteModal 닫기
+            onDelete={() => {
+              setIsCalendarInfoOpen(); // info 모달닫기
+              setIsDeleteModalOpen();; // Delete 모달 닫기
+            }}
           />
         </div>
       )}
