@@ -77,23 +77,47 @@ export default function SideBarLeft() {
     }
   }, [userInfo, isCalendarInfoOpen, isCreateOpen]);
 
-  const handleToggle = (id) => {
-    // 체크 상태 변경
-    setChecked((prev) => {
-      const newChecked = { ...prev, [id]: !prev[id] }; // 현재 id의 체크 상태 반전
-      // myCalendars의 isOnCalendar 값을 업데이트
-      setMyCalendars((prevCalendars) =>
-        prevCalendars.map((calendar) =>
-          calendar.calendar_id === id
-            ? { ...calendar, isOnCalendar: newChecked[id] }
-            : calendar,
-        ),
+  const handleToggle = async (id) => {
+    try {
+      const token = localStorage.getItem("token"); // 토큰 가져오기
+      const response = await axios.patch(
+        `/api/calendars/${id}`,
+        {
+          calendar_name: myCalendars.calendar_name,
+          calendar_description: myCalendars.calendar_description,
+          is_public: myCalendars.is_public,
+          calendar_color: myCalendars.calendar_color,
+          isOnCalendar: checked[id],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
-      return newChecked;
-    });
-  };
 
-  console.log(checked);
+      if (response.status === 200) {
+        // 체크 상태 변경
+        setChecked((prev) => {
+          const newChecked = { ...prev, [id]: !prev[id] }; // 현재 id의 체크 상태 반전
+          // myCalendars의 isOnCalendar 값을 업데이트
+          setMyCalendars((prevCalendars) =>
+            prevCalendars.map((calendar) =>
+              calendar.calendar_id === id
+                ? { ...calendar, isOnCalendar: newChecked[id] }
+                : calendar,
+            ),
+          );
+          return newChecked;
+        });
+      }
+    } catch (error) {
+      console.error("ERROR: ", error);
+    }
+  };
+  console.log(myCalendars);
+
   const toggleInvite = () => {
     setIsInviteOpen((prev) => !prev);
   };
@@ -120,7 +144,6 @@ export default function SideBarLeft() {
     setCalendarInfoOpen(false);
   };
 
-  console.log("dk", myCalendars);
   return (
     <div>
       <div className="evento-sidebarleft absolute mt-[5rem] h-[calc(100vh-5rem)] w-[18rem] rounded-tr-[2.5rem] bg-eventoGray pl-[2.25rem] pr-[1.75rem] pt-[1.6rem]">

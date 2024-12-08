@@ -83,6 +83,42 @@ export default function Calendar() {
     fetchEventInfo();
   }, []);
 
+  //캘린더 정보 가져오기
+  const [calInfo, setCalInfo] = useState({
+    calId: 0,
+    isOnCalender: true,
+  });
+  useEffect(() => {
+    async function fetchCalInfo() {
+      try {
+        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
+        const response = await axios.get("/api/calendars/admins", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const info = response.data.map((cal) => ({
+          calId: cal.calendar_id,
+          isOnCalendar: cal.isOnCalendar,
+        }));
+        setCalInfo(info);
+      } catch (error) {
+        console.error("캘린더 정보를 가져오는 중 오류 발생:", error);
+      }
+    }
+    fetchCalInfo();
+  }, []);
+
+  // useEffect(() => {
+  //   console.log("calinfo", calInfo);
+  //   setEventData();
+  // }, []);
+
+  // console.log(events);
+  // console.log(eventData);
+  console.log("ak", calInfo);
+
   return (
     <>
       <div className="mainCalendar bg-eventoWhite">
