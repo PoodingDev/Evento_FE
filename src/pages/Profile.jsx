@@ -16,29 +16,30 @@ export default function Profile() {
     userBirth: "",
   });
 
-  useEffect(() => {
-    async function fetchUserInfo() {
-      try {
-        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await instance.get("/api/users/me/", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  async function fetchUserInfo() {
+    try {
+      const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
+      const response = await instance.get("/api/users/me/", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        setUserInfo({
-          userName: response.data.user_name,
-          userNickname: response.data.user_nickname,
-          userEmail: response.data.user_email,
-          userBirth: response.data.user_birth,
-        });
-        // console.log(userInfo);
-      } catch (error) {
-        console.error("사용자 정보를 가져오는 중 오류 발생:", error);
-      }
+      setUserInfo({
+        userName: response.data.user_name,
+        userNickname: response.data.user_nickname,
+        userEmail: response.data.user_email,
+        userBirth: response.data.user_birth,
+      });
+      // console.log(userInfo);
+    } catch (error) {
+      console.error("사용자 정보를 가져오는 중 오류 발생:", error);
     }
+  }
+
+  useEffect(() => {
     fetchUserInfo();
-  }, [userInfo]);
+  }, []);
 
   const editClick = () =>
     navigate("/profile/edit", {

@@ -11,7 +11,7 @@ export default function LogIn() {
       import.meta.env.VITE_NODE_ENV === "test"
     ) {
       redirectUri = `http://localhost:5173/auth/${platform}`;
-      console.log(redirectUri);
+      // console.log(redirectUri);
     } else {
       redirectUri = `https://evento.kro.kr/auth/${platform}`;
     }

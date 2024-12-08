@@ -35,13 +35,13 @@ export default function SideBarLeft() {
         const token = localStorage.getItem("token");
         const [myCalendarsResponse, subscribedCalendarsResponse, ddayResponse] =
           await Promise.allSettled([
-            instance.get("/api/calendars/admins/", {
+            instance.get("/api/calendars/calendars/admin/", {
               headers: { Authorization: `Bearer ${token}` },
             }),
-            instance.get(`/api/users/${userInfo.user_id}/subscriptions/`, {
+            instance.get(`/api/calendars/subscriptions/`, {
               headers: { Authorization: `Bearer ${token}` },
             }),
-            instance.get(`/api/users/${userInfo.user_id}/favorite-events/`, {
+            instance.get(`/api/users/${userInfo.user_id}/favorites/`, {
               headers: { Authorization: `Bearer ${token}` },
             }),
           ]);
@@ -242,7 +242,7 @@ export default function SideBarLeft() {
       )}
       <div className="fixed bottom-[3rem] left-[4rem] flex flex-col items-center justify-center">
         <ul className="space-y-[.8rem]">
-          {(dday || []).map((item, index) => {
+          {(Array.isArray(dday) ? dday : []).map((item, index) => {
             const today = new Date();
             const dDay = new Date(item.d_day);
             const differenceInTime = dDay - today;

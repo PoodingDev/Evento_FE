@@ -35,7 +35,7 @@ export default function ProfileEdit() {
         {
           user_email: userEmail,
           user_name: userName,
-          userbirth: birth ? birth.toISOString().substring(0, 10) : null,
+          user_birth: birth ? birth.toISOString().substring(0, 10) : null,
           user_nickname: nickname,
         },
         {
