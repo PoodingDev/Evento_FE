@@ -4,6 +4,7 @@ import axios from "axios";
 import { FaBirthdayCake, FaPen } from "react-icons/fa";
 import { IoChevronBack, IoPersonCircleOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
+import { instance } from "../api/axios";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -15,29 +16,28 @@ export default function Profile() {
     userBirth: "",
   });
 
-  useEffect(() => {
-    async function fetchUserInfo() {
-      try {
-        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await axios.get("/api/users/me", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  async function fetchUserInfo() {
+    try {
+      const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
+      const response = await instance.get("/api/users/me/", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        // 사용자 정보 -> 상태
-        const { user_id, user_name, user_email, user_birth, user_nickname } =
-          response.data;
-        setUserInfo({
-          userName: user_name,
-          userNickname: user_nickname,
-          userEmail: user_email,
-          userBirth: user_birth,
-        });
-      } catch (error) {
-        console.error("사용자 정보를 가져오는 중 오류 발생:", error);
-      }
+      setUserInfo({
+        userName: response.data.user_name,
+        userNickname: response.data.user_nickname,
+        userEmail: response.data.user_email,
+        userBirth: response.data.user_birth,
+      });
+      // console.log(userInfo);
+    } catch (error) {
+      console.error("사용자 정보를 가져오는 중 오류 발생:", error);
     }
+  }
+
+  useEffect(() => {
     fetchUserInfo();
   }, []);
 

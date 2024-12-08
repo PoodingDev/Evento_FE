@@ -1,12 +1,12 @@
 import React from "react";
-import axios from "axios";
 import { FaXmark } from "react-icons/fa6";
+import { instance } from "../api/axios";
 
 export default function DeleteAccountModal({ onClose }) {
   const handleDeleteAccount = async () => {
     try {
       const token = localStorage.getItem("token"); // 토큰 가져오기
-      const response = await axios.delete("/api/users/delete", {
+      const response = await instance.delete("/api/users/delete/", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

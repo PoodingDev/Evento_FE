@@ -1,9 +1,9 @@
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { FaLock, FaToggleOff, FaToggleOn, FaUnlock } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
+import { instance } from "../api/axios";
 
 export default function EventEdit({
   onClose,
@@ -50,8 +50,8 @@ export default function EventEdit({
   const save = async () => {
     try {
       const token = localStorage.getItem("token"); // 토큰 가져오기
-      const response = await axios.patch(
-        `/api/calendars/${eventDetails.cal_id}/events/${eventDetails.id}`,
+      const response = await instance.patch(
+        `/api/calendars/${eventDetails.cal_id}/events/${eventDetails.id}/`,
         {
           event_title: newEventInfo.newEventTitle,
           cal_title: eventInfo.title,
@@ -111,7 +111,7 @@ export default function EventEdit({
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex w-full flex-col">
+      <div className="flex flex-col w-full">
         <div className="mb-[1rem] flex items-center justify-between">
           {/* 이벤트 제목 */}
           <div className="flex items-center">

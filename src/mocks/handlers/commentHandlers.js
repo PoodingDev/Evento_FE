@@ -49,7 +49,7 @@ let mockComments = [
 export const commentHandlers = [
   // 댓글 작성
   rest.post(
-    "/api/calendars/:calendar_id/events/:event_id/comments",
+    "/api/calendars/:calendar_id/events/:event_id/comments/",
     async (req, res, ctx) => {
       const { content } = await req.json();
       const { calendar_id, event_id } = req.params;
@@ -95,7 +95,7 @@ export const commentHandlers = [
 
   // 댓글 조회
   rest.get(
-    "/api/calendars/:calendar_id/events/:event_id/comments",
+    "/api/calendars/:calendar_id/events/:event_id/comments/",
     (req, res, ctx) => {
       const { event_id } = req.params;
       const token = req.headers.get("Authorization");

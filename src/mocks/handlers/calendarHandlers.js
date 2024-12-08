@@ -105,7 +105,7 @@ let mockSearchCalendars = [
 
 export const calendarHandlers = [
   // 내 캘린더
-  rest.get("/api/calendars/admins", (req, res, ctx) => {
+  rest.get("/api/calendars/admins/", (req, res, ctx) => {
     const token = req.headers.get("Authorization");
 
     if (!token || token !== "Bearer fake_token") {
@@ -180,7 +180,7 @@ export const calendarHandlers = [
   // }),
 
   // 캘린더 생성 핸들러
-  rest.post("/api/calendars", async (req, res, ctx) => {
+  rest.post("/api/calendars/", async (req, res, ctx) => {
     const token = req.headers.get("Authorization");
     const { calendar_name, calendar_description, calendar_color, is_public } =
       await req.json();
@@ -217,7 +217,7 @@ export const calendarHandlers = [
   }),
 
   // 캘린더 수정 핸들러
-  rest.patch("/api/calendars/:calendarId", async (req, res, ctx) => {
+  rest.patch("/api/calendars/:calendarId/", async (req, res, ctx) => {
     const token = req.headers.get("Authorization");
     const { calendarId } = req.params;
     const {
@@ -275,7 +275,7 @@ export const calendarHandlers = [
   }),
 
   // 캘린더 삭제 핸들러
-  rest.delete("/api/calendars/:calendarId", async (req, res, ctx) => {
+  rest.delete("/api/calendars/:calendarId/", async (req, res, ctx) => {
     const token = req.headers.get("Authorization");
     const { calendarId } = req.params;
 
@@ -315,7 +315,7 @@ export const calendarHandlers = [
   }),
 
   //구독 조회
-  rest.get("/api/users/:user_id/subscriptions", (req, res, ctx) => {
+  rest.get("/api/users/:user_id/subscriptions/", (req, res, ctx) => {
     const token = req.headers.get("Authorization");
 
     if (!token || token !== "Bearer fake_token") {
@@ -369,7 +369,7 @@ export const calendarHandlers = [
   }),
 
   // 공개 캘린더 검색
-  rest.get("/api/users/calendars/search", (req, res, ctx) => {
+  rest.get("/api/users/calendars/search/", (req, res, ctx) => {
     const token = req.headers.get("Authorization");
     const nickname = req.url.searchParams.get("nickname");
 
@@ -415,7 +415,7 @@ export const calendarHandlers = [
   }),
 
   // 캘린더 구독
-  rest.post("/api/subscriptions", async (req, res, ctx) => {
+  rest.post("/api/subscriptions/", async (req, res, ctx) => {
     const token = req.headers.get("Authorization");
     const { calendar_id } = await req.json();
 

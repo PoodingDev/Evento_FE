@@ -4,10 +4,10 @@ import EventInfo from "components/EventInfo";
 import EventInfoModal from "/src/components/EventInfoModal";
 import FullCalendar from "@fullcalendar/react";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { FaPlus } from "react-icons/fa6";
+import { instance } from "../api/axios";
 
 export default function Calendar() {
   const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);

@@ -2,8 +2,8 @@ import CalendarInfo from "./CalendarInfoModal";
 import CreateCalendar from "./CreateCalendarModal";
 import InviteCodeModal from "./InviteCodeModal";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { instance } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 
 import {
@@ -35,13 +35,13 @@ export default function SideBarLeft() {
         const token = localStorage.getItem("token");
         const [myCalendarsResponse, subscribedCalendarsResponse, ddayResponse] =
           await Promise.allSettled([
-            axios.get("/api/calendars/admins", {
+            instance.get("/api/calendars/calendars/admin/", {
               headers: { Authorization: `Bearer ${token}` },
             }),
-            axios.get(`/api/users/${userInfo.user_id}/subscriptions`, {
+            instance.get(`/api/calendars/subscriptions/`, {
               headers: { Authorization: `Bearer ${token}` },
             }),
-            axios.get(`/api/users/${userInfo.user_id}/favorite-events`, {
+            instance.get(`/api/users/${userInfo.user_id}/favorites/`, {
               headers: { Authorization: `Bearer ${token}` },
             }),
           ]);
@@ -265,7 +265,7 @@ export default function SideBarLeft() {
       )}
       <div className="fixed bottom-[3rem] left-[4rem] flex flex-col items-center justify-center">
         <ul className="space-y-[.8rem]">
-          {(dday || []).map((item, index) => {
+          {(Array.isArray(dday) ? dday : []).map((item, index) => {
             const today = new Date();
             const dDay = new Date(item.d_day);
             const differenceInTime = dDay - today;
