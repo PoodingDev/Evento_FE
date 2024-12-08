@@ -57,9 +57,10 @@ export default function LoginPostCode() {
         // 전역 상태 업데이트
         setLoggedIn(true);
         setUserInfo(userInfo);
-
+        console.log("--------------------------------");
+        console.log("로그인 성공, userInfo: " + userInfo);
         // 캘린더 페이지로 이동
-        navigate("/calendar");
+        navigate("/profile");
       } catch (error) {
         console.error("Authentication error:", error);
 

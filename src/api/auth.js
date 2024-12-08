@@ -54,16 +54,33 @@ export async function requestNaverLogin(code, state) {
   return response.data;
 }
 
+export async function refreshAccessToken() {
+  try {
+    const refreshToken = localStorage.getItem("refreshToken");
+    if (!refreshToken) {
+      throw new Error("리프레시 토큰이 없습니다.");
+    }
+
+    const response = await instance.post(`/api/users/login/refresh/`, {
+      refresh: refreshToken,
+    });
+
+    const { access } = response.data;
+
+    localStorage.setItem("token", access);
+
+    return access;
+  } catch (error) {
+    console.error("토큰 갱신 실패:", error);
+    throw error;
+  }
+}
+
 export async function fetchUserInfo(token) {
   const response = await instance.get("api/users/me/", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-
-  // if (!response.ok) {
-  //   throw new Error("Failed to fetch user info");
-  // }
-
   return response.data;
 }

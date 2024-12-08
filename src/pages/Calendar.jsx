@@ -49,14 +49,11 @@ export default function Calendar() {
     async function fetchEventInfo() {
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await instance.get(
-          "/api/calendars/:calendar_id/events/",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        const response = await instance.get("/api/events/public/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
-        );
+        });
         const start_date = new Date(response.data.start_time);
         const end_date = new Date(response.data.end_time);
 

@@ -2,90 +2,41 @@ import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import React, { useEffect, useState } from "react";
 import { FaBirthdayCake } from "react-icons/fa";
+import { FaCalendar, FaRegCalendar } from "react-icons/fa6";
 import { IoPersonCircleOutline } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { instance } from "../api/axios";
 
 export default function ProfileEdit() {
   const navigate = useNavigate();
-  const [userId, setUserId] = useState(null);
-  const [userName, setUserName] = useState("");
-  const [userNickname, setUserNickname] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [userBirth, setUserBirth] = useState(null);
+  const location = useLocation();
+
+  const { userName, userNickname, userEmail, userBirth } = location.state || {};
+
+  const [nickname, setNickname] = useState(userNickname);
+  const [birth, setBirth] = useState(userBirth ? new Date(userBirth) : null);
   const [isToggled, setIsToggled] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // 사용자 정보 가져오기
-  useEffect(() => {
-    async function fetchUserInfo() {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await instance.get("/api/users/me/", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const {
-          user_id,
-          user_name,
-          user_nickname,
-          user_email,
-          user_birth,
-          is_birth_public,
-        } = response.data;
-
-        setUserId(user_id);
-        setUserName(user_name);
-        setUserNickname(user_nickname);
-        setUserEmail(user_email);
-        setIsToggled(is_birth_public);
-
-        // 날짜를 Date 객체로 변환
-        if (user_birth) {
-          const parsedDate = new Date(user_birth);
-          if (!isNaN(parsedDate.getTime())) {
-            setUserBirth(parsedDate);
-          }
-        }
-      } catch (error) {
-        console.error("사용자 정보를 가져오는 중 오류 발생:", error);
-        setErrorMessage(
-          "사용자 정보를 불러오지 못했습니다. 다시 시도해 주세요.",
-        );
-      }
-    }
-
-    fetchUserInfo();
-  }, []);
-
-  // 닉네임 수정 핸들러
   const handleNickName = (e) => {
     setUserNickname(e.target.value);
   };
 
-  // 토글 상태 변경 핸들러
-  const handleToggle = () => {
-    setIsToggled(!isToggled);
-  };
+  // const handleToggle = () => {
+  //   setIsToggled(!isToggled);
+  // };
 
-  // 저장 버튼 클릭 핸들러
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("token");
-      if (!userId) {
-        throw new Error("사용자 ID를 찾을 수 없습니다.");
-      }
 
-      const response = await instance.post(
-        `/api/users/${userId}/`,
+      const response = await instance.put(
+        `/api/users/me/`,
         {
-          user_nickname: userNickname,
-          user_birth: userBirth
-            ? userBirth.toISOString().substring(0, 10)
-            : null, // 날짜를 ISO 문자열로 변환
-          is_birth_public: isToggled,
+          user_email: userEmail,
+          user_name: userName,
+          userbirth: birth ? birth.toISOString().substring(0, 10) : null,
+          user_nickname: nickname,
         },
         {
           headers: {
@@ -96,7 +47,7 @@ export default function ProfileEdit() {
       );
 
       if (response.status === 200) {
-        alert("변경된 닉네임과 공개 상태가 저장되었습니다!");
+        alert("변경된 정보가 저장되었습니다!");
         navigate(-1);
       }
     } catch (error) {
@@ -108,7 +59,7 @@ export default function ProfileEdit() {
         if (status === 401) {
           setErrorMessage("로그인이 필요합니다.");
         } else if (status === 404) {
-          setErrorMessage("현재 로그인된 사용자의 정보를 찾을 수 없습니다.");
+          setErrorMessage("사용자 정보를 찾을 수 없습니다.");
         } else if (status === 400) {
           if (data.error === "닉네임 중복") {
             setErrorMessage("이미 사용 중인 닉네임입니다.");
@@ -142,8 +93,8 @@ export default function ProfileEdit() {
               <IoPersonCircleOutline className="h-[7.5rem] w-[7.5rem] object-cover text-eventoPurpleBase" />
               <input
                 type="text"
-                value={userNickname}
-                onChange={handleNickName}
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
                 placeholder="닉네임 수정"
                 className="w-[9rem] rounded-lg bg-gray-200 p-[2px] px-3 py-2 text-center font-semibold text-darkGray focus:border-[1px] focus:border-none focus:bg-eventoPurpleLight/80 focus:outline-none"
               />
@@ -159,20 +110,20 @@ export default function ProfileEdit() {
                 <span className="text-darkGray">{userEmail}</span>
               </li>
               <li className="flex items-center justify-between">
-                <span className="font-semibold text-darkGray">내 생일</span>
-                <div className="flex items-center justify-end">
+                <span className="font-semibold text-darkGray">생일</span>
+                <div className="flex items-center justify-end rounded-lg bg-gray-200">
                   <DatePicker
-                    selected={userBirth}
-                    onChange={(date) => setUserBirth(date)} // Date 객체 업데이트
+                    selected={birth}
+                    onChange={(date) => setBirth(date)}
                     dateFormat="yyyy-MM-dd"
-                    className="p-1 text-right rounded-lg bg-eventoWhite text-darkGray"
+                    className="w-[6rem] rounded-lg bg-gray-200 p-1 text-right text-darkGray"
                     showYearDropdown
                     scrollableYearDropdown
                     yearDropdownItemNumber={100}
                     minDate={new Date(1900, 0, 1)}
                     maxDate={new Date(2050, 11, 31)}
                   />
-                  <FaBirthdayCake className="ml-[0.2rem] text-center text-[1.1rem] text-eventoPurpleBase/80" />
+                  <FaRegCalendar className="rounded-lgtext-center mx-[0.2rem] text-[1.1rem] text-eventoPurpleBase/80" />
                 </div>
               </li>
             </ul>
