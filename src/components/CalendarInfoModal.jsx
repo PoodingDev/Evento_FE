@@ -15,6 +15,8 @@ import {
 } from "react-icons/fa";
 
 export default function CalendarInfo({ calendar, onClose, userId }) {
+  const user_id = localStorage.getItem("user_id");
+  console.log(user_id);
   const [calendarState, setCalendarState] = useState({
     name: calendar.name,
     description: calendar.description,
@@ -22,12 +24,13 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
     color: calendar.color,
     invitation_code: calendar.invitation_code,
     admins: calendar.admins,
+    creator_id: calendar.creator_id,
   });
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const { userInfo } = useAuth();
-
   // 상태 변경 핸들러
+  console.log("---");
+  console.log(calendar);
   const updateState = (key, value) => {
     setCalendarState((prev) => ({
       ...prev,
@@ -215,7 +218,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
               className="cursor-pointer text-[1.5rem] text-darkGray"
               onClick={() => setIsEdit(true)}
             />
-            {calendar.creator_id === userInfo.user_id && (
+            {calendar.creator_id == user_id && (
               <FaTrashCan
                 className="cursor-pointer text-[1.5rem] text-darkGray"
                 onClick={() => setDeleteModalOpen(true)}
