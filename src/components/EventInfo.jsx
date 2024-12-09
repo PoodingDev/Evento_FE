@@ -348,7 +348,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                     })
                   }
                   dateFormat="yyyy-MM-dd"
-                  className="w-[12rem] bg-transparent pr-[1rem] text-center"
+                  className="w-[12rem] bg-transparent text-center"
                   showYearDropdown
                   scrollableYearDropdown
                   yearDropdownItemNumber={100}
@@ -366,7 +366,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                     })
                   }
                   dateFormat="yyyy-MM-dd"
-                  className="w-[12rem] bg-transparent pr-[1rem] text-center"
+                  className="w-[12rem] bg-transparent pr-[0.3rem] text-center"
                   showYearDropdown
                   scrollableYearDropdown
                   yearDropdownItemNumber={100}
@@ -389,7 +389,11 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                   onChange={(e) => {
                     setEventInfo({ detailEventMemo: e.target.value });
                   }}
-                  className="w-[15rem] bg-transparent pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
+                  className="flex w-[15rem] items-center bg-transparent pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
+                  style={{
+                    height: "2.5rem", // 원하는 높이 설정
+                    lineHeight: "2.5rem", // 내용과 높이 일치
+                  }}
                   disabled
                 />
               </div>

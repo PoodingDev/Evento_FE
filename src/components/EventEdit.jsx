@@ -53,11 +53,11 @@ export default function EventEdit({
       const response = await instance.patch(
         `/api/events/${eventDetails.id}/`,
         {
-          title: newEventInfo.newEventTitle,
-          // cal_title: eventInfo.title,
+          event_title: newEventInfo.newEventTitle,
+          cal_title: eventInfo.title,
           start_time: newEventInfo.newStartDate,
           end_time: newEventInfo.newEndDate,
-          description: newEventInfo.newEventDetail,
+          event_description: newEventInfo.newEventDetail,
           is_public: newEventInfo.newEventPublic,
         },
         {
@@ -111,7 +111,7 @@ export default function EventEdit({
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex w-full flex-col">
+      <div className="flex flex-col w-full">
         <div className="mb-[1rem] flex items-center justify-between">
           {/* 이벤트 제목 */}
           <div className="flex items-center">
@@ -147,7 +147,7 @@ export default function EventEdit({
             </div>
           </div>
         </div>
-
+g
         {/* 시간 */}
         <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
           시간
@@ -162,7 +162,7 @@ export default function EventEdit({
               })
             }
             dateFormat="yyyy-MM-dd"
-            className="w-[12rem] rounded-md bg-lightGray/20 pr-[1rem] text-center"
+            className="w-[12rem] rounded-md bg-lightGray/20 text-center"
             showYearDropdown
             scrollableYearDropdown
             yearDropdownItemNumber={100}
@@ -179,7 +179,7 @@ export default function EventEdit({
               })
             }
             dateFormat="yyyy-MM-dd"
-            className="w-[12rem] rounded-md bg-lightGray/20 pr-[1rem] text-center"
+            className="w-[12rem] rounded-md bg-lightGray/20 pr-[0.3rem] text-center"
             showYearDropdown
             scrollableYearDropdown
             yearDropdownItemNumber={100}
@@ -196,14 +196,15 @@ export default function EventEdit({
           </div>
           <input
             type="text"
-            value={newEventInfo.newEventDetail}
+            value={eventInfo.detailEventMemo}
             onChange={(e) => {
-              setNewEventInfo({
-                ...newEventInfo,
-                newEventDetail: e.target.value,
-              });
+              setEventInfo({ detailEventMemo: e.target.value });
             }}
-            className="w-[15rem] rounded-md border-b-[0.1rem] bg-lightGray/20 pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
+            className="flex h-[1rem] w-[15rem] items-center rounded-md bg-lightGray/30 pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
+            style={{
+              height: "2.5rem", // 원하는 높이 설정
+              lineHeight: "2.5rem", // 내용과 높이 일치
+            }}
           />
         </div>
 
