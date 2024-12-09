@@ -90,30 +90,35 @@ export default function Calendar() {
 
         const formattedStartDate = start_date.toLocaleDateString("ko");
         const formattedEndDate = end_date.toLocaleDateString("ko");
-        const eventMockData = response.data.map((event) => ({
-          allDay: true,
-          id: event.event_id,
-          title: event.title,
-          start: event.start_time,
-          end: event.end_time,
-          extendedProps: {
-            memo: event.description,
-          },
-          calId: event.calendar_id,
-          // calTitle: clickCalInfo.calTitle,
-          // color: clickCalInfo.calColor,
-          // calTitle: calInfo[0].calendarName,
-          // color: calInfo[0].calendarColor,
-          editable: true, // 이벤트 편집 가능
-        }));
-        console.log();
+
+        const eventMockData = response.data.map((event) => {
+          const calendar = calInfo.find(
+            (cal) => cal.calId === event.calendar_id,
+          );
+
+          return {
+            allDay: true,
+            id: event.event_id,
+            title: event.title,
+            start: event.start_time,
+            end: event.end_time,
+            extendedProps: {
+              memo: event.description,
+            },
+            calId: event.calendar_id,
+            calTitle: calendar ? calendar.calendarName : "", // calId와 일치하는 calendarName을 설정
+            color: calendar ? calendar.calendarColor : "gray", // 기본 색상 지정
+            editable: true, // 이벤트 편집 가능
+          };
+        });
+
         setEvents(eventMockData);
       } catch (error) {
         console.error("이벤트 정보를 가져오는 중 오류 발생:", error);
       }
     }
     fetchEventInfo();
-  }, [calInfo]);
+  }, [calInfo, events]);
 
   return (
     <>
