@@ -216,14 +216,14 @@ export default function SideBarLeft() {
             <ul className="m-[1rem] mt-[1.5rem] space-y-[0.5rem]">
               {subscribedCalendars.map((calendar) => (
                 <li
-                  key={calendar.calendar.calendar_id}
+                  key={calendar.calendar_id}
                   className="flex items-center space-x-[0.5rem]"
                 >
                   <div
                     className="cursor-pointer"
-                    onClick={() => handleToggle(calendar.calendar.calendar_id)}
+                    onClick={() => handleToggle(calendar.calendar_id)}
                   >
-                    {checked[calendar.calendar.calendar_id] ? (
+                    {checked[calendar.calendar_id] ? (
                       <FaCheckSquare className="text-[0.9rem] text-eventoPurpleBase" />
                     ) : (
                       <FaRegSquare className="text-[0.9rem] text-eventoPurpleBase" />
@@ -233,9 +233,9 @@ export default function SideBarLeft() {
                     htmlFor={calendar.calendar_id}
                     className="flex items-center text-[0.9rem] font-medium text-eventoPurpleBase"
                   >
-                    {calendar.calendar.name}
-                    <span className="ml-2 text-[0.7rem] font-light text-darkGray">
-                      {calendar.calendar.creator_nickname}
+                    {calendar.name}
+                    <span className="ml-2 text-[0.7rem] text-darkGray/80">
+                      {calendar.creator_nickname}
                     </span>
                   </label>
                 </li>
