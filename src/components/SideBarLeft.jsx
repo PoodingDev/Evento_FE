@@ -47,7 +47,7 @@ export default function SideBarLeft() {
               headers: { Authorization: `Bearer ${token}` },
             }),
           ]);
-        // console.log(myCalendarsResponse);
+
         if (myCalendarsResponse.status === "fulfilled") {
           setMyCalendars(myCalendarsResponse.value.data);
           const initialChecked = myCalendarsResponse.value.data.reduce(
@@ -82,7 +82,7 @@ export default function SideBarLeft() {
   const handleToggle = async (id) => {
     try {
       const token = localStorage.getItem("token"); // 토큰 가져오기
-      const response = await axios.patch(
+      const response = await instance.patch(
         `/api/calendars/${id}`,
         {
           calendar_name: myCalendars.name,
@@ -144,7 +144,7 @@ export default function SideBarLeft() {
     );
     setCalendarInfoOpen(false);
   };
-
+  console.log(subscribedCalendars);
   return (
     <div>
       <div className="evento-sidebarleft absolute mt-[5rem] h-[calc(100vh-5rem)] w-[18rem] rounded-tr-[2.5rem] bg-eventoGray pl-[2.25rem] pr-[1.75rem] pt-[1.6rem]">
@@ -216,14 +216,14 @@ export default function SideBarLeft() {
             <ul className="m-[1rem] mt-[1.5rem] space-y-[0.5rem]">
               {subscribedCalendars.map((calendar) => (
                 <li
-                  key={calendar.calendar_id}
+                  key={calendar.calendar.calendar_id}
                   className="flex items-center space-x-[0.5rem]"
                 >
                   <div
                     className="cursor-pointer"
-                    onClick={() => handleToggle(calendar.calendar_id)}
+                    onClick={() => handleToggle(calendar.calendar.calendar_id)}
                   >
-                    {checked[calendar.calendar_id] ? (
+                    {checked[calendar.calendar.calendar_id] ? (
                       <FaCheckSquare className="text-[0.9rem] text-eventoPurpleBase" />
                     ) : (
                       <FaRegSquare className="text-[0.9rem] text-eventoPurpleBase" />
@@ -233,9 +233,9 @@ export default function SideBarLeft() {
                     htmlFor={calendar.calendar_id}
                     className="flex items-center text-[0.9rem] font-medium text-eventoPurpleBase"
                   >
-                    {calendar.name}
+                    {calendar.calendar.name}
                     <span className="ml-2 text-[0.7rem] font-light text-darkGray">
-                      {calendar.description}
+                      {calendar.calendar.creator_nickname}
                     </span>
                   </label>
                 </li>

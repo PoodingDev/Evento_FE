@@ -108,7 +108,7 @@ export default function Subscription() {
       fetchData();
     }
   }, [userInfo, subscribedCalendars]);
-
+  console.log(subscribedCalendars);
   return (
     <div className="h-[100vh] bg-eventoWhite pl-[18rem] pt-[4rem]">
       <div className="ml-[5rem] mt-[2rem] flex items-center text-center">
@@ -151,13 +151,14 @@ function CalenderSearch({ toggleSubscription }) {
         setFilteredSearch([]); // 검색어가 없으면 빈 배열 반환
         return;
       }
-
       try {
         const token = localStorage.getItem("token");
-        const response = await instance.get("/api/calendars/search/", {
-          headers: { Authorization: `Bearer ${token}` },
-          params: { nickname: debouncedInput }, // 검색어를 쿼리 파라미터로 전달
-        });
+        const response = await instance.get(
+          `/api/calendars/search/${debouncedInput}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
 
         if (response.status === 200) {
           setFilteredSearch(response.data); // 검색 결과 업데이트
@@ -167,7 +168,6 @@ function CalenderSearch({ toggleSubscription }) {
         setFilteredSearch([]); // 오류 발생 시 빈 배열로 설정
       }
     }
-
     fetchCalendars();
   }, [debouncedInput]);
   return (
@@ -185,27 +185,27 @@ function CalenderSearch({ toggleSubscription }) {
       <ul className="my-[2rem] flex w-auto flex-col">
         {filteredSearch.map((calendar) => (
           <li
-            key={calendar.calendar_id}
+            key={calendar.calendar.calendar_id}
             className="my-2 flex w-[20rem] items-center gap-[1rem]"
           >
             <IoPersonCircleOutline className="h-[3.5rem] w-[3.5rem] object-cover" />
             <div>
               <h3 className="text-eventoPurpleDark">
-                {calendar.calendar_name}
+                {calendar.calendar.name}
               </h3>
               <p className="text-darkGray">
-                {calendar.creator?.nickname || "닉네임 없음"}
+                {calendar.calendar.creator_nickname || "알 수 없음"}
               </p>
             </div>
             <button
               className={`ml-auto h-[2rem] w-[5rem] rounded-[0.625rem] border-2 p-1 align-middle ${
-                calendar.isSubscribed
+                calendar.is_subscribed
                   ? "border-darkRed bg-white text-darkRed"
                   : "border-darkRed bg-darkRed text-white"
               }`}
-              onClick={() => toggleSubscription(calendar.calendar_id)}
+              onClick={() => toggleSubscription(calendar.calendar.calendar_id)}
             >
-              {calendar.isSubscribed ? "구독 취소" : "구독"}
+              {calendar.is_subscribed ? "구독 취소" : "구독"}
             </button>
           </li>
         ))}
@@ -215,35 +215,38 @@ function CalenderSearch({ toggleSubscription }) {
 }
 
 function SubscriptionCalender({ openCalendars, toggleSubscription }) {
+  console.log(openCalendars);
   return (
     <>
       <div className="relative after:absolute after:bottom-0 after:left-0 after:top-0 after:w-[2px] after:bg-gray-200 after:content-['']"></div>
-      <section className="flex flex-col items-center w-1/3">
+      <section className="flex w-1/3 flex-col items-center">
         <h1>구독한 캘린더</h1>
-        <ul className="flex flex-col w-auto">
+        <ul className="flex w-auto flex-col">
           {openCalendars.map((calendar) => (
             <li
-              key={calendar.calendar_id}
+              key={calendar.calendars.calendar_id}
               className="my-2 flex items-center gap-[1rem]"
             >
               <IoPersonCircleOutline className="h-[3.5rem] w-[3.7rem] object-cover text-eventoPurpleDark/70" />
               <div>
                 <h3 className="text-[1rem] font-medium text-eventoPurpleDark/80">
-                  {calendar.calendar_name}
+                  {calendar.calendars.name}
                 </h3>
                 <p className="text-[0.9rem] text-darkGray/80">
-                  {calendar.calendar_description}
+                  {calendar.calendars.description}
                 </p>
               </div>
               <button
                 className={`ml-auto h-[1.8rem] w-[4.5rem] rounded-[0.625rem] border-2 p-1 align-middle text-[0.9rem] ${
-                  calendar.isSubscribed
+                  calendar.is_subscribed
                     ? "border-darkRed/85 bg-white text-darkRed/85"
                     : "border-darkRed/50 bg-darkRed/85 text-white"
                 }`}
-                onClick={() => toggleSubscription(calendar.calendar_id)}
+                onClick={() =>
+                  toggleSubscription(calendar.calendars.calendar_id)
+                }
               >
-                {calendar.isSubscribed ? "구독 취소" : "구독"}
+                {calendar.is_subscribed ? "구독 취소" : "구독"}
               </button>
             </li>
           ))}
