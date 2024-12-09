@@ -49,7 +49,7 @@ export default function Calendar() {
     async function fetchEventInfo() {
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await axios.get(
+        const response = await instance.get(
           `/api/calendars/${calInfo.calId}/events`,
           {
             //isactive인 캘린더의 이벤트(바뀐 API)
@@ -98,7 +98,7 @@ export default function Calendar() {
     async function fetchCalInfo() {
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await axios.get("/api/calendars/admins", {
+        const response = await instance.get("/api/calendars/admins", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
