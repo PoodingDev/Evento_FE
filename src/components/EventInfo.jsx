@@ -80,6 +80,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
   //캘린더 정보가져오기
   const [calInfo, setCalInfo] = useState({
     calenderName: "",
+    isPublic: false,
     members: [],
   });
   useEffect(() => {
@@ -99,6 +100,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
         if (selectedCalendar) {
           setCalInfo({
             calenderName: selectedCalendar.name,
+            isPublic: selectedCalendar.is_public,
             members: selectedCalendar.admins,
           });
         } else {
@@ -111,28 +113,6 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
     }
     fetchCalInfo();
   }, [eventInfo.title]);
-
-  useEffect(() => {
-    async function fetchComments() {
-      try {
-        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await instance.get(
-          `/api/calendars/${eventDetails.cal_id}/events/${eventDetails.id}/comments/`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-
-        setCommentList(response.data.comments || []);
-      } catch (error) {
-        console.error("댓글 정보를 가져오는 중 오류 발생:", error);
-      }
-    }
-
-    fetchComments();
-  }, [eventDetails]);
 
   //수정 및 편집
   const [isEdit, setIsEdit] = useState(false);
