@@ -98,7 +98,7 @@ export default function Calendar() {
     async function fetchCalInfo() {
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await instance.get("/api/calendars/admins", {
+        const response = await instance.get("/api/calendars/admin", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
