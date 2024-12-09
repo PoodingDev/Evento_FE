@@ -31,14 +31,13 @@ export default function CreateCalendar({ onClose }) {
       if (!title) {
         throw new Error("캘린더 제목을 입력해주세요.");
       }
-
       const response = await instance.post(
         "/api/calendars/",
         {
-          calendar_name: title,
-          calendar_description: detailMemo,
+          name: title,
+          description: detailMemo,
           is_public: isPublic,
-          calendar_color: calColor,
+          color: calColor,
         },
         {
           headers: {

@@ -83,10 +83,11 @@ export default function SideBarLeft() {
       const response = await axios.patch(
         `/api/calendars/${id}`,
         {
-          calendar_name: myCalendars.calendar_name,
-          calendar_description: myCalendars.calendar_description,
+          calendar_name: myCalendars.name,
+          calendar_description: myCalendars.description,
           is_public: myCalendars.is_public,
-          calendar_color: myCalendars.calendar_color,
+          calendar_color: myCalendars.color,
+          admins: myCalendars.admins,
           isactive: checked[id],
         },
         {
@@ -176,22 +177,22 @@ export default function SideBarLeft() {
                     {checked[calendar.calendar_id] ? (
                       <FaCheckSquare
                         className="text-[0.93rem]"
-                        style={{ color: calendar.calendar_color }}
+                        style={{ color: calendar.color }}
                       />
                     ) : (
                       <FaRegSquare
                         className="text-[0.93rem]"
-                        style={{ color: calendar.calendar_color }}
+                        style={{ color: calendar.color }}
                       />
                     )}
                   </div>
                   <label
                     htmlFor={calendar.calendar_id}
                     className="cursor-pointer text-[0.9rem] font-medium"
-                    style={{ color: calendar.calendar_color }}
+                    style={{ color: calendar.color }}
                     onClick={() => handleViewCalendar(calendar)}
                   >
-                    {calendar.calendar_name}
+                    {calendar.name}
                   </label>
                 </li>
               ))}
@@ -230,9 +231,9 @@ export default function SideBarLeft() {
                     htmlFor={calendar.calendar_id}
                     className="flex items-center text-[0.9rem] font-medium text-eventoPurpleBase"
                   >
-                    {calendar.calendar_name}
+                    {calendar.name}
                     <span className="ml-2 text-[0.7rem] font-light text-darkGray">
-                      {calendar.calendar_description}
+                      {calendar.description}
                     </span>
                   </label>
                 </li>
@@ -257,11 +258,11 @@ export default function SideBarLeft() {
           <CalendarInfo
             calendar={selectedCalendar}
             onClose={() => setCalendarInfoOpen(false)}
-            onSave={handleSaveCalendar}
             userId={userInfo?.user_id}
           />
         </div>
       )}
+
       <div className="fixed bottom-[3rem] left-[4rem] flex flex-col items-center justify-center">
         <ul className="space-y-[.8rem]">
           {(Array.isArray(dday) ? dday : []).map((item, index) => {

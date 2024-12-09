@@ -16,13 +16,17 @@ import {
 export default function CalendarInfo({ calendar, onClose, userId }) {
   // 통합 상태 관리
   const [calendarState, setCalendarState] = useState({
-    title: calendar.calendar_name,
-    detailMemo: calendar.calendar_description,
+    name: calendar.name,
+    description: calendar.description,
     isPublic: calendar.is_public,
-    calColor: calendar.calendar_color,
-    visitCode: calendar.invitation_code,
+    color: calendar.color,
+    invitation_code: calendar.invitation_code,
+    admins: calendar.admins,
   });
-  const { loggedIn, userInfo, setLoggedIn } = useAuth();
+  const { userInfo } = useAuth();
+  {
+    calendar?.admins?.length > 0 ? calendar.admins.join(", ") : "나만의 캘린더";
+  }
   const [isEdit, setIsEdit] = useState(false);
 
   // 상태 변경 핸들러
@@ -36,20 +40,21 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
   // 상태 초기화 함수
   const resetState = () => {
     setCalendarState({
-      title: calendar.calendar_name,
-      detailMemo: calendar.calendar_description,
+      name: calendar.name,
+      description: calendar.description,
       isPublic: calendar.is_public,
-      calColor: calendar.calendar_color,
-      visitCode: calendar.invitation_code,
+      color: calendar.color,
+      invitation_code: calendar.invitation_code,
+      admins: calendar.admins,
     });
     setIsEdit(false);
   };
 
-  // 컴포넌트가 마운트될 때 creator_id와 userId 확인
+  // creator_id와 userId 확인
   useEffect(() => {
-    // console.log("Calendar Creator ID:", calendar.creator);
-    // console.log("Current User ID:", userInfo.user_id);
-    // console.log(calendar);
+    console.log("Calendar Creator ID:", calendar.creator);
+    console.log("Current User ID:", userInfo.user_id);
+    console.log(calendar);
   }, [calendar.creator_id, userId]);
 
   // 저장
@@ -59,10 +64,11 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
       const response = await instance.patch(
         `/api/calendars/${calendar.calendar_id}/`,
         {
-          calendar_name: calendarState.title,
-          calendar_description: calendarState.detailMemo,
+          name: calendarState.name,
+          description: calendarState.description,
           is_public: calendarState.isPublic,
-          calendar_color: calendarState.calColor,
+          color: calendarState.color,
+          creator: calendarState.creator_id,
         },
 
         {
@@ -108,6 +114,10 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
     }
   };
 
+  //관리자 +a 계산
+  const visibleAdmins = calendar?.admins?.slice(0, 3) || [];
+  const remainingAdminsCount = calendar?.admins?.length - visibleAdmins.length;
+
   return (
     <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
       <FaXmark
@@ -115,21 +125,21 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex w-full flex-col">
+      <div className="flex flex-col w-full">
         <div className="mb-[2.8rem] flex justify-between">
           {isEdit ? (
             <input
               type="text"
-              value={calendarState.title}
+              value={calendarState.name}
               className="h-[3.8rem] w-[35rem] rounded-md bg-lightGray/20 text-[3em] font-bold text-darkGray focus:outline-none"
-              onChange={(e) => updateState("title", e.target.value)}
+              onChange={(e) => updateState("name", e.target.value)}
             />
           ) : (
             <div
               className="flex h-[3.8rem] w-[35rem] items-center rounded-md text-[3em] font-bold focus:outline-none"
-              style={{ color: calendarState.calColor }}
+              style={{ color: calendarState.color }}
             >
-              {calendarState.title}
+              {calendarState.name}
             </div>
           )}
         </div>
@@ -138,9 +148,9 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
           <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
             멤버
           </div>
-          <div className="w-[40rem] text-[1.1rem] font-semibold text-darkGray">
-            {calendar?.members?.length > 0
-              ? calendar.members.map((member) => member.nickname).join(", ")
+          <div className="w-[40rem] text-[0.9rem] text-darkGray/90">
+            {calendar?.admins?.length > 0
+              ? calendar.admins.join(", ")
               : "나만의 캘린더"}
           </div>
         </div>
@@ -157,9 +167,9 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
           <div className="flex">
             <input
               type="text"
-              value={calendarState.detailMemo}
+              value={calendarState.description}
               className="mb-[3rem] mr-[2rem] flex h-[1.5rem] w-[18rem] items-center rounded-md bg-lightGray/20 text-[1.1rem] font-semibold text-darkGray"
-              onChange={(e) => updateState("detailMemo", e.target.value)}
+              onChange={(e) => updateState("description", e.target.value)}
             />
             <div className="ml-[0.2rem] flex h-[2rem] w-[10rem]">
               {[
@@ -173,11 +183,11 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
               ].map(({ color, label }) => (
                 <button
                   key={label}
-                  onClick={() => updateState("calColor", color)}
+                  onClick={() => updateState("color", color)}
                   className="relative mr-[0.3rem] flex h-[1rem] w-[1rem] items-center justify-center"
                   style={{ backgroundColor: color }}
                 >
-                  {calendarState.calColor === color && (
+                  {calendarState.color === color && (
                     <FaCheck className="absolute text-[0.6rem] text-eventoWhite" />
                   )}
                 </button>
@@ -187,11 +197,11 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
         ) : (
           <div className="flex">
             <div className="mb-[3rem] flex h-[1.5rem] w-[20rem] items-center text-[1.1rem] font-semibold text-darkGray">
-              {calendarState.detailMemo}
+              {calendarState.description}
             </div>
             <div
               className="ml-[0.2rem] h-[1rem] w-[1rem] items-center"
-              style={{ backgroundColor: calendarState.calColor }}
+              style={{ backgroundColor: calendarState.color }}
             />
           </div>
         )}
@@ -225,7 +235,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
               )}
             </div>
             <div className="pr-[0.5rem] text-[1.1rem] font-semibold text-darkGray">
-              {calendarState.visitCode}
+              {calendarState.invitation_code}
             </div>
           </div>
         ) : (
@@ -234,11 +244,11 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
               {calendarState.isPublic ? "공개" : "비공개"}
             </div>
             <div className="pr-[0.5rem] text-[1.1rem] font-semibold text-darkGray">
-              {calendarState.visitCode}
+              {calendarState.invitation_code}
             </div>
             <CopyToClipboard
               className="cursor-pointer text-eventoPurple active:text-lightGray"
-              text={calendarState.visitCode}
+              text={calendarState.invitation_code}
             >
               <FaRegCopy />
             </CopyToClipboard>
@@ -266,7 +276,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
             className="cursor-pointer text-[1.5rem] text-darkGray"
             onClick={() => setIsEdit(true)}
           />
-          {calendar.creator === userInfo.user_id && (
+          {calendar.creator_id === userInfo.user_id && (
             <FaTrashCan
               className="cursor-pointer text-[1.5rem] text-darkGray"
               onClick={handleDelete}
