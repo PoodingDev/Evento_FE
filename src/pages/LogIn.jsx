@@ -62,7 +62,7 @@ export default function LogIn() {
               className="absolute left-2 ml-[0.6rem] h-[1rem]"
               alt="K"
             />
-            <span className="w-full text-center">카카오 연동하기</span>
+            <span className="w-full text-center">카카오 로그인</span>
           </div>
           <div
             className="relative flex h-[2.5rem] w-[15rem] cursor-pointer items-center rounded-lg bg-[#03C75A] text-eventoWhite"
@@ -73,7 +73,7 @@ export default function LogIn() {
               className="absolute left-2 h-[2.3rem]"
               alt="N"
             />
-            <span className="w-full text-center">네이버 연동하기</span>
+            <span className="w-full text-center">네이버 로그인</span>
           </div>
           <div
             className="relative flex h-[2.5rem] w-[15rem] cursor-pointer items-center rounded-lg bg-[#F2F2F2]/90 text-[#555]"
@@ -84,7 +84,7 @@ export default function LogIn() {
               className="absolute left-2 ml-[0.3rem] h-[1.8rem]"
               alt="G"
             />
-            <span className="ml-auto mr-auto">구글로 시작하기</span>
+            <span className="ml-auto mr-auto">구글 로그인</span>
           </div>
         </div>
       </div>
