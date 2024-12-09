@@ -62,8 +62,8 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
       );
       if (response.status === 204) {
         // alert("캘린더가 성공적으로 삭제되었습니다.");
-        setDeleteModalOpen(false); // 삭제 모달 닫기
-        onClose(); // 인포 모달 닫기
+        setDeleteModalOpen(false); // 삭제
+        onClose(); // 인포
       }
     } catch (error) {
       console.error("캘린더 삭제 실패:", error);
@@ -73,7 +73,6 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
 
   return (
     <>
-      {/* 삭제 모달이 열리면 CalendarInfo를 숨김 */}
       {!isDeleteModalOpen && (
         <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
           <FaXmark
@@ -226,7 +225,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
         </div>
       )}
 
-      {/* 삭제 모달 */}
+      {/* 삭제 확인 모달 */}
       {isDeleteModalOpen && (
         <DeleteCalendarModal
           onDelete={handleDelete}
