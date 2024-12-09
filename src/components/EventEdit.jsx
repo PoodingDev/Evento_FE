@@ -53,11 +53,11 @@ export default function EventEdit({
       const response = await instance.patch(
         `/api/events/${eventDetails.id}/`,
         {
-          event_title: newEventInfo.newEventTitle,
-          cal_title: eventInfo.title,
+          title: newEventInfo.newEventTitle,
+          // cal_title: eventInfo.title,
           start_time: newEventInfo.newStartDate,
           end_time: newEventInfo.newEndDate,
-          event_description: newEventInfo.newEventDetail,
+          description: newEventInfo.newEventDetail,
           is_public: newEventInfo.newEventPublic,
         },
         {

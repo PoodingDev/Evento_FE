@@ -114,7 +114,6 @@ export default function CreateEvent({ onClose, setEvents }) {
 
       if (response.status === 201) {
         const start_date = new Date(response.data.start_time);
-        console.log(response);
         const end_date = new Date(response.data.end_time);
 
         const formattedStartDate = start_date.toLocaleDateString("ko");
@@ -139,7 +138,6 @@ export default function CreateEvent({ onClose, setEvents }) {
 
         console.log("Response Data:", JSON.stringify(response.data, null, 2));
         alert("이벤트가 성공적으로 생성되었습니다!");
-        console.log(newEvent);
         onClose(); // 모달 닫기
       }
     } catch (error) {
@@ -196,7 +194,7 @@ export default function CreateEvent({ onClose, setEvents }) {
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex flex-col w-full">
+      <div className="flex w-full flex-col">
         <div className="mb-[1rem] flex items-center justify-between">
           {/* 이벤트 제목 */}
           <input
@@ -215,8 +213,6 @@ export default function CreateEvent({ onClose, setEvents }) {
           className="relative z-[100] mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoPurpleLight text-center text-[1rem] font-bold"
           onClick={() => {
             showList();
-
-            console.log(showCalList);
           }}
           style={{ backgroundColor: calColor }}
         >

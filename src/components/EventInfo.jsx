@@ -240,7 +240,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
       alert("캘린더 수정에 실패했습니다. 다시 시도해 주세요.");
     }
   };
-  console.log("a", eventInfo);
+
   //취소
   const cancel = () => {
     setNewEventInfo({
@@ -267,7 +267,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
         },
       );
 
-      if (response.status === 200) {
+      if (response.status === 204) {
         // 삭제가 성공적으로 완료되었을 때
         setEvents((prevEvents) => {
           return prevEvents.filter(
