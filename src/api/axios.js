@@ -1,4 +1,5 @@
 import axios from "axios";
+import { refreshAccessToken } from "./auth";
 
 export let instance;
 if (import.meta.env.VITE_NODE_ENV === "development") {
@@ -54,7 +55,7 @@ if (import.meta.env.VITE_NODE_ENV === "development") {
           // 리프레시 토큰도 만료되었다면 사용자 로그아웃 처리
           localStorage.removeItem("token");
           localStorage.removeItem("refreshToken");
-          window.location.href = "/login";
+          // window.location.href = "/login";
         }
       }
 

@@ -6,6 +6,7 @@ import FullCalendar from "@fullcalendar/react";
 import React, { useEffect, useState } from "react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import timeGridPlugin from "@fullcalendar/timegrid";
 import { FaPlus } from "react-icons/fa6";
 import { instance } from "../api/axios";
 
@@ -95,9 +96,10 @@ export default function Calendar() {
           const calendar = calInfo.find(
             (cal) => cal.calId === event.calendar_id,
           );
-
+          console.log(event.end_time, event.start_time);
           return {
-            allDay: true,
+            displayEventEnd: true,
+            allDay: false,
             id: event.event_id,
             title: event.title,
             start: event.start_time,
@@ -118,14 +120,14 @@ export default function Calendar() {
       }
     }
     fetchEventInfo();
-  }, [calInfo, events]);
+  }, [calInfo]);
 
   return (
     <>
       <div className="mainCalendar bg-eventoWhite">
         <FullCalendar
           // plugins={[dayGridPlugin, interactionPlugin]} // 플러그인 추가
-          plugins={[dayGridPlugin]} // 플러그인 추가
+          plugins={[dayGridPlugin, timeGridPlugin]} // 플러그인 추가
           initialView="dayGridMonth" // 기본 뷰 설정
           headerToolbar={{
             left: "", // 왼쪽 버튼 제거
