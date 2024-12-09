@@ -15,6 +15,7 @@ import {
   FaRegCommentDots,
 } from "react-icons/fa";
 export default function EventInfo({ onClose, eventDetails, setEvents }) {
+  const user_nickname = localStorage.getItem("user_nickname");
   const [viewMode, setViewMode] = useState("info");
   console.log(`viewMode:${viewMode}`);
   const handleViewChange = (mode) => {
@@ -430,9 +431,8 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
             <div className="absolute bottom-[3rem] right-[3rem] flex space-x-[0.5rem] text-[1.5rem] text-darkGray">
               <FaPen onClick={() => handleViewChange("edit")} />
               {calInfo.members &&
-                calInfo.members.find(
-                  (cal) => cal === userInfo.user_nickname,
-                ) !== undefined && (
+                calInfo.members.find((cal) => cal === user_nickname) !==
+                  undefined && (
                   <FaRegTrashAlt
                     className="cursor-pointer text-[1.5rem] text-darkGray"
                     onClick={handleDelete}
