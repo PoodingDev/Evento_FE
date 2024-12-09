@@ -57,7 +57,7 @@ export default function EventComments({ onClose, eventDetails, onCancel }) {
             },
           },
         );
-        console.log(response.data);
+
         setCommentList(response.data || []);
       } catch (error) {
         console.error("댓글 정보를 가져오는 중 오류 발생:", error);
@@ -95,7 +95,7 @@ export default function EventComments({ onClose, eventDetails, onCancel }) {
       console.error("댓글 작성 중 오류 발생:", error);
     }
   };
-  console.log("A", commentList);
+
   return (
     <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
       <FaXmark
