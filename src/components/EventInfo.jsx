@@ -80,6 +80,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
   //캘린더 정보가져오기
   const [calInfo, setCalInfo] = useState({
     calenderName: "",
+    isPublic: false,
     members: [],
   });
   useEffect(() => {
@@ -91,7 +92,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
             Authorization: `Bearer ${token}`,
           },
         });
-
+        console.log(response);
         const selectedCalendar = response.data.find(
           (cal) => cal.name === eventInfo.title,
         );
@@ -99,6 +100,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
         if (selectedCalendar) {
           setCalInfo({
             calenderName: selectedCalendar.name,
+            isPublic: selectedCalendar.is_public,
             members: selectedCalendar.admins,
           });
         } else {
