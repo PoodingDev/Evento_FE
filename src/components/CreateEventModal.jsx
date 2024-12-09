@@ -34,6 +34,7 @@ export default function CreateEvent({ onClose, setEvents }) {
   //캘린더 이름
   const [title, setTitle] = useState(`캘린더 이름`);
   const [calId, setCalId] = useState(0);
+  const [calIsPublic, setCalIsPublic] = useState(false);
 
   //시간
   const [startDate, setStartDate] = useState(new Date());
@@ -159,10 +160,11 @@ export default function CreateEvent({ onClose, setEvents }) {
             Authorization: `Bearer ${token}`,
           },
         });
-
+        console.log(response.data);
         const calendarIds = response.data.map((item) => item.calendar_id);
         const calendarNames = response.data.map((item) => item.name);
         const calendarColors = response.data.map((item) => item.color);
+        const calendarIsPublic = response.data.map((item) => item.is_public);
 
         setCalData({
           calId: calendarIds,
@@ -183,10 +185,11 @@ export default function CreateEvent({ onClose, setEvents }) {
       calenderId: calId,
       calenderName: title,
       calendarColor: calColor,
+      calendarIsPublic: calIsPublic,
       members: members,
     });
   }, [calId]);
-
+  console.log(calInfo);
   return (
     <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
       <FaXmark
@@ -231,7 +234,7 @@ export default function CreateEvent({ onClose, setEvents }) {
                       setTitle(calData.calendarName[index]);
                       setCalId(calData.calId[index]);
                       setCalColor(calData.calendarColor[index]);
-                      // setMembers(calData.members[index]);
+                      setCalIsPublic(calData.calendarIsPublic[index]);
                     }}
                     style={{ backgroundColor: calData.calendarColor[index] }}
                   >
