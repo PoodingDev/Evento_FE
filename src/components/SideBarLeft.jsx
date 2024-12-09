@@ -35,7 +35,7 @@ export default function SideBarLeft() {
         const token = localStorage.getItem("token");
         const [myCalendarsResponse, subscribedCalendarsResponse, ddayResponse] =
           await Promise.allSettled([
-            instance.get("/api/calendars/calendars/admin/", {
+            instance.get("/api/calendars/admin/", {
               headers: { Authorization: `Bearer ${token}` },
             }),
             instance.get(`/api/calendars/subscriptions/`, {
@@ -45,7 +45,6 @@ export default function SideBarLeft() {
               headers: { Authorization: `Bearer ${token}` },
             }),
           ]);
-        // console.log("123");
         // console.log(myCalendarsResponse);
         if (myCalendarsResponse.status === "fulfilled") {
           setMyCalendars(myCalendarsResponse.value.data);

@@ -78,12 +78,14 @@ export default function Profile() {
                   {userInfo.userBirth}
                 </span>
               </li>
+              <li className="flex items-center justify-center">
+                <FaPen
+                  className="mt-[.8rem] cursor-pointer text-[1rem] text-darkGray"
+                  onClick={editClick}
+                />
+              </li>
             </ul>
           </div>
-          <FaPen
-            className="-translate-x-[9rem] -translate-y-[3.5rem] cursor-pointer text-[1rem] text-darkGray"
-            onClick={editClick}
-          />
         </div>
         <div className="absolute bottom-[5rem] right-[6rem]">
           <button

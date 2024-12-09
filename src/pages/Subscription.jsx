@@ -154,13 +154,10 @@ function CaleanderSearch({ toggleSubscription }) {
 
       try {
         const token = localStorage.getItem("token");
-        const response = await instance.get(
-          "/api/calendars/calendars/search/",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-            params: { nickname: debouncedInput }, // 검색어를 쿼리 파라미터로 전달
-          },
-        );
+        const response = await instance.get("/api/calendars/search/", {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { nickname: debouncedInput }, // 검색어를 쿼리 파라미터로 전달
+        });
 
         if (response.status === 200) {
           setFilteredSearch(response.data); // 검색 결과 업데이트

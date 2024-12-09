@@ -14,8 +14,8 @@ export default function DeleteAccountModal({ onClose }) {
         },
       });
 
-      if (response.status === 200) {
-        alert(response.data.message); // "회원탈퇴가 완료되었습니다."
+      if (response.status === 204) {
+        alert("회원탈퇴가 완료되었습니다.");
         localStorage.removeItem("token"); // 토큰 제거
         localStorage.removeItem("refreshToken"); //refresh 토큰제거
         navigate("/login");
