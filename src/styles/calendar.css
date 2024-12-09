@@ -76,6 +76,9 @@
   box-sizing: border-box !important;
 }
 
+.fc-event-title-container {
+  font-size: 0.75rem;
+}
 
 .fc {
   border: none;

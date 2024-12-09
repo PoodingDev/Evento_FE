@@ -196,7 +196,7 @@ export default function CreateEvent({ onClose, setEvents }) {
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex w-full flex-col">
+      <div className="flex flex-col w-full">
         <div className="mb-[1rem] flex items-center justify-between">
           {/* 이벤트 제목 */}
           <input

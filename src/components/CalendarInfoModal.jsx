@@ -16,7 +16,6 @@ import {
 
 export default function CalendarInfo({ calendar, onClose, userId }) {
   const user_id = localStorage.getItem("user_id");
-  console.log(user_id);
   const [calendarState, setCalendarState] = useState({
     name: calendar.name,
     description: calendar.description,
@@ -28,9 +27,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
   });
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  // 상태 변경 핸들러
-  console.log("---");
-  console.log(calendar);
+  // 상태 변경 핸들러;
   const updateState = (key, value) => {
     setCalendarState((prev) => ({
       ...prev,
@@ -38,6 +35,39 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
     }));
   };
 
+  const save = async () => {
+    try {
+      const token = localStorage.getItem("token"); // 토큰 가져오기
+      console.log(calendarState);
+      const response = await instance.patch(
+        `/api/calendars/${calendar.calendar_id}/`,
+        {
+          name: calendarState.name,
+          description: calendarState.description,
+          is_public: calendarState.isPublic,
+          color: calendarState.color,
+          creator: calendarState.creator,
+          invitation_code: calendarState.invitation_code,
+        },
+
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      if (response.status === 200) {
+        // 상태 업데이트 및 편집 종료
+        resetState();
+        onClose();
+      }
+    } catch (error) {
+      console.error("캘린더 수정 실패:", error);
+      alert("캘린더 수정에 실패했습니다. 다시 시도해 주세요.");
+    }
+  };
   const resetState = () => {
     setCalendarState({
       name: calendar.name,
@@ -213,18 +243,35 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
               </div>
             )}
           </div>
-          <div className="absolute bottom-[3rem] right-[3rem] flex space-x-[0.5rem]">
-            <FaPen
-              className="cursor-pointer text-[1.5rem] text-darkGray"
-              onClick={() => setIsEdit(true)}
-            />
-            {calendar.creator_id == user_id && (
-              <FaTrashCan
+          {isEdit ? (
+            <div className="absolute bottom-[2rem] right-[2rem] flex space-x-[0.5rem]">
+              <button
+                className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] border-[0.15rem] border-solid border-eventoPurple/80 text-center text-[1.1rem] text-eventoPurple/80 hover:bg-eventoPurpleLight/70 active:bg-eventoPurpleLight"
+                onClick={resetState}
+              >
+                <span>취소</span>
+              </button>
+              <button
+                onClick={save}
+                className="flex h-[2.5rem] w-[5rem] items-center justify-center rounded-[0.5rem] bg-eventoPurple/90 text-center text-[1.1rem] text-eventoWhite hover:bg-eventoPurple/70 active:bg-eventoPurple/50"
+              >
+                <span>저장</span>
+              </button>
+            </div>
+          ) : (
+            <div className="absolute bottom-[3rem] right-[3rem] flex space-x-[0.5rem]">
+              <FaPen
                 className="cursor-pointer text-[1.5rem] text-darkGray"
-                onClick={() => setDeleteModalOpen(true)}
+                onClick={() => setIsEdit(true)}
               />
-            )}
-          </div>
+              {calendar.creator_id == user_id && (
+                <FaTrashCan
+                  className="cursor-pointer text-[1.5rem] text-darkGray"
+                  onClick={handleDelete}
+                />
+              )}
+            </div>
+          )}
         </div>
       )}
 
