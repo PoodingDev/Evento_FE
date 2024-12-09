@@ -92,7 +92,8 @@ export default function CreateEvent({ onClose, setEvents }) {
         );
       } else {
         response = await instance.post(
-          "/api/events/private/create",
+          "/api/events/private/create/",
+
           {
             calendar_id: calId,
             title: eventTitle,

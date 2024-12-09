@@ -67,7 +67,6 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
       isEventPublic: eventDetails.isPublic,
     });
 
-
     setNewEventInfo({
       newEventTitle: eventDetails.title,
       newStartDate: eventDetails.start,
@@ -86,20 +85,20 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
     async function fetchCalInfo() {
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await instance.get("/api/calendars/admins/", {
+        const response = await instance.get("/api/calendars/admin/", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
         const selectedCalendar = response.data.find(
-          (cal) => cal.calendar_name === eventInfo.title,
+          (cal) => cal.name === eventInfo.title,
         );
 
         if (selectedCalendar) {
           setCalInfo({
-            calenderName: selectedCalendar.calendar_name,
-            members: selectedCalendar.members,
+            calenderName: selectedCalendar.name,
+            members: selectedCalendar.admins,
           });
         } else {
           console.error("일치하는 캘린더를 찾을 수 없습니다.");
@@ -240,7 +239,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
       alert("캘린더 수정에 실패했습니다. 다시 시도해 주세요.");
     }
   };
-
+  console.log("a", eventInfo);
   //취소
   const cancel = () => {
     setNewEventInfo({
@@ -257,12 +256,15 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
   const handleDelete = async () => {
     try {
       const token = localStorage.getItem("token"); // 토큰 가져오기
-      const response = await instance.delete(`/api/events/${eventInfo.eventId}/`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const response = await instance.delete(
+        `/api/events/${eventInfo.eventId}/`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
 
       if (response.status === 200) {
         // 삭제가 성공적으로 완료되었을 때
@@ -311,7 +313,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                 onClose();
               }}
             />
-            <div className="flex flex-col w-full">
+            <div className="flex w-full flex-col">
               <div className="mb-[1rem] flex items-center justify-between">
                 {/* 이벤트 제목 */}
 
@@ -427,15 +429,10 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
             </div>
             <div className="absolute bottom-[3rem] right-[3rem] flex space-x-[0.5rem] text-[1.5rem] text-darkGray">
               <FaPen onClick={() => handleViewChange("edit")} />
-              {calInfo.members === undefined ? (
-                <FaRegTrashAlt
-                  className="cursor-pointer text-[1.5rem] text-darkGray"
-                  onClick={handleDelete}
-                />
-              ) : null}
               {calInfo.members &&
-                calInfo.members.find((cal) => cal.id === userInfo.user_id) !==
-                  undefined && (
+                calInfo.members.find(
+                  (cal) => cal === userInfo.user_nickname,
+                ) !== undefined && (
                   <FaRegTrashAlt
                     className="cursor-pointer text-[1.5rem] text-darkGray"
                     onClick={handleDelete}
