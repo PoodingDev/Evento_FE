@@ -11,7 +11,7 @@ export async function requestKakaoLogin(code) {
     },
     {
       headers: {
-        "Content-Type": "application/json/",
+        "Content-Type": "application/json",
       },
       withCredentials: true,
     },
