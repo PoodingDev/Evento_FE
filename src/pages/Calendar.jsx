@@ -102,11 +102,11 @@ export default function Calendar() {
           calId: event.calendar_id,
           // calTitle: clickCalInfo.calTitle,
           // color: clickCalInfo.calColor,
-          calTitle: calInfo[0].calendarName,
-          color: calInfo[0].calendarColor,
+          // calTitle: calInfo[0].calendarName,
+          // color: calInfo[0].calendarColor,
           editable: true, // 이벤트 편집 가능
         }));
-
+        console.log();
         setEvents(eventMockData);
       } catch (error) {
         console.error("이벤트 정보를 가져오는 중 오류 발생:", error);
