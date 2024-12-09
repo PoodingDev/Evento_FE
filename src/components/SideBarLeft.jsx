@@ -50,7 +50,7 @@ export default function SideBarLeft() {
           setMyCalendars(myCalendarsResponse.value.data);
           const initialChecked = myCalendarsResponse.value.data.reduce(
             (acc, calendar) => {
-              acc[calendar.calendar_id] = true; // 기본적으로 모든 캘린더는 선택된 상태로 설정
+              acc[calendar.calendar_id] = true;
               return acc;
             },
             {},
