@@ -44,40 +44,66 @@ export default function Calendar() {
     setSelectedEvent(null); // 선택된 날짜 초기화
   };
 
+  //캘린더 정보 가져오기
+  const [calInfo, setCalInfo] = useState({
+    calId: 0,
+    isOnCalender: true,
+  });
+  useEffect(() => {
+    async function fetchCalInfoChange() {
+      try {
+        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
+        const response = await instance.get("/api/calendars/admin/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const info = response.data.map((cal) => ({
+          calId: cal.calendar_id,
+          calendarName: cal.name,
+          calendarColor: cal.color,
+          isactive: cal.isactive,
+        }));
+        setCalInfo(info);
+      } catch (error) {
+        console.error("캘린더 정보를 가져오는 중 오류 발생:", error);
+      }
+    }
+    fetchCalInfoChange();
+  }, []);
+
   //이벤트 정보 가져오기
   useEffect(() => {
     async function fetchEventInfo() {
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await instance.get(
-          `/api/calendars/${calInfo.calId}/events`,
-          {
-            //isactive인 캘린더의 이벤트(바뀐 API)
-            //const response = await axios.get(`api/calendars/active`, {
 
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        //isactive인 캘린더의 이벤트(바뀐 API)
+        const response = await instance.get(`/api/events/public/list/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
-        );
+        });
         const start_date = new Date(response.data.start_time);
         const end_date = new Date(response.data.end_time);
 
         const formattedStartDate = start_date.toLocaleDateString("ko");
         const formattedEndDate = end_date.toLocaleDateString("ko");
-
         const eventMockData = response.data.map((event) => ({
           allDay: true,
           id: event.event_id,
-          title: event.event_title,
+          title: event.title,
           start: event.start_time,
           end: event.end_time,
           extendedProps: {
-            memo: event.event_description,
+            memo: event.description,
           },
-          calId: event.cal_id,
-          calTitle: event.cal_title,
-          color: event.cal_color,
+          calId: event.calendar_id,
+          // calTitle: clickCalInfo.calTitle,
+          // color: clickCalInfo.calColor,
+          calTitle: calInfo[0].calendarName,
+          color: calInfo[0].calendarColor,
           editable: true, // 이벤트 편집 가능
         }));
 
@@ -87,37 +113,6 @@ export default function Calendar() {
       }
     }
     fetchEventInfo();
-  }, []);
-
-  //캘린더 정보 가져오기
-  const [calInfo, setCalInfo] = useState({
-    calId: 0,
-    isOnCalender: true,
-  });
-  useEffect(() => {
-    async function fetchCalInfo() {
-      try {
-        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await instance.get("/api/calendars/admin", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const info = response.data.map((cal) => ({
-          calId: cal.calendar_id,
-          isactive: cal.isactive,
-        }));
-        setCalInfo(info);
-      } catch (error) {
-        console.error("캘린더 정보를 가져오는 중 오류 발생:", error);
-      }
-    }
-    fetchCalInfo();
-  }, []);
-
-  useEffect(() => {
-    console.log("확인", calInfo);
   }, [calInfo]);
 
   return (

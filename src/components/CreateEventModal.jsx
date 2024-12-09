@@ -63,8 +63,8 @@ export default function CreateEvent({ onClose, setEvents }) {
       let response;
 
       if (isEventPublic) {
-        response = await axios.post(
-          "/api/events/public/create",
+        response = await instance.post(
+          "/api/events/public/create/",
           {
             calendar_id: calId,
             title: eventTitle,
@@ -139,22 +139,21 @@ export default function CreateEvent({ onClose, setEvents }) {
       );
     }
   };
-  console.log(calInfo);
 
   //캘린더 정보
   useEffect(() => {
     async function fetchCalInfo() {
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-        const response = await instance.get("/api/calendars/calendars/admin/", {
+        const response = await instance.get("/api/calendars/admin/", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
         const calendarIds = response.data.map((item) => item.calendar_id);
-        const calendarNames = response.data.map((item) => item.calendar_name);
-        const calendarColors = response.data.map((item) => item.calendar_color);
+        const calendarNames = response.data.map((item) => item.name);
+        const calendarColors = response.data.map((item) => item.color);
 
         setCalData({
           calId: calendarIds,
@@ -202,9 +201,11 @@ export default function CreateEvent({ onClose, setEvents }) {
         {/* 캘린더 선택 */}
 
         <div
-          className="relative z-20 mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoPurpleLight text-center text-[1rem] font-bold"
+          className="relative z-[100] mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoPurpleLight text-center text-[1rem] font-bold"
           onClick={() => {
             showList();
+
+            console.log(showCalList);
           }}
           style={{ backgroundColor: calColor }}
         >
@@ -213,7 +214,7 @@ export default function CreateEvent({ onClose, setEvents }) {
             <p className="">{`${title}`}</p>
           </div>
           {showCalList && (
-            <div className="absolute left-[1.3rem] top-[1.55rem] flex h-[6rem] w-[8rem] flex-col overflow-auto">
+            <div className="absolute left-[1.3rem] top-[1.55rem] flex h-[6rem] w-[8rem] flex-col overflow-auto bg-eventoWhite">
               {calData.calId.map((cal, index) => {
                 return (
                   <button
