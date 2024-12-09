@@ -82,8 +82,8 @@ export default function CreateEvent({ onClose, setEvents }) {
           },
         );
       } else {
-        response = await axios.post(
-          "/api/events/private/create",
+        response = await instance.post(
+          "/api/events/private/create/",
           {
             calendar_id: calId,
             title: eventTitle,

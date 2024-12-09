@@ -118,7 +118,7 @@ export default function Calendar() {
       }
     }
     fetchEventInfo();
-  }, [calInfo, events]);
+  }, [calInfo]);
 
   return (
     <>
