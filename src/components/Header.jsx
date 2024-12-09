@@ -16,6 +16,7 @@ export default function Header() {
   const handleLogout = () => {
     setLoggedIn(false);
     localStorage.removeItem("token"); // 로그아웃 시 토큰 제거
+    localStorage.removeItem("refreshToken"); // 로그아웃 시 토큰 제거
     navigate("/login");
   };
 
