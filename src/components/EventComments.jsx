@@ -37,7 +37,13 @@ export default function EventComments({ onClose, eventDetails, onCancel }) {
   //   },
   // ];
   //댓글 정보
-  const [commentList, setCommentList] = useState([]);
+  const [commentList, setCommentList] = useState([
+    {
+      comment_id: 0,
+      content: "",
+      admin_nickname: "",
+    },
+  ]);
 
   useEffect(() => {
     async function fetchComments() {
@@ -51,8 +57,8 @@ export default function EventComments({ onClose, eventDetails, onCancel }) {
             },
           },
         );
-
-        setCommentList(response.data.comments || []);
+        console.log(response.data);
+        setCommentList(response.data || []);
       } catch (error) {
         console.error("댓글 정보를 가져오는 중 오류 발생:", error);
       }
@@ -89,7 +95,7 @@ export default function EventComments({ onClose, eventDetails, onCancel }) {
       console.error("댓글 작성 중 오류 발생:", error);
     }
   };
-
+  console.log("A", commentList);
   return (
     <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
       <FaXmark
@@ -125,8 +131,8 @@ export default function EventComments({ onClose, eventDetails, onCancel }) {
           <div className="h-[16rem] space-y-[0.8rem] overflow-auto px-[1rem]">
             {commentList.map((comment) => {
               return (
-                <div key={comment.id} className="flex flex-wrap">
-                  <div className="ml-[0.2rem] w-[42rem] pb-[0.2rem] text-[0.8rem] text-darkGray">{`${comment.username}`}</div>
+                <div key={comment.comment_id} className="flex flex-wrap">
+                  <div className="ml-[0.2rem] w-[42rem] pb-[0.2rem] text-[0.8rem] text-darkGray">{`${comment.admin_nickname}`}</div>
                   <div
                     style={{ backgroundColor: `${eventDetails.color}BB` }}
                     className="mr-[1rem] flex items-center rounded-[0.6rem] px-[0.7rem] py-[0.2rem] text-[0.9rem] leading-[1.5rem] text-eventoWhite"
