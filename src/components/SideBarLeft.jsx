@@ -47,7 +47,7 @@ export default function SideBarLeft() {
               headers: { Authorization: `Bearer ${token}` },
             }),
           ]);
-        // console.log(myCalendarsResponse);
+
         if (myCalendarsResponse.status === "fulfilled") {
           setMyCalendars(myCalendarsResponse.value.data);
           const initialChecked = myCalendarsResponse.value.data.reduce(
@@ -144,7 +144,7 @@ export default function SideBarLeft() {
     );
     setCalendarInfoOpen(false);
   };
-
+  console.log(subscribedCalendars);
   return (
     <div>
       <div className="evento-sidebarleft absolute mt-[5rem] h-[calc(100vh-5rem)] w-[18rem] rounded-tr-[2.5rem] bg-eventoGray pl-[2.25rem] pr-[1.75rem] pt-[1.6rem]">
