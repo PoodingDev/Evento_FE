@@ -48,7 +48,7 @@ export default function CreateCalendar({ onClose }) {
       );
 
       if (response.status === 201) {
-        alert("캘린더가 성공적으로 생성되었습니다!");
+        // alert("캘린더가 성공적으로 생성되었습니다!");
         onClose(); // 모달 닫기
       }
     } catch (error) {
