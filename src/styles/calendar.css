@@ -26,6 +26,12 @@
   border: none;
 }
 
+.fc-event-title {
+  font-size: 0.8rem !important;
+  font-weight: 100 !important;
+  font-weight: 500 !important;
+}
+
 .fc .fc-button-primary:hover {
   font-size: 16px;
   color: #8867df;
@@ -77,7 +83,7 @@
 }
 
 .fc-event-title-container {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
 }
 
 .fc {
