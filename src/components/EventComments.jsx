@@ -155,7 +155,7 @@ export default function EventComments({
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
         const response = await instance.get(
-          `/api/calendars/${eventDetails.calendarId}/events/${eventDetails.id}/comments/`,
+          `/api/events/${eventDetails.id}/comments/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -194,7 +194,7 @@ export default function EventComments({
     try {
       const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
       const response = await instance.post(
-        `/api/calendars/${eventDetails.calendarId}/events/${eventDetails.id}/comments/`,
+        `/api/events/${eventDetails.id}/comments/`,
         { content: input },
         {
           headers: {
@@ -219,7 +219,7 @@ export default function EventComments({
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex flex-col w-full">
+      <div className="flex w-full flex-col">
         <div className="mb-[1rem] flex items-center justify-between">
           {/* 이벤트 제목 */}
 
