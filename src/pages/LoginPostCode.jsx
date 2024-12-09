@@ -60,7 +60,7 @@ export default function LoginPostCode() {
         // console.log("--------------------------------");
         // console.log("로그인 성공, userInfo: " + userInfo);
         // 캘린더 페이지로 이동
-        navigate("/profile");
+        navigate("/Calendar");
       } catch (error) {
         console.error("Authentication error:", error);
 

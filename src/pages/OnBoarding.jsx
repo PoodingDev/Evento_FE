@@ -2,86 +2,94 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function OnBoarding() {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // ✅ 컴포넌트 내부로 이동
   const [slides] = useState([
     {
       img: "/assets/evento_logo.png",
       title: "간편한 일정 관리,",
-      body: "evento.와 함께 시작하세요",
-    },
-    {
-      img: "/assets/onboarding/main_calendar.png",
-      title: "Evento1",
       body: (
         <>
-          선택한 캘린더만 표시되고, 지정된 색상으로 구분되어
           <br />
-          한눈에 쉽게 확인할 수 있는 맞춤형 캘린더 서비스입니다! 💖
+          evento와 함께 새로운 경험을 시작하세요
         </>
       ),
     },
     {
-      img: "/assets/onboarding/subscription_search.png",
-      title: "Evento2",
+      img: "/assets/onboarding/main_calendar.png",
+      title: "깔끔한 캘린더 분류",
       body: (
         <>
-          좋아하는 아티스트를 검색해 캘린더를 구독하고,
+          색상별로 일정을 구분하여
           <br />
-          구독한 캘린더를 한눈에 확인할 수 있어요!
+          한눈에 보기 쉽게 정리해보세요.
         </>
       ),
     },
     {
       img: "/assets/onboarding/subscription_list.png",
-      title: "Evento3",
+      title: "맞춤형 일정 필터링",
       body: (
         <>
-          원하는 캘린더를 선택해,
+          내가 필요한 일정만 선택해서
           <br />
-          필요한 일정만 한눈에 확인할 수 있는 페이지입니다!
+          효율적으로 관리하세요.
+        </>
+      ),
+    },
+    {
+      img: "/assets/onboarding/subscription_search.png",
+      title: "스마트한 덕질",
+      body: (
+        <>
+          좋아하는 아티스트의 공식 스케줄을
+          <br />
+          구독하고 한곳에서 확인하세요.
         </>
       ),
     },
     {
       img: "/assets/onboarding/comment_like.png",
-      title: "Evento4",
+      title: "함께하는 일정 계획",
       body: (
         <>
-          상세 일정을 클릭해 의견을 나누고,
+          일정별 채팅창을 통해
           <br />
-          '좋아요'를 눌러보세요!
+          친구들과 소통하며 계획을 세워보세요.
         </>
       ),
     },
     {
       img: "/assets/onboarding/d_day.png",
-      title: "Evento5",
+      title: "특별한 날은 D-Day로",
       body: (
         <>
-          중요한 일정은 D-DAY로 표시되어,
+          중요한 날을 D-Day로 설정하고
           <br />
-          이벤트까지 남은 일수를 한눈에 확인할 수 있습니다.
+          남은 날짜를 쉽게 확인하세요.
         </>
       ),
     },
     {
       img: "/assets/onboarding/create_calendar.png",
-      title: "Evento6",
-      body: (
-        <>
-          색상을 변경하고, 공개/비공개 설정으로 검색 여부를 조정할 수 있어요.
-          <br />
-          친구를 초대해 함께 캘린더를 관리할 수 있습니다!
-        </>
-      ),
+      title: "우리만의 캘린더",
+      body: <>비공개 설정 기능을 통해 나와 친구들만의 캘린더를 완성하세요.</>,
     },
     {
       img: "/assets/evento_logo.png",
       title: "",
-      body: "지금 바로 시작하세요",
+      body: "지금 바로 시작하세요!",
     },
   ]);
+
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // 토큰 체크 및 리다이렉션
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/calendar"); // 토큰이 있으면 캘린더로 리다이렉션
+    }
+  }, [navigate]);
 
   const handleSwipe = (direction) => {
     if (direction === "next") {
@@ -97,10 +105,7 @@ export default function OnBoarding() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-eventoWhite px-5 py-5">
-      {/* <div className="relative mx-auto w-[40%] overflow-hidden rounded-3xl bg-white px-10 pb-10 pt-16 text-gray-800 shadow-lg">
-       */}
       <div className="relative mx-10 w-[40%] overflow-hidden rounded-3xl pb-10 pt-16 text-gray-800">
-        {/* 슬라이드 컨테이너 */}
         <div
           className="flex transition-transform duration-500 ease-in-out"
           style={{
@@ -113,26 +118,31 @@ export default function OnBoarding() {
               className="flex w-full flex-shrink-0 flex-col items-center justify-center text-center"
               style={{ width: "100%" }}
             >
-              {/* 이미지 렌더링 */}
               <img
                 src={slide.img}
                 alt={slide.title}
-                className="mb-5 w-auto object-contain "
+                className="mb-5 w-auto object-contain"
                 style={{
-                  height: index === 0 || index === slides.length - 1 ? "100px" : "250px",
+                  height:
+                    index === 0 || index === slides.length - 1
+                      ? "100px"
+                      : "250px",
                 }}
               />
-              <h2 className={`text-[1.3rem] font-bold text-eventoPurpleDark ${index === 0 ? "mt-20" : "mb-3"
-                }`}>
+              <h2
+                className={`text-[1.3rem] font-semibold text-eventoPurpleDark/90 ${
+                  index === 0 ? "mt-20" : "mb-3"
+                }`}
+              >
                 {slide.title}
               </h2>
-              <p className="h-16 text-[1.1rem] font-semibold leading-tight text-eventoPurple/80">
+              <p className="h-16 text-[1rem] leading-tight text-eventoPurple/80">
                 {slide.body}
               </p>
               {index === slides.length - 1 && (
                 <button
                   onClick={() => navigate("/login")}
-                  className="mb-4 rounded-lg bg-eventoPurpleDark px-6 py-3 text-white shadow hover:bg-eventoPurple focus:outline-none active:bg-eventoWhite active:text-eventoPurpleDark"
+                  className="rounded- mb-4 rounded-full bg-eventoPurpleDark px-8 py-3 text-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-eventoPurple hover:shadow-2xl focus:outline-none active:scale-95 active:bg-eventoWhite active:text-eventoPurpleDark"
                 >
                   Get Started
                 </button>
@@ -141,19 +151,18 @@ export default function OnBoarding() {
           ))}
         </div>
 
-        {/* Dots */}
         <div className="mt-6 flex justify-center">
           {slides.map((_, index) => (
             <span
               key={index}
               onClick={() => handleDotClick(index)}
-              className={`mx-1 h-3 w-3 cursor-pointer rounded-full ${index === currentIndex ? "bg-eventoPurple" : "bg-gray-300"
-                }`}
+              className={`mx-1 h-3 w-3 cursor-pointer rounded-full ${
+                index === currentIndex ? "bg-eventoPurple" : "bg-gray-300"
+              }`}
             ></span>
           ))}
         </div>
 
-        {/* 네비게이션 */}
         <div className="absolute left-2 top-1/2 -translate-y-1/2 transform">
           <button
             onClick={() => handleSwipe("prev")}
