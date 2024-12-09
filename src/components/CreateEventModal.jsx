@@ -1,6 +1,7 @@
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import React, { useEffect, useState } from "react";
+import dayjs from "dayjs";
 import { FaCaretDown, FaToggleOff, FaToggleOn } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { instance } from "../api/axios";
@@ -62,6 +63,14 @@ export default function CreateEvent({ onClose, setEvents }) {
       }
       let response;
 
+      const endDate2 = new dayjs(endDate)
+        .set("hour", 23)
+        .set("minute", 59)
+        .set("second", 58);
+      const startDate2 = new dayjs(startDate)
+        .set("hour", 0)
+        .set("minute", 0)
+        .set("second", 0);
       if (isEventPublic) {
         response = await instance.post(
           "/api/events/public/create/",
@@ -69,8 +78,8 @@ export default function CreateEvent({ onClose, setEvents }) {
             calendar_id: calId,
             title: eventTitle,
             description: detailEventMemo,
-            start_time: startDate,
-            end_time: endDate,
+            start_time: startDate2.toDate(),
+            end_time: endDate2.toDate(),
             is_public: isEventPublic,
             location: "",
           },
@@ -84,6 +93,7 @@ export default function CreateEvent({ onClose, setEvents }) {
       } else {
         response = await instance.post(
           "/api/events/private/create/",
+
           {
             calendar_id: calId,
             title: eventTitle,
@@ -104,13 +114,14 @@ export default function CreateEvent({ onClose, setEvents }) {
 
       if (response.status === 201) {
         const start_date = new Date(response.data.start_time);
+        console.log(response);
         const end_date = new Date(response.data.end_time);
 
         const formattedStartDate = start_date.toLocaleDateString("ko");
         const formattedEndDate = end_date.toLocaleDateString("ko");
 
         const newEvent = {
-          allDay: true,
+          allDay: false,
           id: response.data.event_id,
           title: response.data.event_title,
           start: formattedStartDate,

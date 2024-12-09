@@ -28,11 +28,13 @@ export default function SideBarLeft() {
   const [dday, setDday] = useState([]);
 
   const { loggedIn, userInfo } = useAuth();
+  const userId = localStorage.getItem("user_id");
 
   useEffect(() => {
     async function fetchData() {
       try {
         const token = localStorage.getItem("token");
+
         const [myCalendarsResponse, subscribedCalendarsResponse, ddayResponse] =
           await Promise.allSettled([
             instance.get("/api/calendars/admin/", {
@@ -41,7 +43,7 @@ export default function SideBarLeft() {
             instance.get(`/api/calendars/subscriptions/`, {
               headers: { Authorization: `Bearer ${token}` },
             }),
-            instance.get(`/api/users/${userInfo.user_id}/favorites/`, {
+            instance.get(`/api/users/${userId}/favorites/`, {
               headers: { Authorization: `Bearer ${token}` },
             }),
           ]);
@@ -50,7 +52,7 @@ export default function SideBarLeft() {
           setMyCalendars(myCalendarsResponse.value.data);
           const initialChecked = myCalendarsResponse.value.data.reduce(
             (acc, calendar) => {
-              acc[calendar.calendar_id] = true; // 기본적으로 모든 캘린더는 선택된 상태로 설정
+              acc[calendar.calendar_id] = true;
               return acc;
             },
             {},
@@ -72,10 +74,10 @@ export default function SideBarLeft() {
       }
     }
 
-    if (userInfo?.user_id) {
+    if (userId) {
       fetchData();
     }
-  }, [userInfo, isCalendarInfoOpen, isCreateOpen]);
+  }, [isCalendarInfoOpen, isCreateOpen]);
 
   const handleToggle = async (id) => {
     try {
@@ -258,7 +260,7 @@ export default function SideBarLeft() {
           <CalendarInfo
             calendar={selectedCalendar}
             onClose={() => setCalendarInfoOpen(false)}
-            userId={userInfo?.user_id}
+            userId={userId}
           />
         </div>
       )}

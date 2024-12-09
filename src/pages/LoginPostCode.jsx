@@ -50,10 +50,10 @@ export default function LoginPostCode() {
         // 토큰 저장
         localStorage.setItem("token", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
-
         // 사용자 정보 가져오기
         const userInfo = await fetchUserInfo(accessToken);
-
+        localStorage.setItem("user_id", userInfo.user_id);
+        localStorage.setItem("user_nickname", userInfo.user_nickname);
         // 전역 상태 업데이트
         setLoggedIn(true);
         setUserInfo(userInfo);

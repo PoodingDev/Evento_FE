@@ -75,6 +75,7 @@ export default function ProfileEdit() {
         );
       }
     }
+    localStorage.setItem("user_nickname", nickname);
   };
 
   const handleCancel = () => {
