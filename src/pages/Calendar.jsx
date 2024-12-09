@@ -96,7 +96,7 @@ export default function Calendar() {
           const calendar = calInfo.find(
             (cal) => cal.calId === event.calendar_id,
           );
-          console.log(event.end_time, event.start_time);
+
           return {
             displayEventEnd: true,
             allDay: false,
@@ -113,14 +113,13 @@ export default function Calendar() {
             editable: true, // 이벤트 편집 가능
           };
         });
-
         setEvents(eventMockData);
       } catch (error) {
         console.error("이벤트 정보를 가져오는 중 오류 발생:", error);
       }
     }
     fetchEventInfo();
-  }, [calInfo]);
+  }, [calInfo, isModalOpen, isCreateEventOpen]);
 
   return (
     <>
