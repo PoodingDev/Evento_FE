@@ -18,15 +18,15 @@ export default function Subscription() {
     const calendarInSearch = filteredSearch.find(
       (calendar) => calendar.calendar_id === id,
     );
-
+    console.log(calendarInSearch);
     const calendarInSubscribed = subscribedCalendars.find(
       (calendar) => calendar.calendar_id === id,
     );
 
     try {
       if (
-        calendarInSearch?.isSubscribed ||
-        calendarInSubscribed?.isSubscribed
+        calendarInSearch?.is_subscribed ||
+        calendarInSubscribed?.is_subscribed
       ) {
         // 구독 취소
         const token = localStorage.getItem("token");
