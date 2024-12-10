@@ -269,15 +269,18 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
             </div>
           ) : (
             <div className="absolute bottom-[3rem] right-[3rem] flex space-x-[0.5rem]">
-              <FaPen
-                className="cursor-pointer text-[1.5rem] text-darkGray"
-                onClick={() => setIsEdit(true)}
-              />
               {calendar.creator_id == user_id && (
-                <FaTrashCan
-                  className="cursor-pointer text-[1.5rem] text-darkGray"
-                  onClick={() => setDeleteModalOpen(true)}
-                />
+                <>
+                  <FaPen
+                    className="cursor-pointer text-[1.5rem] text-darkGray"
+                    onClick={() => setIsEdit(true)}
+                  />
+
+                  <FaTrashCan
+                    className="cursor-pointer text-[1.5rem] text-darkGray"
+                    onClick={() => setDeleteModalOpen(true)}
+                  />
+                </>
               )}
             </div>
           )}
