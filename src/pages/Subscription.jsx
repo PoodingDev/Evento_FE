@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { instance } from "../api/axios";
-import { useAuth } from "../context/AuthContext";
+import { useCalendar } from "../context/CalendarContext";
 
 import {
   IoChevronBack,
@@ -10,12 +10,10 @@ import {
 } from "react-icons/io5";
 
 export default function Subscription() {
-  const user_id = localStorage.getItem("user_id");
-  const [subscribedCalendars, setSubscribedCalendars] = useState([]);
+  const { subscribedCalendars, fetchData } = useCalendar();
   const [filteredSearch, setFilteredSearch] = useState([]);
 
   const toggleSearchSubscription = async (calendar) => {
-    console.log("Search에서 토글 요청 캘린더:", calendar);
     try {
       const token = localStorage.getItem("token");
       const { calendar_id: id } = calendar;
@@ -35,82 +33,44 @@ export default function Subscription() {
             item.calendar_id === id ? { ...item, is_subscribed: false } : item,
           ),
         );
-
-        // subscribedCalendars에서 제거
-        setSubscribedCalendars((prev) =>
-          prev.filter((item) => item.calendar_id !== id),
-        );
       } else {
         // 구독 추가
-        const response = await instance.post(
+        await instance.post(
           `/api/calendars/subscriptions/`,
           { calendar_id: id },
           { headers: { Authorization: `Bearer ${token}` } },
         );
 
-        if (response.status === 201) {
-          setFilteredSearch((prev) =>
-            prev.map((item) =>
-              item.calendar_id === id ? { ...item, is_subscribed: true } : item,
-            ),
-          );
-
-          // subscribedCalendars에 추가
-          setSubscribedCalendars((prev) => [
-            ...prev,
-            { ...calendar, is_subscribed: true },
-          ]);
-        }
+        setFilteredSearch((prev) =>
+          prev.map((item) =>
+            item.calendar_id === id ? { ...item, is_subscribed: true } : item,
+          ),
+        );
       }
+
+      // 데이터 동기화
+      fetchData();
     } catch (error) {
-      console.error("Search에서 구독 상태 변경 중 오류 발생:", error);
-    }
-  };
-
-  const toggleSubscribedCalendar = async (calendar) => {
-    console.log("Subscribed에서 토글 요청 캘린더:", calendar);
-    try {
-      const token = localStorage.getItem("token");
-
-      await instance.delete(`/api/calendars/subscriptions/${calendar.id}/`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      setSubscribedCalendars((prev) => prev.filter((item) => item.id !== id));
-    } catch (error) {
-      console.error("Subscribed에서 구독 상태 변경 중 오류 발생:", error);
+      console.error("구독 상태 변경 중 오류 발생:", error);
     }
   };
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await instance.get(`/api/calendars/subscriptions/`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+    async function fetchSearchResults() {
+      const token = localStorage.getItem("token");
+      const response = await instance.get(`/api/calendars/search/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-        if (response.status === 200) {
-          // 초기 데이터 로드
-          const initializedCalendars = response.data.map((calendar) => ({
-            ...calendar,
-            is_subscribed: true, // 구독 상태 설정
-          }));
-
-          console.log("구독한 캘린더 데이터:", initializedCalendars); // 디버깅 로그
-          setSubscribedCalendars(initializedCalendars);
-        } else {
-          console.error("구독한 캘린더를 가져오지 못했습니다.");
-        }
-      } catch (error) {
-        console.error("캘린더 데이터를 가져오는 중 오류 발생:", error);
+      if (response.status === 200) {
+        setFilteredSearch(response.data);
+      } else {
+        console.error("캘린더 검색 데이터를 가져오지 못했습니다.");
       }
     }
 
-    if (user_id) {
-      fetchData();
-    }
-  }, [user_id, filteredSearch]);
+    fetchSearchResults();
+  }, []);
 
   return (
     <div className="h-[100vh] bg-eventoWhite pl-[18rem] pt-[4rem]">
@@ -124,12 +84,12 @@ export default function Subscription() {
         <CalenderSearch
           filteredSearch={filteredSearch}
           setFilteredSearch={setFilteredSearch}
-          toggleSubscription={toggleSearchSubscription} // Search용 함수 전달
+          toggleSubscription={toggleSearchSubscription}
         />
 
         <SubscriptionCalender
           openCalendars={subscribedCalendars}
-          toggleSubscription={toggleSubscribedCalendar} // Subscribed용 함수 전달
+          toggleSubscription={toggleSearchSubscription}
         />
       </div>
     </div>
@@ -157,6 +117,7 @@ function CalenderSearch({
         setFilteredSearch([]);
         return;
       }
+
       try {
         const token = localStorage.getItem("token");
         const response = await instance.get(
@@ -167,17 +128,16 @@ function CalenderSearch({
         );
 
         if (response.status === 200) {
-          const updatedResults = response.data.map((calendar) => ({
-            ...calendar,
-            is_subscribed: calendar.is_subscribed,
-          }));
-          setFilteredSearch(updatedResults);
+          setFilteredSearch(response.data);
+        } else {
+          setFilteredSearch([]);
         }
       } catch (error) {
         console.error("캘린더 검색 중 오류 발생:", error);
         setFilteredSearch([]);
       }
     }
+
     fetchCalendars();
   }, [debouncedInput]);
 
@@ -187,7 +147,7 @@ function CalenderSearch({
         <input
           type="text"
           value={inputValue}
-          placeholder="닉네임을 검색하세요"
+          placeholder="캘린더를 검색하세요"
           onChange={(event) => setInputValue(event.target.value)}
           className="focus: rounded-full bg-gray-200 p-[2px] px-3 py-2 text-center text-eventoblack/90 focus:bg-eventoPurpleLight/80 focus:placeholder-eventoPurpleDark/50 focus:outline-none"
         />
@@ -227,7 +187,7 @@ function SubscriptionCalender({ openCalendars, toggleSubscription }) {
   return (
     <>
       <div className="relative after:absolute after:bottom-0 after:left-0 after:top-0 after:w-[2px] after:bg-gray-200 after:content-['']"></div>
-      <section className="flex flex-col items-center w-1/3">
+      <section className="flex w-1/3 flex-col items-center">
         <h1>구독한 캘린더</h1>
         <ul className="mt-[2rem] flex w-auto flex-col">
           {openCalendars.map((calendar) => (
@@ -243,17 +203,6 @@ function SubscriptionCalender({ openCalendars, toggleSubscription }) {
               <p className="text-[0.9rem] text-darkGray/80">
                 {calendar.description}
               </p>
-
-              {/* <button
-                className={`ml-auto h-[2rem] w-[5rem] rounded-[0.625rem] border-2 p-1 align-middle ${
-                  calendar.is_subscribed
-                    ? "border-darkRed bg-white text-darkRed"
-                    : "border-darkRed bg-darkRed text-white"
-                }`}
-                onClick={() => toggleSubscription(calendar)}
-              >
-                {calendar.is_subscribed ? "구독 취소" : "구독"}
-              </button> */}
             </li>
           ))}
         </ul>
