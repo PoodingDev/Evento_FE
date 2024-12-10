@@ -48,10 +48,7 @@ export default function Calendar() {
   };
 
   //캘린더 정보 가져오기
-  const [calInfo, setCalInfo] = useState({
-    calId: 0,
-    isOnCalender: true,
-  });
+  const [calInfo, setCalInfo] = useState([]);
   useEffect(() => {
     async function fetchCalInfoChange() {
       try {
@@ -68,12 +65,42 @@ export default function Calendar() {
           calendarColor: cal.color,
           isactive: cal.isactive,
         }));
-        setCalInfo(info);
+        setCalInfo((prevCalInfo) => [
+          ...prevCalInfo, // 기존의 calInfo 데이터
+          ...info, // 새로 가져온 구독 캘린더 데이터
+        ]);
       } catch (error) {
         console.error("캘린더 정보를 가져오는 중 오류 발생:", error);
       }
     }
     fetchCalInfoChange();
+  }, []);
+
+  //구독 캘린더 정보 가져오기
+  useEffect(() => {
+    async function fetchCalInfoSubChange() {
+      try {
+        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
+        const response = await instance.get("/api/calendars/subscriptions/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const info = response.data.map((cal) => ({
+          calId: cal.id,
+          calendarName: cal.name,
+          calendarColor: cal.color,
+          isactive: cal.isactive,
+        }));
+        setCalInfo((prevCalInfo) => [
+          ...info, // 새로 가져온 구독 캘린더 데이터
+        ]);
+      } catch (error) {
+        console.error("구독 캘린더 정보를 가져오는 중 오류 발생:", error);
+      }
+    }
+    fetchCalInfoSubChange();
   }, []);
 
   //이벤트 정보 가져오기
@@ -93,11 +120,11 @@ export default function Calendar() {
 
         // const formattedStartDate = start_date.toLocaleDateString("ko");
         // const formattedEndDate = end_date.toLocaleDateString("ko");
-        console.log(response.data);
         const eventMockData = response.data.map((event) => {
           const calendar = calInfo.find(
             (cal) => cal.calId === event.calendar_id,
           );
+
           return {
             displayEventEnd: true,
             allDay: false,
