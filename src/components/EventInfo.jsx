@@ -359,6 +359,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
           onClose={onClose}
           eventDetails={eventDetails}
           eventInfo={eventInfo}
+          calInfo={calInfo}
           setEventInfo={setEventInfo}
           onSave={() => save}
           onCancel={() => handleViewChange("info")}

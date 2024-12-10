@@ -13,6 +13,7 @@ export default function EventEdit({
   onSave,
   onCancel,
   setEvents,
+  calInfo,
 }) {
   //상태 관리
   const [newEventInfo, setNewEventInfo] = useState({
@@ -209,28 +210,29 @@ export default function EventEdit({
         </div>
 
         {/* 기타 아이콘 */}
-
-        <div className="mb-[2rem]">
-          <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
-            이벤트 공개 여부
+        {calInfo.isPublic && (
+          <div className="mb-[2rem]">
+            <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
+              이벤트 공개 여부
+            </div>
+            <div className="flex items-center space-x-[0.5rem] text-[1rem] text-darkGray">
+              <p>구독자들에게 공개하기</p>
+              {newEventInfo.newEventPublic === true ? (
+                <FaToggleOn
+                  size={25}
+                  className="cursor-pointer text-eventoPurple"
+                  onClick={toggleIsPublic}
+                />
+              ) : (
+                <FaToggleOff
+                  size={25}
+                  className="cursor-pointer text-eventoPurple"
+                  onClick={toggleIsPublic}
+                />
+              )}
+            </div>
           </div>
-          <div className="flex items-center space-x-[0.5rem] text-[1rem] text-darkGray">
-            <p>구독자들에게 공개하기</p>
-            {newEventInfo.newEventPublic === true ? (
-              <FaToggleOn
-                size={25}
-                className="cursor-pointer text-eventoPurple"
-                onClick={toggleIsPublic}
-              />
-            ) : (
-              <FaToggleOff
-                size={25}
-                className="cursor-pointer text-eventoPurple"
-                onClick={toggleIsPublic}
-              />
-            )}
-          </div>
-        </div>
+        )}
       </div>
 
       <div className="absolute bottom-[2rem] right-[2rem] flex space-x-[0.5rem]">
