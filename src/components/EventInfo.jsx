@@ -394,14 +394,8 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                   </div>
                   <input
                     type="text"
-                    value={newEventInfo.newEventTitle}
+                    value={eventInfo.eventTitle}
                     className="ml-[.5rem] h-[2.7rem] w-[25rem] rounded-md bg-transparent pl-[.5rem] text-[2.3rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
-                    onChange={(e) => {
-                      setNewEventInfo({
-                        ...newEventInfo,
-                        newEventTitle: e.target.value,
-                      });
-                    }}
                     disabled
                   />
                 </div>
@@ -427,13 +421,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
               </div>
               <div className="relative z-10 mb-[2rem] flex w-[25rem] -translate-x-[0.5rem] items-center text-[2rem] font-bold text-darkGray">
                 <DatePicker
-                  selected={newEventInfo.newStartDate}
-                  onChange={(date) =>
-                    setNewEventInfo({
-                      ...newEventInfo,
-                      newStartDate: date,
-                    })
-                  }
+                  selected={eventInfo.startDate}
                   dateFormat="yyyy-MM-dd"
                   className="w-[13rem] rounded-md bg-transparent px-[.6rem] text-center"
                   showYearDropdown
@@ -445,15 +433,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                 />
                 <span className="w-[2rem] text-center">&nbsp;-</span>
                 <DatePicker
-                  selected={
-                    newEventInfo.newEndDate || newEventInfo.newStartDate
-                  }
-                  onChange={(date) =>
-                    setNewEventInfo({
-                      ...newEventInfo,
-                      newEndDate: date,
-                    })
-                  }
+                  selected={eventInfo.endDate || eventInfo.startDate}
                   dateFormat="yyyy-MM-dd"
                   className="ml-[.3rem] w-[13rem] rounded-md bg-transparent pr-[1rem] text-center"
                   showYearDropdown
@@ -474,13 +454,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                 </div>
                 <input
                   type="text"
-                  value={newEventInfo.newEventDetail}
-                  onChange={(e) => {
-                    setNewEventInfo({
-                      ...newEventInfo,
-                      newEventDetail: e.target.value,
-                    });
-                  }}
+                  value={eventInfo.detailEventMemo}
                   className="flex h-[2rem] w-[15rem] items-center rounded-md bg-transparent pb-[0.5rem] pl-[0.2rem] pt-[0.5rem] text-[1.2rem] text-darkGray placeholder-lightGray focus:outline-none"
                   disabled
                 />
