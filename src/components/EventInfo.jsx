@@ -481,7 +481,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                       newEventDetail: e.target.value,
                     });
                   }}
-                  className="flex h-[2rem] w-[15rem] items-center rounded-md bg-transparent pb-[0.5rem] pl-[0.2rem] pt-[0.1rem] text-[1.2rem] text-darkGray placeholder-lightGray focus:outline-none"
+                  className="flex h-[2rem] w-[15rem] items-center rounded-md bg-transparent pb-[0.5rem] pl-[0.2rem] pt-[0.5rem] text-[1.2rem] text-darkGray placeholder-lightGray focus:outline-none"
                   disabled
                 />
               </div>
