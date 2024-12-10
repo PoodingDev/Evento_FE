@@ -26,7 +26,7 @@ export default function OnBoarding() {
       ),
     },
     {
-      img: "/assets/onboarding/subscription_list.png",
+      img: "/assets/onboarding/filtering.png",
       title: "맞춤형 일정 필터링",
       body: (
         <>
@@ -105,7 +105,7 @@ export default function OnBoarding() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-eventoWhite px-5 py-5">
-      <div className="relative mx-10 w-[40%] overflow-hidden rounded-3xl pb-10 pt-16 text-gray-800">
+      <div className="relative mx-10 w-[60%] overflow-hidden rounded-3xl pb-10 pt-16 text-gray-800">
         <div
           className="flex transition-transform duration-500 ease-in-out"
           style={{
@@ -171,7 +171,7 @@ export default function OnBoarding() {
             {"<"}
           </button>
         </div>
-        <div className="absolute right-2 top-1/2 -translate-y-1/2 transform">
+        <div className="absolute right-1 top-1/2 -translate-y-1/2 transform">
           <button
             onClick={() => handleSwipe("next")}
             className="h-10 w-10 rounded-full bg-eventoPurpleLight/30 text-eventoPurple hover:bg-gray-300"
