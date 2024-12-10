@@ -34,7 +34,7 @@ export default function CreateEvent({ onClose, setEvents }) {
   //캘린더 이름
   const [title, setTitle] = useState(`캘린더 이름`);
   const [calId, setCalId] = useState(0);
-  const [calIsPublic, setCalIsPublic] = useState(false);
+  const [calIsPublic, setCalIsPublic] = useState(true);
 
   //시간
   const [startDate, setStartDate] = useState(new Date());
@@ -170,6 +170,7 @@ export default function CreateEvent({ onClose, setEvents }) {
           calId: calendarIds,
           calendarName: calendarNames,
           calendarColor: calendarColors,
+          calendarIsPublic: calendarIsPublic,
           members: members,
         });
       } catch (error) {
@@ -282,27 +283,29 @@ export default function CreateEvent({ onClose, setEvents }) {
         </div>
 
         {/* 공개 여부 */}
-        <div className="mb-[2rem]">
-          <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
-            이벤트 공개 여부
+        {calIsPublic && (
+          <div className="mb-[2rem]">
+            <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
+              이벤트 공개 여부
+            </div>
+            <div className="flex items-center space-x-[0.5rem] text-[1rem] text-darkGray">
+              <p>구독자들에게 공개하기</p>
+              {isEventPublic ? (
+                <FaToggleOn
+                  size={25}
+                  className="cursor-pointer text-eventoPurple"
+                  onClick={toggleIsPublic}
+                />
+              ) : (
+                <FaToggleOff
+                  size={25}
+                  className="cursor-pointer text-eventoPurple"
+                  onClick={toggleIsPublic}
+                />
+              )}
+            </div>
           </div>
-          <div className="flex items-center space-x-[0.5rem] text-[1rem] text-darkGray">
-            <p>구독자들에게 공개하기</p>
-            {isEventPublic ? (
-              <FaToggleOn
-                size={25}
-                className="cursor-pointer text-eventoPurple"
-                onClick={toggleIsPublic}
-              />
-            ) : (
-              <FaToggleOff
-                size={25}
-                className="cursor-pointer text-eventoPurple"
-                onClick={toggleIsPublic}
-              />
-            )}
-          </div>
-        </div>
+        )}
 
         {/* 에러 메시지 출력 */}
         {errorMessage && (
