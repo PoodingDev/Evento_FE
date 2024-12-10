@@ -111,7 +111,7 @@ export default function EventEdit({
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex flex-col w-full">
+      <div className="flex w-full flex-col">
         <div className="mb-[1rem] flex items-center justify-between">
           {/* 이벤트 제목 */}
           <div className="flex items-center">
@@ -147,7 +147,7 @@ export default function EventEdit({
             </div>
           </div>
         </div>
-g
+
         {/* 시간 */}
         <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
           시간
