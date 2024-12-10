@@ -193,21 +193,10 @@ export default function SideBarLeft() {
       <div className="fixed bottom-[3rem] left-[4rem] flex flex-col items-center justify-center">
         <ul className="space-y-[.8rem]">
           {(Array.isArray(dday) ? dday : []).map((item, index) => {
-            const today = new Date();
-            const dDay = new Date(item.d_day);
-            const differenceInTime = dDay - today;
-            const differenceInDays = Math.ceil(
-              differenceInTime / (1000 * 60 * 60 * 24),
-            );
-
             return (
               <li key={index} className="flex items-center">
                 <span className="flex w-[3rem] items-center text-left text-[.9rem] font-bold text-eventoPurpleDark/70">
-                  {differenceInDays > 0
-                    ? `D-${differenceInDays}`
-                    : differenceInDays === 0
-                      ? "D-Day"
-                      : `D+${Math.abs(differenceInDays)}`}
+                  {item.d_day}
                 </span>
                 <span className="flex flex-1 items-center pl-2 text-left text-[0.8rem] text-darkGray/90">
                   {item.event_title}
