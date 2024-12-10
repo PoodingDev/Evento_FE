@@ -135,7 +135,7 @@ export default function Calendar() {
               memo: event.description,
             },
             calId: event.calendar_id,
-            calTitle: calendar ? calendar.calendarName : "", // calId와 일치하는 calendarName을 설정
+            calTitle: event.calendar_title,
             color: event.calendar_color,
             editable: true, // 이벤트 편집 가능
           };

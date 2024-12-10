@@ -59,7 +59,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
     setEventInfo({
       eventId: eventDetails.id,
       eventTitle: eventDetails.title,
-      cal_id: eventDetails.calId,
+      cal_id: eventDetails.cal_id,
       title: eventDetails.cal_title,
       startDate: eventDetails.start,
       endDate: eventDetails.end,
@@ -93,9 +93,11 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
         });
 
         const selectedCalendar = response.data.find(
-          (cal) => cal.name === eventInfo.title,
+          (cal) => cal.calendar_id === eventInfo.cal_id,
         );
-
+        console.log("aaaaaaaaa", response.data);
+        console.log("dkdk", eventInfo);
+        console.log("dkdk", selectedCalendar);
         if (selectedCalendar) {
           setCalInfo({
             calenderName: selectedCalendar.name,
@@ -124,8 +126,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
             },
           },
         );
-        console.log("gijsoafa");
-        console.log(response);
+
         setIsLike(response.is_liked);
       } catch (error) {
         console.error("캘린더 정보를 가져오는 중 오류 발생:", error);
@@ -349,6 +350,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
       alert("이벤트 삭제에 실패했습니다. 다시 시도해 주세요.");
     }
   };
+  console.log(calInfo);
 
   return (
     <>
