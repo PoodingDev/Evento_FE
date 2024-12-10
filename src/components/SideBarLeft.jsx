@@ -59,8 +59,8 @@ export default function SideBarLeft() {
     try {
       const token = localStorage.getItem("token");
       await instance.patch(
-        `/api/calendars/${id}`,
-        { isactive: !checked[id] },
+        `/api/calendars/${id}/`,
+        { calendar_id: id, is_active: !checked[id] },
         {
           headers: { Authorization: `Bearer ${token}` },
         },
