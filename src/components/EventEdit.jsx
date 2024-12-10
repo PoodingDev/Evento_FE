@@ -180,7 +180,7 @@ export default function EventEdit({
               })
             }
             dateFormat="yyyy-MM-dd"
-            className="ml-[.5rem] w-[13rem] rounded-md bg-lightGray/20 px-[.6rem] text-center"
+            className="ml-[.5rem] w-[13rem] rounded-md bg-lightGray/20 pl-[.3rem] pr-[.7rem] text-center"
             showYearDropdown
             scrollableYearDropdown
             yearDropdownItemNumber={100}

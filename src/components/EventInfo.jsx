@@ -455,7 +455,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                     })
                   }
                   dateFormat="yyyy-MM-dd"
-                  className="ml-[.5rem] w-[13rem] rounded-md bg-transparent px-[.6rem] text-center"
+                  className="ml-[.5rem] w-[13rem] rounded-md bg-transparent pl-[.3rem] pr-[.7rem] text-center"
                   showYearDropdown
                   scrollableYearDropdown
                   yearDropdownItemNumber={100}
