@@ -2,11 +2,10 @@ import CalendarInfo from "./CalendarInfoModal";
 import CreateCalendar from "./CreateCalendarModal";
 import InviteCodeModal from "./InviteCodeModal";
 import React, { useEffect, useState } from "react";
+import instance from "../api/axios";
 import { useNavigate } from "react-router-dom";
-import { instance } from "../api/axios";
+import { useAuth } from "../context/AuthContext";
 import { useCalendar } from "../context/CalendarContext";
-
-// import { useAuth } from "context/AuthContext";
 
 import {
   FaRegSquare,
@@ -27,6 +26,7 @@ export default function SideBarLeft() {
   const [isInviteOpen, setIsInviteOpen] = useState(false);
   const [isCreateOpen, setIsCreateCalendarOpen] = useState(false);
 
+  const { loggedIn, userInfo } = useAuth();
   const [dday, setDday] = useState([]);
 
   useEffect(() => {
@@ -50,8 +50,8 @@ export default function SideBarLeft() {
     }
 
     if (user_id) {
-      fetchData(); // Fetch calendars
-      fetchDdayData(); // Fetch D-Day events
+      fetchData();
+      fetchDdayData();
     }
   }, [isCalendarInfoOpen, isCreateOpen]);
 
@@ -82,22 +82,10 @@ export default function SideBarLeft() {
     setCalendarInfoOpen(true);
   };
 
-  const handleSaveCalendar = (updatedCalendar) => {
-    setMyCalendars((prevCalendars) =>
-      prevCalendars.map((calendar) =>
-        calendar.calendar_id === updatedCalendar.calendar_id
-          ? updatedCalendar
-          : calendar,
-      ),
-    );
-    setCalendarInfoOpen(false);
-  };
-
   return (
     <div>
       <div className="evento-sidebarleft absolute mt-[5rem] h-[calc(100vh-5rem)] w-[18rem] rounded-tr-[2.5rem] bg-eventoGray pl-[2.25rem] pr-[1.75rem] pt-[1.6rem]">
         <div>
-          {/* 내 캘린더 */}
           <div className="evento-my-calendar">
             <div className="mr-[0.3rem] flex items-center justify-between">
               <span className="text-[0.9rem] text-darkGray">내 캘린더</span>
@@ -147,7 +135,6 @@ export default function SideBarLeft() {
             </ul>
           </div>
         </div>
-        {/* 구독한 캘린더 */}
         <div className="mt-[2rem]">
           <div className="evento-subscription">
             <div className="mr-[0.3rem] flex items-center justify-between">
@@ -193,21 +180,10 @@ export default function SideBarLeft() {
       <div className="fixed bottom-[3rem] left-[4rem] flex flex-col items-center justify-center">
         <ul className="space-y-[.8rem]">
           {(Array.isArray(dday) ? dday : []).map((item, index) => {
-            const today = new Date();
-            const dDay = new Date(item.d_day);
-            const differenceInTime = dDay - today;
-            const differenceInDays = Math.ceil(
-              differenceInTime / (1000 * 60 * 60 * 24),
-            );
-
             return (
               <li key={index} className="flex items-center">
                 <span className="flex w-[3rem] items-center text-left text-[.9rem] font-bold text-eventoPurpleDark/70">
-                  {differenceInDays > 0
-                    ? `D-${differenceInDays}`
-                    : differenceInDays === 0
-                      ? "D-Day"
-                      : `D+${Math.abs(differenceInDays)}`}
+                  {item.d_day}
                 </span>
                 <span className="flex flex-1 items-center pl-2 text-left text-[0.8rem] text-darkGray/90">
                   {item.event_title}
@@ -217,27 +193,6 @@ export default function SideBarLeft() {
           })}
         </ul>
       </div>
-
-      {/* 모달 */}
-      {isInviteOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-          <InviteCodeModal onClose={toggleInvite} />
-        </div>
-      )}
-      {isCreateOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-          <CreateCalendar onClose={toggleCreateCalendar} />
-        </div>
-      )}
-      {isCalendarInfoOpen && selectedCalendar && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-          <CalendarInfo
-            calendar={selectedCalendar}
-            onClose={() => setCalendarInfoOpen(false)}
-            userId={user_id}
-          />
-        </div>
-      )}
     </div>
   );
 }
