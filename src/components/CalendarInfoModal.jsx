@@ -159,7 +159,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
                   className="mb-[3rem] mr-[2rem] flex h-[1.5rem] w-[18rem] items-center rounded-md bg-lightGray/20 text-[1.1rem] font-semibold text-darkGray"
                   onChange={(e) => updateState("description", e.target.value)}
                 />
-                <div className="ml-[0.2rem] flex h-[2rem] w-[10rem]">
+                <div className="flex h-[3rem] w-[11rem] flex-wrap items-center rounded-[0.2rem] p-[0.2rem]">
                   {[
                     { color: "#E05C5C", label: "calendarRed" },
                     { color: "#FFC960", label: "calendarYellow" },
