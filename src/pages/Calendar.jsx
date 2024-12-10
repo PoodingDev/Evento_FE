@@ -88,17 +88,16 @@ export default function Calendar() {
             Authorization: `Bearer ${token}`,
           },
         });
-        const start_date = new Date(response.data.start_time);
-        const end_date = new Date(response.data.end_time);
+        // const start_date = new Date(response.data.start_time);
+        // const end_date = new Date(response.data.end_time);
 
-        const formattedStartDate = start_date.toLocaleDateString("ko");
-        const formattedEndDate = end_date.toLocaleDateString("ko");
-
+        // const formattedStartDate = start_date.toLocaleDateString("ko");
+        // const formattedEndDate = end_date.toLocaleDateString("ko");
+        console.log(response.data);
         const eventMockData = response.data.map((event) => {
           const calendar = calInfo.find(
             (cal) => cal.calId === event.calendar_id,
           );
-
           return {
             displayEventEnd: true,
             allDay: false,

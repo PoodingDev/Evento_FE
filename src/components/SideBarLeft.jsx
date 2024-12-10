@@ -66,15 +66,15 @@ export default function SideBarLeft() {
         }
 
         if (ddayResponse.status === "fulfilled") {
-          console.log("ddayResponse.value:", ddayResponse.value); // 로그 추가
-          console.log("ddayResponse.value.data:", ddayResponse.value?.data);
+          // console.log("ddayResponse.value:", ddayResponse.value); // 로그 추가
+          // console.log("ddayResponse.value.data:", ddayResponse.value?.data);
 
           // favorite_events 배열 추출
           const favoriteEvents =
             ddayResponse.value?.data?.favorite_events || [];
           setDday(favoriteEvents);
 
-          console.log("dday (after setDday):", dday);
+          // console.log("dday (after setDday):", dday);
         }
       } catch (error) {
         console.error("캘린더 데이터를 가져오는 중 오류 발생:", error);
@@ -151,7 +151,7 @@ export default function SideBarLeft() {
     );
     setCalendarInfoOpen(false);
   };
-  console.log(subscribedCalendars);
+  // console.log(subscribedCalendars);
   return (
     <div>
       <div className="evento-sidebarleft absolute mt-[5rem] h-[calc(100vh-5rem)] w-[18rem] rounded-tr-[2.5rem] bg-eventoGray pl-[2.25rem] pr-[1.75rem] pt-[1.6rem]">
