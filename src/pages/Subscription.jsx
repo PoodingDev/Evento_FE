@@ -110,7 +110,7 @@ export default function Subscription() {
     if (user_id) {
       fetchData();
     }
-  }, [user_id]);
+  }, [user_id, subscribedCalendars, filteredSearch]);
 
   return (
     <div className="h-[100vh] bg-eventoWhite pl-[18rem] pt-[4rem]">
