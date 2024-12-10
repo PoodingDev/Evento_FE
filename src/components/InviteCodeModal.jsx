@@ -53,7 +53,7 @@ export default function InviteCodeModal({ onClose, calendarId }) {
           },
         );
 
-        if (response.status === 201) {
+        if (response.status === 200) {
           alert("관리자로 성공적으로 초대되었습니다.");
           onClose();
         }
