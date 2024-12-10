@@ -441,7 +441,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                   yearDropdownItemNumber={100}
                   minDate={new Date(1900, 0, 1)}
                   maxDate={new Date(2050, 11, 31)}
-                  disable
+                  disabled
                 />
                 <span className="w-[2rem] text-center">&nbsp;-</span>
                 <DatePicker
@@ -461,7 +461,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                   yearDropdownItemNumber={100}
                   minDate={new Date(1900, 0, 1)}
                   maxDate={new Date(2050, 11, 31)}
-                  disable
+                  disabled
                 />
               </div>
 
