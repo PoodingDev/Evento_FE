@@ -23,6 +23,8 @@ export default function Calendar() {
   // 클릭된 이벤트를 처리하는 함수
   const handleEventClick = (info) => {
     const clickedEvent = info.event;
+    console.log("qwer");
+    console.log(clickedEvent);
     const eventDetails = {
       id: clickedEvent.id,
       title: clickedEvent.title,

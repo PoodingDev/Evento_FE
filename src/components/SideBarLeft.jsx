@@ -15,6 +15,7 @@ import {
 } from "react-icons/fa";
 
 export default function SideBarLeft() {
+  const user_id = localStorage.getItem("user_id");
   const [isCalendarInfoOpen, setCalendarInfoOpen] = useState(false);
   const [selectedCalendar, setSelectedCalendar] = useState(null);
 
@@ -43,7 +44,7 @@ export default function SideBarLeft() {
             instance.get(`/api/calendars/subscriptions/`, {
               headers: { Authorization: `Bearer ${token}` },
             }),
-            instance.get(`/api/users/${userId}/favorites/`, {
+            instance.get(`/api/users/${user_id}/favorites/`, {
               headers: { Authorization: `Bearer ${token}` },
             }),
           ]);

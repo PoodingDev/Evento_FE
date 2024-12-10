@@ -15,9 +15,10 @@ import {
   FaRegCommentDots,
 } from "react-icons/fa";
 export default function EventInfo({ onClose, eventDetails, setEvents }) {
+  const user_id = localStorage.getItem("user_id");
   const user_nickname = localStorage.getItem("user_nickname");
   const [viewMode, setViewMode] = useState("info");
-  console.log(`viewMode:${viewMode}`);
+
   const handleViewChange = (mode) => {
     setViewMode(mode);
   };
@@ -44,8 +45,6 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
     newEventDetail: "",
     newEventPublic: false,
   });
-
-  const { userInfo } = useAuth();
 
   //캘린더 색상
   const [calColor, setCalColor] = useState(eventDetails.color);
@@ -105,7 +104,6 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
           });
         } else {
           console.error("일치하는 캘린더를 찾을 수 없습니다.");
-          // 해당 캘린더가 없을 때 기본 값 설정 (필요에 따라 수정)
         }
       } catch (error) {
         console.error("캘린더 정보를 가져오는 중 오류 발생:", error);
@@ -113,6 +111,28 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
     }
     fetchCalInfo();
   }, [eventInfo.title]);
+
+  useEffect(() => {
+    async function fetchLike() {
+      try {
+        const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
+        const response = await instance.get(
+          `/api/events/${eventInfo.eventId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+        console.log("gijsoafa");
+        console.log(response);
+        setIsLike(response.is_liked);
+      } catch (error) {
+        console.error("캘린더 정보를 가져오는 중 오류 발생:", error);
+      }
+    }
+    fetchLike();
+  }, []);
 
   //수정 및 편집
   const [isEdit, setIsEdit] = useState(false);
@@ -125,8 +145,75 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
   };
 
   //북마크
-  const [isLike, setIsLike] = useState(false);
-  const toggleIsLike = () => setIsLike(!isLike);
+  const [isLike, setIsLike] = useState(eventInfo.is_liked);
+  // 좋아요 상태를 서버에서 가져오기
+  const fetchLikeStatus = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await instance.get(`/api/events/${eventInfo.eventId}/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        const { is_liked } = response.data; // 서버에서 가져온 is_liked 값
+        setIsLike(is_liked); // 상태 업데이트
+      } else {
+        console.error("좋아요 상태를 가져오지 못했습니다.");
+      }
+    } catch (error) {
+      console.error("좋아요 상태를 가져오는 중 오류 발생:", error);
+    }
+  };
+
+  // 좋아요 상태 토글
+  const toggleIsLike = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (isLike) {
+        // 좋아요 취소
+        const response = await instance.delete(
+          `/api/users/${user_id}/favorites/${eventInfo.eventId}/`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        if (response.status === 204) {
+          console.log("좋아요가 취소되었습니다.");
+          await fetchLikeStatus(); // 최신 상태 다시 가져오기
+        }
+      } else {
+        // 좋아요 추가
+        const response = await instance.post(
+          `/api/users/${user_id}/favorites/`,
+          { event_id: eventInfo.eventId },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        if (response.status === 201) {
+          console.log("좋아요가 추가되었습니다.");
+          await fetchLikeStatus(); // 최신 상태 다시 가져오기
+        }
+      }
+    } catch (error) {
+      console.error("좋아요 상태 변경 중 오류 발생:", error);
+    }
+  };
+
+  // 초기 좋아요 상태 가져오기
+  useEffect(() => {
+    if (eventInfo.eventId) {
+      fetchLikeStatus();
+    }
+  }, [eventInfo.eventId]);
 
   const [isComment, setIsComment] = useState(false);
   const toggleIsComment = () => setIsComment(!isComment);
@@ -297,7 +384,6 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
             <div className="flex w-full flex-col">
               <div className="mb-[1rem] flex items-center justify-between">
                 {/* 이벤트 제목 */}
-
                 <div className="flex items-center">
                   <div className="text-darkGray">
                     {eventInfo.isEventPublic ? (
