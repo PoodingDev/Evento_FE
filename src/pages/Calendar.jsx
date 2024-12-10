@@ -109,22 +109,21 @@ export default function Calendar() {
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
 
-        //isactive인 캘린더의 이벤트(바뀐 API)
-        const response = await instance.get(`/api/events/public/list/`, {
+        const response = await instance.get(`/api/events/active/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        // const start_date = new Date(response.data.start_time);
-        // const end_date = new Date(response.data.end_time);
+        const eventData = response.data.admin_events.concat(
+          response.data.subscription_events,
+        );
+        console.log("aaa", response.data);
 
-        // const formattedStartDate = start_date.toLocaleDateString("ko");
-        // const formattedEndDate = end_date.toLocaleDateString("ko");
-        const eventMockData = response.data.map((event) => {
+        const eventList = eventData.map((event) => {
           const calendar = calInfo.find(
             (cal) => cal.calId === event.calendar_id,
           );
-
+          console.log("fff", calendar);
           return {
             displayEventEnd: true,
             allDay: false,
@@ -137,11 +136,11 @@ export default function Calendar() {
             },
             calId: event.calendar_id,
             calTitle: calendar ? calendar.calendarName : "", // calId와 일치하는 calendarName을 설정
-            color: calendar ? calendar.calendarColor : "gray", // 기본 색상 지정
+            color: event.calendar_color,
             editable: true, // 이벤트 편집 가능
           };
         });
-        setEvents(eventMockData);
+        setEvents(eventList);
       } catch (error) {
         console.error("이벤트 정보를 가져오는 중 오류 발생:", error);
       }
