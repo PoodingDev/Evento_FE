@@ -26,6 +26,14 @@ module.exports = {
         calendarBlue: "#6D87D5",
         calendarDarkPurple: "#8867DF",
         calendarPurple: "#B469D3",
+        calendarPink: "#E67C93",
+        calendarOrange: "#FFB866",
+        calendarTeal: "#58C9C0",
+        calendarIndigo: "#7B93D6",
+        calendarBrown: "#A6856A",
+        calendarOlive: "#9AB87A",
+        calendarLavender: "#C7A8D9",
+        
 
         // 경고 색상
         lightRed: "#FFCFCB",

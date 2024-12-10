@@ -168,6 +168,15 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
                     { color: "#6D87D5", label: "calendarBlue" },
                     { color: "#8867DF", label: "calendarDarkPurple" },
                     { color: "#B469D3", label: "calendarPurple" },
+                    { color: "#E67C93", label: "calendarPink" },
+                    { color: "#FFB866", label: "calendarOrange" },
+                    { color: "#58C9C0", label: "calendarTeal" },
+                    { color: "#7B93D6", label: "calendarIndigo" },
+                    { color: "#A6856A", label: "calendarBrown" },
+                    { color: "#9AB87A", label: "calendarOlive" },
+                    { color: "#C7A8D9", label: "calendarLavender" },
+                    { color: "#D86A77", label: "calendarCoral" },
+                    { color: "#FFD37A", label: "calendarGold" },
                   ].map(({ color, label }) => (
                     <button
                       key={label}
