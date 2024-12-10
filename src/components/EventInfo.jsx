@@ -394,11 +394,12 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                   </div>
                   <input
                     type="text"
-                    value={eventInfo.eventTitle}
-                    className="ml-[1rem] h-[2.5rem] w-full bg-transparent text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
+                    value={newEventInfo.newEventTitle}
+                    className="ml-[.5rem] h-[2.7rem] w-[25rem] rounded-md bg-transparent pl-[.5rem] text-[2.3rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
                     onChange={(e) => {
-                      setEventInfo({
-                        eventTitle: e.target.value,
+                      setNewEventInfo({
+                        ...newEventInfo,
+                        newEventTitle: e.target.value,
                       });
                     }}
                     disabled
@@ -424,35 +425,37 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
               <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
                 시간
               </div>
-              <div className="relative z-10 mb-[2rem] flex w-[25rem] -translate-x-[0.3rem] items-center text-[2rem] font-bold text-darkGray">
+              <div className="relative z-10 mb-[2rem] flex w-[25rem] -translate-x-[0.5rem] items-center text-[2rem] font-bold text-darkGray">
                 <DatePicker
-                  selected={eventInfo.startDate}
+                  selected={newEventInfo.newStartDate}
                   onChange={(date) =>
-                    setEventInfo({
-                      ...eventInfo,
-                      startDate: date,
+                    setNewEventInfo({
+                      ...newEventInfo,
+                      newStartDate: date,
                     })
                   }
                   dateFormat="yyyy-MM-dd"
-                  className="w-[12rem] bg-transparent text-center"
+                  className="w-[13rem] rounded-md bg-transparent px-[.6rem] text-center"
                   showYearDropdown
                   scrollableYearDropdown
                   yearDropdownItemNumber={100}
                   minDate={new Date(1900, 0, 1)}
                   maxDate={new Date(2050, 11, 31)}
-                  disabled
+                  disabledabledabled
                 />
                 <span className="w-[2rem] text-center">&nbsp;-</span>
                 <DatePicker
-                  selected={eventInfo.endDate || eventInfo.startDate}
+                  selected={
+                    newEventInfo.newEndDate || newEventInfo.newStartDate
+                  }
                   onChange={(date) =>
-                    setEventInfo({
-                      ...eventInfo,
-                      endDate: date,
+                    setNewEventInfo({
+                      ...newEventInfo,
+                      newEndDate: date,
                     })
                   }
                   dateFormat="yyyy-MM-dd"
-                  className="w-[12rem] bg-transparent pr-[0.3rem] text-center"
+                  className="ml-[.5rem] w-[13rem] rounded-md bg-transparent px-[.6rem] text-center"
                   showYearDropdown
                   scrollableYearDropdown
                   yearDropdownItemNumber={100}
@@ -471,15 +474,14 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                 </div>
                 <input
                   type="text"
-                  value={eventInfo.detailEventMemo}
+                  value={newEventInfo.newEventDetail}
                   onChange={(e) => {
-                    setEventInfo({ detailEventMemo: e.target.value });
+                    setNewEventInfo({
+                      ...newEventInfo,
+                      newEventDetail: e.target.value,
+                    });
                   }}
-                  className="flex w-[15rem] items-center bg-transparent pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
-                  style={{
-                    height: "2.5rem", // 원하는 높이 설정
-                    lineHeight: "2.5rem", // 내용과 높이 일치
-                  }}
+                  className="flex h-[2rem] w-[15rem] items-center rounded-md bg-transparent pb-[0.5rem] pl-[0.2rem] pt-[0.1rem] text-[1.2rem] text-darkGray placeholder-lightGray focus:outline-none"
                   disabled
                 />
               </div>

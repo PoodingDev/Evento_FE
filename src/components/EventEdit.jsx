@@ -126,7 +126,7 @@ export default function EventEdit({
             <input
               type="text"
               value={newEventInfo.newEventTitle}
-              className="ml-[1rem] h-[2.5rem] w-full rounded-md bg-eventoPurple bg-lightGray/20 text-[2.5rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
+              className="ml-[.5rem] h-[2.7rem] w-[25rem] rounded-md bg-lightGray/20 pl-[.5rem] text-[2.3rem] font-bold text-darkGray placeholder-lightGray focus:outline-none"
               onChange={(e) => {
                 setNewEventInfo({
                   ...newEventInfo,
@@ -153,7 +153,7 @@ export default function EventEdit({
         <div className="mb-[0.75rem] text-[1rem] font-bold text-eventoPurple">
           시간
         </div>
-        <div className="relative z-10 mb-[2rem] flex w-[25rem] -translate-x-[0.3rem] items-center text-[2rem] font-bold text-darkGray">
+        <div className="relative z-10 mb-[2rem] flex w-[25rem] -translate-x-[0.5rem] items-center text-[2rem] font-bold text-darkGray">
           <DatePicker
             selected={newEventInfo.newStartDate}
             onChange={(date) =>
@@ -163,7 +163,7 @@ export default function EventEdit({
               })
             }
             dateFormat="yyyy-MM-dd"
-            className="w-[12rem] rounded-md bg-lightGray/20 text-center"
+            className="w-[13rem] rounded-md bg-lightGray/20 px-[.6rem] text-center"
             showYearDropdown
             scrollableYearDropdown
             yearDropdownItemNumber={100}
@@ -180,7 +180,7 @@ export default function EventEdit({
               })
             }
             dateFormat="yyyy-MM-dd"
-            className="w-[12rem] rounded-md bg-lightGray/20 pr-[0.3rem] text-center"
+            className="ml-[.5rem] w-[13rem] rounded-md bg-lightGray/20 px-[.6rem] text-center"
             showYearDropdown
             scrollableYearDropdown
             yearDropdownItemNumber={100}
@@ -204,11 +204,7 @@ export default function EventEdit({
                 newEventDetail: e.target.value,
               });
             }}
-            className="flex h-[1rem] w-[15rem] items-center rounded-md bg-lightGray/30 pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
-            style={{
-              height: "2.5rem", // 원하는 높이 설정
-              lineHeight: "2.5rem", // 내용과 높이 일치
-            }}
+            className="flex h-[2rem] w-[15rem] items-center rounded-md bg-lightGray/30 pb-[0.5rem] pl-[0.2rem] pt-[0.1rem] text-[1.2rem] text-darkGray placeholder-lightGray focus:outline-none"
           />
         </div>
 
