@@ -6,6 +6,7 @@ import { instance } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 
 export default function EventComments({ onClose, eventDetails, onCancel }) {
+  const user_nickname = localStorage.getItem("user_nickname");
   // const data = [
   //   {
   //     id: 1,
@@ -88,8 +89,14 @@ export default function EventComments({ onClose, eventDetails, onCancel }) {
         },
       );
 
-      // 새로운 댓글 추가
-      setCommentList((prevComments) => [...prevComments, response.data]);
+      // 새로운 댓글 추가 (닉네임을 로컬에서 설정)
+      const newComment = {
+        comment_id: response.data.comment_id,
+        content: response.data.content,
+        admin_nickname: user_nickname, // 로컬 스토리지의 닉네임 사용
+      };
+
+      setCommentList((prevComments) => [...prevComments, newComment]);
       setInput("");
     } catch (error) {
       console.error("댓글 작성 중 오류 발생:", error);
@@ -134,7 +141,7 @@ export default function EventComments({ onClose, eventDetails, onCancel }) {
                 <div key={comment.comment_id} className="flex flex-wrap">
                   <div className="ml-[0.2rem] w-[42rem] pb-[0.2rem] text-[0.8rem] text-darkGray">{`${comment.admin_nickname}`}</div>
                   <div
-                    style={{ backgroundColor: `${eventDetails.color}BB` }}
+                    style={{ backgroundColor: `${eventDetails.color}` }}
                     className="mr-[1rem] flex items-center rounded-[0.6rem] px-[0.7rem] py-[0.2rem] text-[0.9rem] leading-[1.5rem] text-eventoWhite"
                   >
                     {`${comment.content}`}
