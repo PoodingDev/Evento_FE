@@ -3,8 +3,8 @@ import CreateCalendar from "./CreateCalendarModal";
 import InviteCodeModal from "./InviteCodeModal";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { instance } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
+import { useCalendar } from "../context/CalendarContext";
 
 import {
   FaRegSquare,
@@ -15,6 +15,7 @@ import {
 } from "react-icons/fa";
 
 export default function SideBarLeft() {
+  const { myCalendars, subscribedCalendars, fetchData } = useCalendar();
   const user_id = localStorage.getItem("user_id");
   const [isCalendarInfoOpen, setCalendarInfoOpen] = useState(false);
   const [selectedCalendar, setSelectedCalendar] = useState(null);
@@ -24,141 +25,67 @@ export default function SideBarLeft() {
   const [isInviteOpen, setIsInviteOpen] = useState(false);
   const [isCreateOpen, setIsCreateCalendarOpen] = useState(false);
 
-  const [myCalendars, setMyCalendars] = useState([]);
-  const [subscribedCalendars, setSubscribedCalendars] = useState([]);
+  const { loggedIn, userInfo } = useAuth();
   const [dday, setDday] = useState([]);
 
-  const { loggedIn, userInfo } = useAuth();
-  const userId = localStorage.getItem("user_id");
-
   useEffect(() => {
-    async function fetchData() {
+    async function fetchDdayData() {
       try {
         const token = localStorage.getItem("token");
+        const ddayResponse = await instance.get(
+          `/api/users/${user_id}/favorites/`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
 
-        const [myCalendarsResponse, subscribedCalendarsResponse, ddayResponse] =
-          await Promise.allSettled([
-            instance.get("/api/calendars/admin/", {
-              headers: { Authorization: `Bearer ${token}` },
-            }),
-            instance.get(`/api/calendars/subscriptions/`, {
-              headers: { Authorization: `Bearer ${token}` },
-            }),
-            instance.get(`/api/users/${user_id}/favorites/`, {
-              headers: { Authorization: `Bearer ${token}` },
-            }),
-          ]);
-
-        if (myCalendarsResponse.status === "fulfilled") {
-          setMyCalendars(myCalendarsResponse.value.data);
-          const initialChecked = myCalendarsResponse.value.data.reduce(
-            (acc, calendar) => {
-              acc[calendar.calendar_id] = true;
-              return acc;
-            },
-            {},
-          );
-          setChecked(initialChecked);
-        }
-
-        if (subscribedCalendarsResponse.status === "fulfilled") {
-          setSubscribedCalendars(subscribedCalendarsResponse.value.data);
-        }
-
-        if (ddayResponse.status === "fulfilled") {
-          // console.log("ddayResponse.value:", ddayResponse.value); // 로그 추가
-          // console.log("ddayResponse.value.data:", ddayResponse.value?.data);
-
-          // favorite_events 배열 추출
-          const favoriteEvents =
-            ddayResponse.value?.data?.favorite_events || [];
+        if (ddayResponse?.status === 200) {
+          const favoriteEvents = ddayResponse.data.favorite_events || [];
           setDday(favoriteEvents);
-
-          // console.log("dday (after setDday):", dday);
         }
       } catch (error) {
-        console.error("캘린더 데이터를 가져오는 중 오류 발생:", error);
+        console.error("D-Day 데이터를 가져오는 중 오류 발생:", error);
       }
     }
 
     if (user_id) {
       fetchData();
+      fetchDdayData();
     }
   }, [isCalendarInfoOpen, isCreateOpen]);
 
   const handleToggle = async (id) => {
     try {
-      const token = localStorage.getItem("token"); // 토큰 가져오기
-      const response = await instance.patch(
+      const token = localStorage.getItem("token");
+      await instance.patch(
         `/api/calendars/${id}`,
+        { isactive: !checked[id] },
         {
-          calendar_name: myCalendars.name,
-          calendar_description: myCalendars.description,
-          is_public: myCalendars.is_public,
-          calendar_color: myCalendars.color,
-          admins: myCalendars.admins,
-          isactive: checked[id],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         },
       );
-      if (response.status === 200) {
-        // 체크 상태 변경
-        setChecked((prev) => {
-          const newChecked = { ...prev, [id]: !prev[id] }; // 현재 id의 체크 상태 반전
-          // myCalendars의 isactive 값을 업데이트
-          setMyCalendars((prevCalendars) =>
-            prevCalendars.map((calendar) =>
-              calendar.calendar_id === id
-                ? { ...calendar, isactive: newChecked[id] }
-                : calendar,
-            ),
-          );
-          return newChecked;
-        });
-      }
+
+      setChecked((prev) => ({
+        ...prev,
+        [id]: !prev[id],
+      }));
     } catch (error) {
-      console.error("ERROR: ", error);
+      console.error("캘린더 토글 중 오류:", error);
     }
   };
 
-  const toggleInvite = () => {
-    setIsInviteOpen((prev) => !prev);
-  };
-
-  const toggleCreateCalendar = () => {
-    setIsCreateCalendarOpen((prev) => !prev);
-  };
-
-  // 캘린더 정보 보기 및 수정 저장 핸들러
+  const toggleInvite = () => setIsInviteOpen((prev) => !prev);
+  const toggleCreateCalendar = () => setIsCreateCalendarOpen((prev) => !prev);
   const handleViewCalendar = (calendar) => {
     setSelectedCalendar(calendar);
     setCalendarInfoOpen(true);
   };
 
-  const handleSaveCalendar = (updatedCalendar) => {
-    // 수정된 내용을 사이드바에도 즉시 반영
-    setMyCalendars((prevCalendars) =>
-      prevCalendars.map((calendar) =>
-        calendar.calendar_id === updatedCalendar.calendar_id
-          ? updatedCalendar
-          : calendar,
-      ),
-    );
-    setCalendarInfoOpen(false);
-  };
-  // console.log(subscribedCalendars);
   return (
     <div>
       <div className="evento-sidebarleft absolute mt-[5rem] h-[calc(100vh-5rem)] w-[18rem] rounded-tr-[2.5rem] bg-eventoGray pl-[2.25rem] pr-[1.75rem] pt-[1.6rem]">
         <div>
-          {/* 내 캘린더 */}
           <div className="evento-my-calendar">
-            {/* 제목 */}
             <div className="mr-[0.3rem] flex items-center justify-between">
               <span className="text-[0.9rem] text-darkGray">내 캘린더</span>
               <div className="flex space-x-[0.5rem]">
@@ -172,7 +99,6 @@ export default function SideBarLeft() {
                 />
               </div>
             </div>
-            {/* 캘린더 리스트 */}
             <ul className="m-[1rem] mt-[1.5rem] space-y-[0.5rem]">
               {myCalendars.map((calendar) => (
                 <li
@@ -208,10 +134,8 @@ export default function SideBarLeft() {
             </ul>
           </div>
         </div>
-        {/* 구독한 캘린더 */}
         <div className="mt-[2rem]">
           <div className="evento-subscription">
-            {/* 제목 */}
             <div className="mr-[0.3rem] flex items-center justify-between">
               <span className="text-[0.9rem] text-darkGray">구독한 캘린더</span>
               <FaPen
@@ -219,7 +143,6 @@ export default function SideBarLeft() {
                 onClick={() => navigate("/subscription")}
               />
             </div>
-            {/* 캘린더 리스트 */}
             <ul className="m-[1rem] mt-[1.5rem] space-y-[0.5rem]">
               {subscribedCalendars.map((calendar) => (
                 <li
@@ -251,27 +174,8 @@ export default function SideBarLeft() {
           </div>
         </div>
       </div>
-      {/* 모달들 */}
-      {isInviteOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-          <InviteCodeModal onClose={toggleInvite} />
-        </div>
-      )}
-      {isCreateOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-          <CreateCalendar onClose={toggleCreateCalendar} />
-        </div>
-      )}
-      {isCalendarInfoOpen && selectedCalendar && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-          <CalendarInfo
-            calendar={selectedCalendar}
-            onClose={() => setCalendarInfoOpen(false)}
-            userId={userId}
-          />
-        </div>
-      )}
 
+      {/* D-Day */}
       <div className="fixed bottom-[3rem] left-[4rem] flex flex-col items-center justify-center">
         <ul className="space-y-[.8rem]">
           {(Array.isArray(dday) ? dday : []).map((item, index) => {

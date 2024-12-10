@@ -12,6 +12,7 @@ import React from "react";
 import SideBarLeft from "/src/components/SideBarLeft";
 import Subscription from "/src/pages/Subscription";
 import { AuthProvider } from "/src/context/AuthContext";
+import { CalendarProvider } from "/src/context/CalendarContext";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function Layout({ children }) {
@@ -38,19 +39,21 @@ function Layout({ children }) {
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Layout>
-          <Routes>
-            <Route path="/login" element={<LogIn />} />
-            <Route path="/auth/:platform" element={<LoginPostCode />} />
-            <Route path="/" element={<OnBoarding />} />
-            <Route path="/calendar" element={<Calendar />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/profile/edit" element={<ProfileEdit />} />
-            <Route path="/subscription" element={<Subscription />} />
-          </Routes>
-        </Layout>
-      </BrowserRouter>
+      <CalendarProvider>
+        <BrowserRouter>
+          <Layout>
+            <Routes>
+              <Route path="/login" element={<LogIn />} />
+              <Route path="/auth/:platform" element={<LoginPostCode />} />
+              <Route path="/" element={<OnBoarding />} />
+              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile/edit" element={<ProfileEdit />} />
+              <Route path="/subscription" element={<Subscription />} />
+            </Routes>
+          </Layout>
+        </BrowserRouter>
+      </CalendarProvider>
     </AuthProvider>
   );
 }
