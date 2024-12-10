@@ -435,13 +435,12 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                     })
                   }
                   dateFormat="yyyy-MM-dd"
-                  className="w-[13rem] rounded-md bg-transparent px-[.6rem] text-center"
+                  className="w-[13rem] rounded-md bg-lightGray/20 px-[.6rem] text-center"
                   showYearDropdown
                   scrollableYearDropdown
                   yearDropdownItemNumber={100}
                   minDate={new Date(1900, 0, 1)}
                   maxDate={new Date(2050, 11, 31)}
-                  disabledabledabled
                 />
                 <span className="w-[2rem] text-center">&nbsp;-</span>
                 <DatePicker
@@ -455,13 +454,12 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                     })
                   }
                   dateFormat="yyyy-MM-dd"
-                  className="ml-[.5rem] w-[13rem] rounded-md bg-transparent pl-[.3rem] pr-[.7rem] text-center"
+                  className="ml-[.3rem] w-[13rem] rounded-md bg-lightGray/20 pr-[1rem] text-center"
                   showYearDropdown
                   scrollableYearDropdown
                   yearDropdownItemNumber={100}
                   minDate={new Date(1900, 0, 1)}
                   maxDate={new Date(2050, 11, 31)}
-                  disabled
                 />
               </div>
 

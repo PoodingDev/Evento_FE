@@ -319,12 +319,15 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
   const handleDelete = async () => {
     try {
       const token = localStorage.getItem("token"); // 토큰 가져오기
-      const response = await instance.delete(`/api/events/${eventInfo.eventId}/`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const response = await instance.delete(
+        `/api/events/${eventInfo.eventId}/`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
 
       if (response.status === 200) {
         // 삭제가 성공적으로 완료되었을 때
@@ -349,7 +352,7 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex flex-col w-full">
+      <div className="flex w-full flex-col">
         <div className="mb-[1rem] flex items-center justify-between">
           {/* 이벤트 제목 */}
           {isEdit ? (
@@ -466,13 +469,8 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
             </div>
             <div className="relative z-10 mb-[2rem] flex w-[25rem] -translate-x-[0.3rem] items-center text-[2rem] font-bold text-darkGray">
               <DatePicker
+                disabled
                 selected={newEventInfo.newStartDate}
-                onChange={(date) =>
-                  setNewEventInfo({
-                    ...newEventInfo,
-                    newStartDate: date,
-                  })
-                }
                 dateFormat="yyyy-MM-dd"
                 className="w-[12rem] bg-transparent text-center"
                 showYearDropdown
@@ -480,7 +478,6 @@ export default function EventInfo({ onClose, eventDetails, setEvents }) {
                 yearDropdownItemNumber={100}
                 minDate={new Date(1900, 0, 1)}
                 maxDate={new Date(2050, 11, 31)}
-                disabled
               />
               <span className="w-[2rem] text-center">&nbsp;-</span>
               <DatePicker
