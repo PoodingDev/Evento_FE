@@ -110,7 +110,7 @@ export default function Subscription() {
     if (user_id) {
       fetchData();
     }
-  }, [user_id, subscribedCalendars, filteredSearch]);
+  }, [user_id, filteredSearch]);
 
   return (
     <div className="h-[100vh] bg-eventoWhite pl-[18rem] pt-[4rem]">
@@ -189,7 +189,7 @@ function CalenderSearch({
           value={inputValue}
           placeholder="닉네임을 검색하세요"
           onChange={(event) => setInputValue(event.target.value)}
-          className="focus: rounded-2xl bg-gray-200 p-[2px] px-3 py-2 text-center focus:border-[1px] focus:border-eventoPurple/80 focus:bg-eventoPurpleLight/80 focus:outline-none"
+          className="focus: rounded-full bg-gray-200 p-[2px] px-3 py-2 text-center text-eventoblack/90 focus:bg-eventoPurpleLight/80 focus:placeholder-eventoPurpleDark/50 focus:outline-none"
         />
         <IoSearch className="text-[2rem]" />
       </div>
@@ -227,7 +227,7 @@ function SubscriptionCalender({ openCalendars, toggleSubscription }) {
   return (
     <>
       <div className="relative after:absolute after:bottom-0 after:left-0 after:top-0 after:w-[2px] after:bg-gray-200 after:content-['']"></div>
-      <section className="flex w-1/3 flex-col items-center">
+      <section className="flex flex-col items-center w-1/3">
         <h1>구독한 캘린더</h1>
         <ul className="mt-[2rem] flex w-auto flex-col">
           {openCalendars.map((calendar) => (
