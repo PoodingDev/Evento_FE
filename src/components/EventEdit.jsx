@@ -53,11 +53,11 @@ export default function EventEdit({
       const response = await instance.patch(
         `/api/events/${eventDetails.id}/`,
         {
-          event_title: newEventInfo.newEventTitle,
-          cal_title: eventInfo.title,
+          title: newEventInfo.newEventTitle,
+          // cal_title: eventInfo.title,
           start_time: newEventInfo.newStartDate,
           end_time: newEventInfo.newEndDate,
-          event_description: newEventInfo.newEventDetail,
+          description: newEventInfo.newEventDetail,
           is_public: newEventInfo.newEventPublic,
         },
         {
@@ -103,6 +103,7 @@ export default function EventEdit({
       alert("캘린더 수정에 실패했습니다. 다시 시도해 주세요.");
     }
   };
+  console.log(newEventInfo);
 
   return (
     <div className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50">
@@ -196,9 +197,12 @@ export default function EventEdit({
           </div>
           <input
             type="text"
-            value={eventInfo.detailEventMemo}
+            value={newEventInfo.newEventDetail}
             onChange={(e) => {
-              setEventInfo({ detailEventMemo: e.target.value });
+              setNewEventInfo({
+                ...newEventInfo,
+                newEventDetail: e.target.value,
+              });
             }}
             className="flex h-[1rem] w-[15rem] items-center rounded-md bg-lightGray/30 pb-[0.5rem] text-[1rem] text-darkGray placeholder-lightGray focus:outline-none"
             style={{
