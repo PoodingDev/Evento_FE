@@ -267,7 +267,7 @@ export default function CalendarInfo({ calendar, onClose, userId }) {
               {calendar.creator_id == user_id && (
                 <FaTrashCan
                   className="cursor-pointer text-[1.5rem] text-darkGray"
-                  onClick={handleDelete}
+                  onClick={() => setDeleteModalOpen(true)}
                 />
               )}
             </div>
