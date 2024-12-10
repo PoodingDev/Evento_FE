@@ -66,16 +66,22 @@ export default function SideBarLeft() {
         }
 
         if (ddayResponse.status === "fulfilled") {
-          setDday(ddayResponse.value.data);
-        } else {
-          setDday([]); // 기본값으로 설정
+          console.log("ddayResponse.value:", ddayResponse.value); // 로그 추가
+          console.log("ddayResponse.value.data:", ddayResponse.value?.data);
+
+          // favorite_events 배열 추출
+          const favoriteEvents =
+            ddayResponse.value?.data?.favorite_events || [];
+          setDday(favoriteEvents);
+
+          console.log("dday (after setDday):", dday);
         }
       } catch (error) {
         console.error("캘린더 데이터를 가져오는 중 오류 발생:", error);
       }
     }
 
-    if (userId) {
+    if (user_id) {
       fetchData();
     }
   }, [isCalendarInfoOpen, isCreateOpen]);
@@ -277,15 +283,15 @@ export default function SideBarLeft() {
             );
 
             return (
-              <li key={index} className="flex">
-                <span className="w-[3rem] text-left text-[.9rem] font-bold text-eventoPurpleDark/70">
+              <li key={index} className="flex items-center">
+                <span className="flex w-[3rem] items-center text-left text-[.9rem] font-bold text-eventoPurpleDark/70">
                   {differenceInDays > 0
                     ? `D-${differenceInDays}`
                     : differenceInDays === 0
                       ? "D-Day"
                       : `D+${Math.abs(differenceInDays)}`}
                 </span>
-                <span className="flex-1 pl-2 text-left text-[0.9rem] text-darkGray/90">
+                <span className="flex flex-1 items-center pl-2 text-left text-[0.8rem] text-darkGray/90">
                   {item.event_title}
                 </span>
               </li>
