@@ -198,7 +198,7 @@ export default function CreateEvent({ onClose, setEvents }) {
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex w-full flex-col">
+      <div className="flex flex-col w-full">
         <div className="mb-[1rem] flex items-center justify-between">
           {/* 이벤트 제목 */}
           <input
@@ -214,23 +214,23 @@ export default function CreateEvent({ onClose, setEvents }) {
         {/* 캘린더 선택 */}
 
         <div
-          className="relative z-[100] mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoPurpleLight text-center text-[1rem] font-bold"
+          className="relative z-[100] mb-[1.5rem] flex h-[2rem] w-[9rem] justify-center rounded-[2.5rem] bg-eventoPurple/70 text-center text-[1rem] font-bold"
           onClick={() => {
             showList();
           }}
           style={{ backgroundColor: calColor }}
         >
-          <div className="flex h-[1.55rem] -translate-x-[0.3rem] items-center justify-between">
-            <FaCaretDown size={25} />
-            <p className="">{`${title}`}</p>
+          <div className="flex h-[1.9rem] -translate-x-[0.3rem] items-center justify-between">
+            <FaCaretDown className="text-eventoWhite" size={25} />
+            <p className="text-eventoWhite">{`${title}`}</p>
           </div>
           {showCalList && (
-            <div className="absolute left-[1.3rem] top-[1.55rem] flex h-[6rem] w-[8rem] flex-col overflow-auto bg-eventoWhite">
+            <div className="scrollbar-custom absolute left-[0.5rem] top-[1.9rem] flex h-[8rem] w-[8.5rem] flex-col justify-center overflow-auto rounded-lg bg-eventoPurpleLight">
               {calData.calId.map((cal, index) => {
                 return (
                   <button
                     key={cal}
-                    className="h-[1.5rem] w-[6.7rem] rounded-[0.3rem] border-[0.05rem] border-solid border-eventoWhite leading-[1.5rem]"
+                    className="h-[1.7rem] w-[7.5rem] rounded-full border-[0.05rem] border-solid border-eventoWhite leading-[1.5rem] text-eventoWhite"
                     onClick={() => {
                       setTitle(calData.calendarName[index]);
                       setCalId(calData.calId[index]);
@@ -258,7 +258,7 @@ export default function CreateEvent({ onClose, setEvents }) {
             dateFormat="yyyy-MM-dd"
             className="w-[12rem] bg-transparent text-center"
           />
-          <span className="w-[2rem] text-center">-</span>
+          <span className="w-[2rem] text-center">&nbsp;-</span>
           <DatePicker
             selected={endDate}
             onChange={(date) => setendDate(date)}

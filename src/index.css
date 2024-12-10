@@ -243,3 +243,32 @@ body {
   /* 핸들 테두리 색상 */
 }
 
+
+/* 스크롤바 스타일 커스터마이징 */
+
+.scrollbar-custom {
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.scrollbar-custom::-webkit-scrollbar {
+  width: 8px;
+  /* 스크롤바 너비 */
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  /* 트랙 배경색 */
+  border-radius: 10px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  /* 스크롤바 색상 */
+  border-radius: 10px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+  background: #a9a9a9;
+  /* 스크롤바 호버 색상 */
+}

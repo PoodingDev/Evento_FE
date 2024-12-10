@@ -124,9 +124,10 @@ export default function Calendar() {
 
   return (
     <>
-      <div className="mainCalendar bg-eventoWhite">
+      <div className="mainCalendar scrollbar-custom overflow-scroll bg-eventoWhite">
         <FullCalendar
           // plugins={[dayGridPlugin, interactionPlugin]} // 플러그인 추가
+          className="h-auto overflow-auto"
           plugins={[dayGridPlugin, timeGridPlugin]} // 플러그인 추가
           initialView="dayGridMonth" // 기본 뷰 설정
           headerToolbar={{
@@ -138,11 +139,11 @@ export default function Calendar() {
             today: "TODAY", // 'today' 버튼 텍스트를 대문자로
           }}
           events={events} // 이벤트 추가
-          aspectRatio={2.1}
+          aspectRatio={2}
           eventClick={handleEventClick} // 이벤트 클릭 핸들러
           dayMaxEventRows={4}
           dayCellDidMount={(info) => {
-            // 특정 날짜 칸에 커스텀 스타일 적용
+            // 특정 날짜 칸에 커스텀 스타일 적용ㄴ
             info.el.style.height = "6rem";
             // info.el.style.overflow="scroll";
           }}
@@ -185,7 +186,7 @@ export default function Calendar() {
 
       <div
         onClick={toggleCreateEvent}
-        className="absolute bottom-[5rem] right-[5rem] z-[100] flex h-[6rem] w-[6rem] cursor-pointer items-center justify-center rounded-full bg-eventoPurple/60 text-center text-[4rem] text-eventoWhite hover:bg-eventoPurple"
+        className="absolute bottom-[5rem] right-[5rem] z-[100] flex h-[6rem] w-[6rem] cursor-pointer items-center justify-center rounded-full bg-eventoPurple text-center text-[4rem] text-eventoWhite hover:bg-eventoPurple"
       >
         <FaPlus className="text-[3rem]" />
       </div>
