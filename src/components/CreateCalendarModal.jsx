@@ -63,7 +63,7 @@ export default function CreateCalendar({ onClose }) {
   return (
     <div
       className="flex h-[29rem] w-[43rem] translate-x-[3rem] justify-center rounded-[1.25rem] bg-eventoWhite p-[2.8rem] shadow-xl shadow-lightGray/50"
-      style={{ backgroundColor: `${calColor}40` }}
+      style={{ backgroundColor: `${calColor}` }}
     >
       <FaXmark
         size={25}
