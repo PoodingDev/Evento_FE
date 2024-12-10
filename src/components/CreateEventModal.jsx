@@ -198,7 +198,7 @@ export default function CreateEvent({ onClose, setEvents }) {
         className="absolute right-[1.2rem] top-[1.2rem] cursor-pointer text-darkGray"
         onClick={onClose}
       />
-      <div className="flex flex-col w-full">
+      <div className="flex w-full flex-col">
         <div className="mb-[1rem] flex items-center justify-between">
           {/* 이벤트 제목 */}
           <input
@@ -225,12 +225,12 @@ export default function CreateEvent({ onClose, setEvents }) {
             <p className="text-eventoWhite">{`${title}`}</p>
           </div>
           {showCalList && (
-            <div className="scrollbar-custom absolute left-[0.5rem] top-[1.9rem] flex h-[8rem] w-[8.5rem] flex-col justify-center overflow-auto rounded-lg bg-eventoPurpleLight">
+            <div className="scrollbar-custom absolute left-[0.5rem] top-[1.9rem] h-[8rem] w-[8rem] flex-col justify-center space-y-[0.1rem] overflow-auto rounded-lg bg-eventoPurpleLight/50 first-letter:flex">
               {calData.calId.map((cal, index) => {
                 return (
                   <button
                     key={cal}
-                    className="h-[1.7rem] w-[7.5rem] rounded-full border-[0.05rem] border-solid border-eventoWhite leading-[1.5rem] text-eventoWhite"
+                    className="h-[1.7rem] w-[7.5rem] rounded-full border-solid leading-[1.5rem] text-eventoWhite"
                     onClick={() => {
                       setTitle(calData.calendarName[index]);
                       setCalId(calData.calId[index]);
