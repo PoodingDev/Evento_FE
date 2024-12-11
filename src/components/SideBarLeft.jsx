@@ -28,32 +28,30 @@ export default function SideBarLeft() {
   const [isCreateOpen, setIsCreateCalendarOpen] = useState(false);
 
   const [dday, setDday] = useState([]);
+  async function fetchDdayData() {
+    try {
+      const token = localStorage.getItem("token");
+      const ddayResponse = await instance.get(
+        `/api/users/${user_id}/favorites/`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
 
-  useEffect(() => {
-    async function fetchDdayData() {
-      try {
-        const token = localStorage.getItem("token");
-        const ddayResponse = await instance.get(
-          `/api/users/${user_id}/favorites/`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
-
-        if (ddayResponse?.status === 200) {
-          const favoriteEvents = ddayResponse.data.favorite_events || [];
-          setDday(favoriteEvents);
-        }
-      } catch (error) {
-        console.error("D-Day 데이터를 가져오는 중 오류 발생:", error);
+      if (ddayResponse?.status === 200) {
+        const favoriteEvents = ddayResponse.data.favorite_events || [];
+        setDday(favoriteEvents);
       }
+    } catch (error) {
+      console.error("D-Day 데이터를 가져오는 중 오류 발생:", error);
     }
-
+  }
+  useEffect(() => {
     if (user_id) {
       fetchData(); // Fetch calendars
       fetchDdayData(); // Fetch D-Day events
     }
-  }, [isCalendarInfoOpen, isCreateOpen,dday]);
+  }, [isCalendarInfoOpen, isCreateOpen]);
 
   const handleToggle = async (id) => {
     try {
@@ -65,7 +63,6 @@ export default function SideBarLeft() {
           headers: { Authorization: `Bearer ${token}` },
         },
       );
-
       setChecked((prev) => ({
         ...prev,
         [id]: !prev[id],
