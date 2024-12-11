@@ -77,7 +77,8 @@ export default function OnBoarding() {
     {
       img: "/assets/evento_logo.png",
       title: "",
-      body: "지금 바로 시작하세요!",
+      // body: "지금 바로 시작하세요!",
+      body: "현재 서버가 종료되었습니다.",
     },
   ]);
 
@@ -104,7 +105,7 @@ export default function OnBoarding() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-eventoWhite px-5 py-5">
+    <div className="flex items-center justify-center min-h-screen px-5 py-5 bg-eventoWhite">
       <div className="relative mx-10 w-[60%] overflow-hidden rounded-3xl pb-10 pt-16 text-gray-800">
         <div
           className="flex transition-transform duration-500 ease-in-out"
@@ -115,13 +116,13 @@ export default function OnBoarding() {
           {slides.map((slide, index) => (
             <div
               key={index}
-              className="flex w-full flex-shrink-0 flex-col items-center justify-center text-center"
+              className="flex flex-col items-center justify-center flex-shrink-0 w-full text-center"
               style={{ width: "100%" }}
             >
               <img
                 src={slide.img}
                 alt={slide.title}
-                className="mb-5 w-auto object-contain"
+                className="object-contain w-auto mb-5"
                 style={{
                   height:
                     index === 0 || index === slides.length - 1
@@ -140,18 +141,24 @@ export default function OnBoarding() {
                 {slide.body}
               </p>
               {index === slides.length - 1 && (
-                <button
-                  onClick={() => navigate("/login")}
-                  className="rounded- mb-4 rounded-full bg-eventoPurpleDark px-8 py-3 text-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-eventoPurple hover:shadow-2xl focus:outline-none active:scale-95 active:bg-eventoWhite active:text-eventoPurpleDark"
-                >
-                  Get Started
-                </button>
+                <>
+                  <p className="mb-4 text-[1.2rem] font-bold text-red-500">
+                    현재 서버가 종료되었습니다.
+                  </p>
+                  <button
+                    disabled
+                    onClick={() => navigate("/login")}
+                    className="px-8 py-3 mb-4 text-white transition-transform duration-300 ease-in-out rounded-full shadow-lg rounded- bg-eventoPurpleDark hover:scale-105 hover:bg-eventoPurple hover:shadow-2xl focus:outline-none active:scale-95 active:bg-eventoWhite active:text-eventoPurpleDark"
+                  >
+                    Get Started
+                  </button>
+                </>
               )}
             </div>
           ))}
         </div>
 
-        <div className="mt-6 flex justify-center">
+        <div className="flex justify-center mt-6">
           {slides.map((_, index) => (
             <span
               key={index}
@@ -163,18 +170,18 @@ export default function OnBoarding() {
           ))}
         </div>
 
-        <div className="absolute left-2 top-1/2 -translate-y-1/2 transform">
+        <div className="absolute transform -translate-y-1/2 left-2 top-1/2">
           <button
             onClick={() => handleSwipe("prev")}
-            className="h-10 w-10 rounded-full bg-eventoPurpleLight/30 text-eventoPurple hover:bg-gray-300"
+            className="w-10 h-10 rounded-full bg-eventoPurpleLight/30 text-eventoPurple hover:bg-gray-300"
           >
             {"<"}
           </button>
         </div>
-        <div className="absolute right-1 top-1/2 -translate-y-1/2 transform">
+        <div className="absolute transform -translate-y-1/2 right-1 top-1/2">
           <button
             onClick={() => handleSwipe("next")}
-            className="h-10 w-10 rounded-full bg-eventoPurpleLight/30 text-eventoPurple hover:bg-gray-300"
+            className="w-10 h-10 rounded-full bg-eventoPurpleLight/30 text-eventoPurple hover:bg-gray-300"
           >
             {">"}
           </button>
