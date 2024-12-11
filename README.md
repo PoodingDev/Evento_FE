@@ -47,7 +47,7 @@
     </tr>
     <tr>
       <td align="center">
-        <a href="https://github.com/cxaos"><img src="https://github.com/cxaosdev.png" height=150 width=150><br/>@cxaosdev</a>
+        <a href="https://github.com/cxaosdev"><img src="https://github.com/cxaosdev.png" height=150 width=150><br/>@cxaosdev</a>
       </td>
       <td align="center">
         <a href="https://github.com/sujinnn"><img src="https://github.com/sujinnn.png" height=150 width=150><br/>@sujinnn</a>
