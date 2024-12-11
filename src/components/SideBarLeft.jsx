@@ -53,7 +53,7 @@ export default function SideBarLeft() {
       fetchData(); // Fetch calendars
       fetchDdayData(); // Fetch D-Day events
     }
-  }, [isCalendarInfoOpen, isCreateOpen]);
+  }, [isCalendarInfoOpen, isCreateOpen,dday]);
 
   const handleToggle = async (id) => {
     try {
