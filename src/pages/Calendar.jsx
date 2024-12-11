@@ -9,22 +9,24 @@ import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { FaPlus } from "react-icons/fa6";
 import { instance } from "../api/axios";
+import { useCalendar } from "../context/CalendarContext";
 
 export default function Calendar() {
+  const { updateTrigger } = useCalendar();
   const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [events, setEvents] = useState([]); // 이벤트 상태s
-  const [selectedEvent, setSelectedEvent] = useState(null); // 클릭된 이벤트 상태 관리
+  const [selectedEvent, setSelectedEvent] = useState(null); // 클릭된 이벤트
+
   const toggleCreateEvent = () => {
     setIsCreateEventOpen((prev) => !prev);
   };
-  const [sidebarUpdate, setSidebarUpdate] = useState(false); // 사이트바 체크박스 변화
 
   // 클릭된 이벤트를 처리하는 함수
   const handleEventClick = (info) => {
     const clickedEvent = info.event;
-    console.log("qwer");
-    console.log(clickedEvent);
+    // console.log("qwer");
+    // console.log(clickedEvent);
     const eventDetails = {
       id: clickedEvent.id,
       title: clickedEvent.title,
@@ -63,7 +65,7 @@ export default function Calendar() {
           calId: cal.calendar_id,
           calendarName: cal.name,
           calendarColor: cal.color,
-          isactive: cal.isactive,
+          isactive: cal.is_active,
         }));
         setCalInfo((prevCalInfo) => [
           ...prevCalInfo, // 기존의 calInfo 데이터
@@ -74,7 +76,7 @@ export default function Calendar() {
       }
     }
     fetchCalInfoChange();
-  }, []);
+  }, [updateTrigger]);
 
   //구독 캘린더 정보 가져오기
   useEffect(() => {
@@ -91,7 +93,7 @@ export default function Calendar() {
           calId: cal.id,
           calendarName: cal.name,
           calendarColor: cal.color,
-          isactive: cal.isactive,
+          isactive: cal.is_active,
         }));
         setCalInfo((prevCalInfo) => [
           ...info, // 새로 가져온 구독 캘린더 데이터
@@ -101,7 +103,7 @@ export default function Calendar() {
       }
     }
     fetchCalInfoSubChange();
-  }, []);
+  }, [updateTrigger]);
 
   //이벤트 정보 가져오기
   useEffect(() => {
@@ -114,16 +116,18 @@ export default function Calendar() {
             Authorization: `Bearer ${token}`,
           },
         });
+
         const eventData = response.data.admin_events.concat(
           response.data.subscription_events,
         );
-        console.log("aaa", response.data);
+        console.log(eventData);
+        // console.log("aaa", response.data);
 
         const eventList = eventData.map((event) => {
           const calendar = calInfo.find(
             (cal) => cal.calId === event.calendar_id,
           );
-          console.log("fff", calendar);
+          // console.log("fff", calendar);
           return {
             displayEventEnd: true,
             allDay: false,
@@ -150,7 +154,7 @@ export default function Calendar() {
 
   return (
     <>
-      <div className="mainCalendar scrollbar-custom overflow-scroll bg-eventoWhite">
+      <div className="overflow-scroll mainCalendar scrollbar-custom bg-eventoWhite">
         <FullCalendar
           // plugins={[dayGridPlugin, interactionPlugin]} // 플러그인 추가
           className="h-auto overflow-auto"

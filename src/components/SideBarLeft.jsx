@@ -17,7 +17,16 @@ import {
 } from "react-icons/fa";
 
 export default function SideBarLeft() {
-  const { myCalendars, subscribedCalendars, fetchData } = useCalendar();
+  const {
+    myCalendars,
+    subscribedCalendars,
+    fetchData,
+    setMyCalendars,
+    setSubscribedCalendars,
+    updateTrigger,
+    setUpdateTrigger,
+  } = useCalendar();
+
   const user_id = localStorage.getItem("user_id");
   const [isCalendarInfoOpen, setCalendarInfoOpen] = useState(false);
   const [selectedCalendar, setSelectedCalendar] = useState(null);
@@ -52,25 +61,93 @@ export default function SideBarLeft() {
       fetchDdayData(); // Fetch D-Day events
     }
   }, [isCalendarInfoOpen, isCreateOpen]);
-
-  const handleToggle = async (id) => {
+  const handleToggle = async (calendar) => {
     try {
       const token = localStorage.getItem("token");
-      await instance.patch(
-        `/api/calendars/${id}/`,
-        { calendar_id: id, is_active: !checked[id] },
+      const updatedIsActive = !calendar.is_active;
+
+      const response = await instance.patch(
+        `/api/calendars/subscriptions/update/`,
+        { calendar_id: calendar.calendar_id, is_active: updatedIsActive },
         {
           headers: { Authorization: `Bearer ${token}` },
         },
       );
-      setChecked((prev) => ({
-        ...prev,
-        [id]: !prev[id],
-      }));
+
+      if (response?.status === 200) {
+        setMyCalendars((prevCalendars) =>
+          prevCalendars.map((item) =>
+            item.calendar_id === calendar.calendar_id
+              ? { ...item, is_active: updatedIsActive }
+              : item,
+          ),
+        );
+
+        // checked 상태 업데이트
+        setChecked((prevChecked) => ({
+          ...prevChecked,
+          [calendar.calendar_id]: updatedIsActive,
+        }));
+      }
+      setUpdateTrigger(!updateTrigger);
     } catch (error) {
       console.error("캘린더 토글 중 오류:", error);
     }
   };
+
+  const handleSubToggle = async (calendar) => {
+    try {
+      const token = localStorage.getItem("token");
+      const updatedIsActive = !calendar.is_active;
+
+      const response = await instance.patch(
+        `/api/calendars/subscriptions/update-subscription/`,
+        { calendar_id: calendar.calendar_id, is_active: updatedIsActive },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+
+      if (response?.status === 200) {
+        setSubscribedCalendars((prevCalendars) =>
+          prevCalendars.map((item) =>
+            item.calendar_id === calendar.calendar_id
+              ? { ...item, is_active: updatedIsActive }
+              : item,
+          ),
+        );
+
+        // checked 상태 업데이트
+        setChecked((prevChecked) => ({
+          ...prevChecked,
+          [calendar.calendar_id]: updatedIsActive,
+        }));
+      }
+      setUpdateTrigger(!updateTrigger);
+    } catch (error) {
+      console.error("캘린더 토글 중 오류:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (myCalendars.length > 0) {
+      const myChecked = myCalendars.reduce((acc, calendar) => {
+        acc[calendar.calendar_id] = calendar.is_active;
+        return acc;
+      }, {});
+      setChecked((prev) => ({ ...prev, ...myChecked }));
+    }
+  }, [myCalendars]);
+
+  useEffect(() => {
+    if (subscribedCalendars.length > 0) {
+      const subChecked = subscribedCalendars.reduce((acc, calendar) => {
+        acc[calendar.calendar_id] = calendar.is_active;
+        return acc;
+      }, {});
+      setChecked((prev) => ({ ...prev, ...subChecked }));
+    }
+  }, [subscribedCalendars]);
 
   const toggleInvite = () => setIsInviteOpen((prev) => !prev);
   const toggleCreateCalendar = () => setIsCreateCalendarOpen((prev) => !prev);
@@ -117,9 +194,9 @@ export default function SideBarLeft() {
                 >
                   <div
                     className="cursor-pointer"
-                    onClick={() => handleToggle(calendar.calendar_id)}
+                    onClick={() => handleToggle(calendar)}
                   >
-                    {checked[calendar.calendar_id] ? (
+                    {calendar.is_active ? (
                       <FaCheckSquare
                         className="text-[0.93rem]"
                         style={{ color: calendar.color }}
@@ -162,17 +239,24 @@ export default function SideBarLeft() {
                 >
                   <div
                     className="cursor-pointer"
-                    onClick={() => handleToggle(calendar.calendar_id)}
+                    onClick={() => handleSubToggle(calendar)}
                   >
-                    {checked[calendar.calendar_id] ? (
-                      <FaCheckSquare className="text-[0.9rem] text-eventoPurpleBase" />
+                    {calendar.is_active ? (
+                      <FaCheckSquare
+                        className="text-[0.93rem]"
+                        style={{ color: calendar.color }}
+                      />
                     ) : (
-                      <FaRegSquare className="text-[0.9rem] text-eventoPurpleBase" />
+                      <FaRegSquare
+                        className="text-[0.93rem]"
+                        style={{ color: calendar.color }}
+                      />
                     )}
                   </div>
                   <label
                     htmlFor={calendar.calendar_id}
                     className="flex items-center text-[0.9rem] font-medium text-eventoPurpleBase"
+                    onClick={() => handleViewCalendar(calendar)}
                   >
                     {calendar.name}
                     <span className="ml-2 text-[0.7rem] text-darkGray/80">

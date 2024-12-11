@@ -6,7 +6,7 @@ const CalendarContext = createContext();
 export const CalendarProvider = ({ children }) => {
   const [myCalendars, setMyCalendars] = useState([]);
   const [subscribedCalendars, setSubscribedCalendars] = useState([]);
-
+  const [updateTrigger, setUpdateTrigger] = useState(false); // 변경 트리거
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -22,9 +22,11 @@ export const CalendarProvider = ({ children }) => {
         ]);
 
       if (myCalendarsResponse?.status === 200) {
+        console.log("내 캘린더 데이터:", myCalendarsResponse.data); // 디버깅 추가
         setMyCalendars(myCalendarsResponse.data);
       }
       if (subscribedCalendarsResponse?.status === 200) {
+        console.log("구독한 캘린더 데이터:", subscribedCalendarsResponse.data); // 디버깅 추가
         setSubscribedCalendars(subscribedCalendarsResponse.data);
       }
     } catch (error) {
@@ -34,7 +36,15 @@ export const CalendarProvider = ({ children }) => {
 
   return (
     <CalendarContext.Provider
-      value={{ myCalendars, subscribedCalendars, fetchData }}
+      value={{
+        myCalendars,
+        setMyCalendars,
+        subscribedCalendars,
+        setSubscribedCalendars,
+        fetchData,
+        updateTrigger,
+        setUpdateTrigger, 
+      }}
     >
       {children}
     </CalendarContext.Provider>
@@ -44,9 +54,7 @@ export const CalendarProvider = ({ children }) => {
 export const useCalendar = () => {
   const context = useContext(CalendarContext);
   if (!context) {
-    throw new Error(
-      "useCalendar는 CalendarProvider 내부에서만 사용할 수 있습니다.",
-    );
+    throw new Error("CalendarProvider 외부");
   }
   return context;
 };
