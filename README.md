@@ -1,136 +1,134 @@
-# Evento  
+<div align="center">
+  <img src="https://evento.kro.kr/assets/evento_logo.png" alt="Evento 로고" width="200">
 
-**Evento**는 아이돌 일정 관리와 공유를 위한 캘린더 플랫폼입니다. 
-
-팬, 관리자, 일반 사용자 모두 자신의 캘린더를 생성, 구독 및 관리하며, 
-
-개인 일정과 아티스트의 일정을 손쉽게 확인하고 상호작용할 수 있습니다.  
-
----
-
-## 팀원 구성  
-- **Frontend**:
-<div>
-
-| **신채영** | **윤수진** | **김호선** |
-| :------: |  :------: | :------: | 
-| [<img src="" height=150 width=150> <br/> @cxaos](https://github.com/cxaos) | [<img src="" height=150 width=150> <br/> @cxaos](https://github.com/cxaos) | [<img src="" height=150 width=150> <br/> @cxaos](https://github.com/cxaos) |
-
-
-- **Backend**:
-<div>
-
-| **정승원** | **박진강** | **권은혜** |
-| :------: |  :------: | :------: | 
-| [<img src="" height=150 width=150> <br/> @cxaos](https://github.com/cxaos) | [<img src="" height=150 width=150> <br/> @cxaos](https://github.com/cxaos) | [<img src="" height=150 width=150> <br/> @cxaos](https://github.com/cxaos) |
-
+  <h3>간편한 일정 관리 및 공유 캘린더 플랫폼</h3>
+  <p>
+    캘린더를 <strong>생성, 구독 및 관리</strong>하며
+    개인 일정과 아티스트의 일정을 손쉽게 확인하고 상호작용할 수 있습니다.
+  </p>
+   <a href="https://evento.kro.kr/" target="_blank">
+    <img src="https://img.shields.io/badge/배포 링크-8867DF?style=for-the-badge">
+  </a>
+</div>
 
 ---
 
-## 개발 환경  
+<h3 align="center">✨👩🏻‍💻 Tech Stack 👩🏻‍💻✨</h3>
+<div align=center> 
+  <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> 
+  <img src="https://img.shields.io/badge/tailwindcss-1daabb.svg?style=for-the-badge&logo=tailwind-css&logoColor=white" />
+  <img src="https://img.shields.io/badge/aws-F7A80D?style=for-the-badge&logo=amazon-aws&logoColor=white">
+  <img src="https://img.shields.io/badge/django-092E20?style=for-the-badge&logo=django&logoColor=white">
+  <img src="https://img.shields.io/badge/postgresql-4169E1?style=for-the-badge&logo=postgresql&logoColor=white">
+</div>
 
-### - Frontend : HTML, JavaScript, React, TailwindCSS, FullCalendar  
 
-### - Backend :**(추가 필요)**  
-
-### - Database** : (추가 필요)**  
-
-### 1. 협업 및 관리 도구  
-- **버전 및 이슈 관리**: GitHub, GitHub Issues  
-- **협업 툴**: Discord, Notion, Jira  
-- **서비스 배포 환경**: AWS, S3, CloudFront  
-- **디자인**: Figma  
-
-### 2. 기타  
-- **커밋 컨벤션** [링크 추가 예정]  
-- **코드 컨벤션** [링크 추가 예정]  
-- **스프라이트** [링크 추가 예정]  
-
----
-
-## 채택한 개발 기술과 브랜치 전략  
-**(추가 필요)**  
+<h3 align="center">✨📋 Collaboration & Management Tools 📋✨</h3>
+<div align=center> 
+  <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"> 
+  <img src="https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white">
+  <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
+  <img src="https://img.shields.io/badge/jira-0052CC?style=for-the-badge&logo=jira&logoColor=white">
+  <img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white">
+  
+</div>
 
 ---
 
-## 프로젝트 구조  
+## Team PoodingDev
+
+<div align="center">
+  <h3>Frontend</h3>
+  <table>
+    <tr>
+      <th>신채영(총괄팀장)</th>
+      <th>윤수진</th>
+      <th>김호선</th>
+    </tr>
+    <tr>
+      <td align="center">
+        <a href="https://github.com/cxaos"><img src="https://github.com/cxaosdev.png" height=150 width=150><br/>@cxaosdev</a>
+      </td>
+      <td align="center">
+        <a href="https://github.com/sujinnn"><img src="https://github.com/sujinnn.png" height=150 width=150><br/>@sujinnn</a>
+      </td>
+      <td align="center">
+        <a href="https://github.com/kim-ho-seon"><img src="https://github.com/kim-ho-seon.png" height=150 width=150><br/>@kim-ho-seon</a>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div align="center">
+  <h3>Backend</h3>
+  <table>
+    <tr>
+      <th>정승원(BE팀장)</th>
+      <th>김진강</th>
+      <th>권은혜</th>
+    </tr>
+    <tr>
+      <td align="center">
+        <a href="https://github.com/seungwon0113"><img src="https://github.com/seungwon0113.png" height=150 width=150><br/>@seungwon0113</a>
+      </td>
+      <td align="center">
+        <a href="https://github.com/jingangkim"><img src="https://github.com/jingangkim.png" height=150 width=150><br/>@jingangkim</a>
+      </td>
+      <td align="center">
+        <a href="https://github.com/grace287"><img src="https://github.com/grace287.png" height=150 width=150><br/>@grace287</a>
+      </td>
+    </tr>
+  </table>
+</div>
+
+
+## 📌 프로젝트 구조  
 ```
 src
- ┣ api
- ┃ ┣ auth.js
- ┃ ┗ axios.js
- ┣ assets
- ┃ ┣ logo
- ┃ ┃ ┗ event_logo.png
- ┃ ┣ onboarding
- ┃ ┃ ┗ editCalendar.png
- ┃ ┣ google_logo.png
- ┃ ┣ kakao_logo.png
- ┃ ┗ naver_logo.png
  ┣ components
- ┃ ┣ CalendarInfoModal.jsx
- ┃ ┣ CreateCalendarModal.jsx
- ┃ ┣ CreateEventModal.jsx
- ┃ ┣ DeleteAccountModal.jsx
- ┃ ┣ DeleteCalendarModal.jsx
- ┃ ┣ EventInfoModal.jsx
- ┃ ┣ Header.jsx
- ┃ ┣ InviteCodeModal.jsx
- ┃ ┣ PlusButton.jsx
- ┃ ┗ SideBarLeft.jsx
+ ┃ ┣ CalendarInfoModal.jsx      // 캘린더 상세
+ ┃ ┣ CreateCalendarModal.jsx    // 새 캘린더 생성
+ ┃ ┣ CreateEventModal.jsx       // 새 이벤트 생성
+ ┃ ┣ DeleteAccountModal.jsx     // 계정 삭제
+ ┃ ┣ DeleteCalendarModal.jsx    // 캘린더 삭제
+ ┃ ┣ EventComments.jsx          // 이벤트 댓글
+ ┃ ┣ EventEdit.jsx              // 이벤트 수정
+ ┃ ┣ EventInfo.jsx              // 이벤트 상세 정보
+ ┃ ┣ Header.jsx                 // 헤더
+ ┃ ┣ InviteCodeModal.jsx        // 초대 코드 입력 
+ ┃ ┗ SideBarLeft.jsx            // 좌측 사이드바
  ┣ context
- ┃ ┗ AuthContext.jsx
- ┣ mocks
- ┃ ┣ handlers
- ┃ ┃ ┣ calendarHandlers.js
- ┃ ┃ ┣ eventHandlers.js
- ┃ ┃ ┣ loginHandlers.js
- ┃ ┃ ┗ userHandlers.js
- ┃ ┗ browser.js
+ ┃ ┣ AuthContext.jsx            // 인증 상태 관리 Context
+ ┃ ┗ CalendarContext.jsx        // 캘린더 데이터 관리 Context
  ┣ pages
- ┃ ┣ Calendar.jsx
- ┃ ┣ LogIn.jsx
- ┃ ┣ LoginPostCode.jsx
- ┃ ┣ OnBoarding.jsx
- ┃ ┣ Profile.jsx
- ┃ ┣ ProfileEdit.jsx
- ┃ ┣ SignUp.jsx
- ┃ ┗ Subscription.jsx
- ┣ styles
- ┃ ┗ calendar.css
- ┣ App.jsx
- ┣ index.css
- ┗ index.jsx
+ ┃ ┣ Calendar.jsx               // 캘린더 메인 페이지
+ ┃ ┣ Login.jsx                  // 로그인 페이지
+ ┃ ┣ LoginPostCode.jsx          // 소셜 로그인 리다이렉션 처리 페이지
+ ┃ ┣ OnBoarding.jsx             // 온보딩 페이지
+ ┃ ┣ Profile.jsx                // 사용자 프로필 페이지
+ ┃ ┣ ProfileEdit.jsx            // 사용자 프로필 수정 페이지
+ ┃ ┗ Subscription.jsx           // 구독 관리 페이지
+
 ```
 
----
+## 📌 개발 기간 및 작업 관리  
 
-## 개발 기간 및 작업 관리  
+### 개발 기간  
+전체 개발 기간 : 2024-11-14 ~ 2024-12-10
 
-### 1. 개발 기간  
-- **Frontend**
-  
-전체 개발 기간 : 2024-11-14 ~ 2024-12-11
+UI 구현 및 수정 : 2024-11-19 ~ 2024-11-27
 
-UI 구현 : 2024-11-14 ~ 2024-12-11
+기능 구현 : 2024-11-25 ~ 2024-12-5
 
-기능 구현 : 2024-11-14 ~ 2024-12-11
+API 연결 및 검토 : 2024-11-14 ~ 2024-12-11
 
-- **Backend** :
-  
-전체 개발 기간 : 2024-11-14 ~ 2024-12-11
-
-UI 구현 : 2024-11-14 ~ 2024-12-11
-
-기능 구현 : 2024-11-14 ~ 2024-12-11
-
-### 2. 작업 관리  
+### 작업 관리  
 - Jira를 활용하여 Sprint 기반 작업 관리  
 - Notion으로 프로젝트 문서화 및 일정 관리  
 
 ---
 
-## 주요 기능  
+## 📌 주요 기능  
 
 ### 1. 캘린더 생성  
 - 사용자는 여러 개의 캘린더를 생성할 수 있습니다.  
@@ -148,7 +146,7 @@ UI 구현 : 2024-11-14 ~ 2024-12-11
 - 관리 권한이 있는 캘린더의 색상을 변경하여 메인 화면에서 캘린더를 시각적으로 구분할 수 있습니다.  
 
 ### 4. 일정 관리 및 상호작용  
-- 관리 권한이 있는 캘린더의 일정마다 **코멘트**를 남길 수 있으며, 구독자들은 **코멘트**에 **좋아요**를 누를 수 있습니다.  
+- 관리 권한이 있는 캘린더의 일정마다 **코멘트**를 남길 수 있습니다.  
 - **D-day 설정**: 중요한 일정은 북마크 기능으로 지정하여 사이드바에서 빠르게 확인할 수 있습니다.  
 - 메인 화면의 **오른쪽 하단 버튼**들을 통해 새 일정을 생성하고, 속한 캘린더와 공개/비공개 상태를 설정할 수 있습니다.  
 
@@ -183,7 +181,7 @@ UI 구현 : 2024-11-14 ~ 2024-12-11
 - 모든 서비스는 **로그인 후** 이용할 수 있습니다.  
 
 ### 9. 일반 사용자 지원  
-- 아티스트 일정뿐만 아니라 일반 사용자(팬 포함)도 개인 캘린더를 생성하고 공유할 수 있습니다.  
+- 아티스트 일정뿐만 아니라 일반 사용자(팬 포함)도 개인 캘린더 및 그룹 캘린더를 생성하고 공유할 수 있습니다.  
 
 ---
 
